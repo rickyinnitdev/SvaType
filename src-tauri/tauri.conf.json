@@ -1,0 +1,37 @@
+{
+  "productName": "SvaType",
+  "version": "0.1.0",
+  "identifier": "org.svatype.desktop",
+  "build": {
+    "beforeDevCommand": { "script": "npm run build:frontend", "wait": true },
+    "beforeBuildCommand": "npm run build:frontend",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "withGlobalTauri": false,
+    "windows": [
+      {
+        "label": "main",
+        "title": "SvaType",
+        "width": 1120,
+        "height": 720,
+        "minWidth": 1024,
+        "minHeight": 640,
+        "visible": false,
+        "backgroundColor": "#f7f8fa",
+        "additionalBrowserArgs": "--disable-features=msSmartScreenProtection,msWebOOUI,msPdfOOUI,ElasticOverscroll --disable-background-networking --disable-component-update --no-first-run"
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; media-src 'self'; connect-src ipc: http://ipc.localhost"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["nsis"],
+    "windows": {
+      "webviewInstallMode": { "type": "skip" },
+      "nsis": { "installMode": "currentUser" }
+    }
+  }
+}

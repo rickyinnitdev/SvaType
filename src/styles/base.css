@@ -1,0 +1,13 @@
+:root {
+  font-family: sans-serif;
+  background: #f7f8fa;
+  color: #17212b;
+}
+
+body {
+  margin: 0;
+}
+
+main {
+  min-height: 100vh;
+}

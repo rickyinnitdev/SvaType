@@ -1,0 +1,12 @@
+{
+  "identifier": "default",
+  "description": "Local main window and user-selected backup/export dialogs only.",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "core:window:allow-show",
+    "core:window:allow-set-fullscreen",
+    "dialog:allow-save",
+    "dialog:allow-open"
+  ]
+}
