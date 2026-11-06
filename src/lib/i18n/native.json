@@ -1,0 +1,10 @@
+{
+  "startup_failed": {
+    "km": "មិនអាចបើក SvaType បានទេ។ សូមបើក Windows ឡើងវិញ។",
+    "en": "SvaType cannot start. Please restart Windows and try again."
+  },
+  "webview_missing": {
+    "km": "ត្រូវដំឡើង WebView2។ សូមប្រើ SvaType-Setup-Full-x64.exe ពី USB។",
+    "en": "Microsoft WebView2 is missing. Run SvaType-Setup-Full-x64.exe from your USB drive, then start SvaType again. No internet is required."
+  }
+}

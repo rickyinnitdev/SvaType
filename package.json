@@ -12,7 +12,8 @@
     "check": "npm run build:wasm && svelte-check --tsconfig ./tsconfig.json && tsc --noEmit && eslint . && prettier --check .",
     "format": "prettier --write .",
     "test": "npm run build:wasm && node --test scripts/*.test.mjs && vitest run",
-    "test:offline": "npm run build:frontend && node scripts/check-offline.mjs"
+    "test:offline": "npm run build:frontend && node scripts/check-offline.mjs",
+    "perf": "node scripts/perf.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.0.0"

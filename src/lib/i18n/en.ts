@@ -2,6 +2,10 @@ import app from '../../../content/app.json';
 import type { Messages } from './km';
 
 export const en: Messages = {
+  diagnostics: 'Diagnostics',
+  keyLatency: 'Key to DOM update',
+  jsHeap: 'JavaScript heap',
+
   vocabulary: 'Vocabulary',
   chooseCategory: 'Choose a category',
   typeWord: 'Type this word',

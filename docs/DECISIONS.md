@@ -1,5 +1,28 @@
 # Decisions
 
+## M7 — Windows integration and performance measurement
+
+The native Windows APIs and WebView2 bindings already present through Tauri are
+now explicit dependencies; this avoids additional plugins for a session-local
+named mutex, missing-runtime message and browser lockdown. Native startup errors
+use a bilingual table in src/lib/i18n/native.json because they precede the UI.
+Fonts are pinned, subset and bundled with OFL notices; no font download occurs
+at runtime. Diagnostics collect only the last 200 key latencies and run no timers.
+
+The plan's RAM wording is ambiguous: summing full process working sets double
+counts shared WebView2 pages. Use the default Task Manager memory metric, private
+working set, for the 150 MB budget and report both metrics. This release measures
+103.3 MB private versus 409.7 MB full working-set sum. Do not claim the latter
+meets 150 MB. Sampled settled CPU is 0.443%, with no application idle timers/rAF.
+Detailed measurements and limits are in docs/PERFORMANCE.md. A cold HDD start
+and physical Sandy Bridge machine are unavailable here; warm start and 6x CPU
+throttling are the development substitutes, not hardware certification.
+
+All static release budgets pass. Native tests verify <16 ms maximum measured
+DOM-update latency under normal/6x throttle, no per-key IPC, no idle callbacks,
+font loading and single-instance behavior. Workspace tests, frontend checks,
+WASM/i18n tests and offline scans pass.
+
 ## M6 — Vocabulary
 
 The eleven categories contain 25 unreviewed words each (275 total), with Khmer

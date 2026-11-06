@@ -22,6 +22,7 @@
   import { preferences } from '../lib/stores/settings.svelte';
   import { activity } from '../lib/stores/activity.svelte';
   import Hands from '../lib/components/Hands.svelte';
+  import { recordLatency } from '../lib/diagnostics.svelte';
   import { navigate, registerLeaveGuard } from '../lib/router.svelte';
   let {
     sandbox = false,
@@ -150,6 +151,7 @@
     capture?.focus();
   }
   function key(event: KeyboardEvent) {
+    const received = performance.now();
     if (!running || !session || event.target !== capture || event.isComposing)
       return;
     if (event.code === 'Tab' || event.code === 'Escape') return;
@@ -160,6 +162,7 @@
       event.preventDefault();
     const result = session.onKey(event);
     if (result.ignored) return;
+    void tick().then(() => recordLatency(performance.now() - received));
     const next = errors;
     if (event.code === 'Backspace') {
       for (const position of next)

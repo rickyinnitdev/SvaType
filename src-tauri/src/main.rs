@@ -5,9 +5,15 @@ mod commands;
 mod content;
 mod error;
 mod paths;
+#[cfg(windows)]
+mod platform;
 mod storage;
 
 fn main() {
+    #[cfg(windows)]
+    let Some(_instance) = platform::startup() else {
+        return;
+    };
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
         .invoke_handler(tauri::generate_handler![
@@ -62,6 +68,8 @@ fn main() {
             let content_root = app.path().resource_dir()?.join("content");
             app.manage(std::sync::Arc::new(content::Content::new(content_root)));
             let window = app.get_webview_window("main").expect("main window exists");
+            #[cfg(windows)]
+            platform::lockdown(&window)?;
             if window.primary_monitor()?.is_some_and(|monitor| {
                 f64::from(monitor.size().width) / monitor.scale_factor() <= 1366.0
             }) {

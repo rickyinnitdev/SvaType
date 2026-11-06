@@ -10,6 +10,7 @@
   } from './lib/router.svelte';
   import { api } from './lib/api';
   import Avatar from './lib/components/Avatar.svelte';
+  import Diagnostics from './lib/components/Diagnostics.svelte';
   let t = $derived(messages());
   let Screen = $state<Component | null>(null);
   let sandbox = $state(false);
@@ -89,6 +90,8 @@
     );
   });
 </script>
+
+<Diagnostics />
 
 <header class="topbar">
   <button

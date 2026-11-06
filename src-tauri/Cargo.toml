@@ -17,3 +17,8 @@ khmer_core = { path = "../crates/khmer_core" }
 rusqlite = { version = "0.38", features = ["bundled", "backup"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+
+[target.'cfg(windows)'.dependencies]
+# Already used transitively by Tauri; needed for native offline startup/lockdown.
+webview2-com = "0.39.1"
+windows = { version = "0.62.2", features = ["Win32_Foundation", "Win32_Security", "Win32_System_Threading", "Win32_System_Com", "Win32_UI_WindowsAndMessaging"] }

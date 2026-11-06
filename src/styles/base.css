@@ -1,4 +1,28 @@
 @import './tokens.css';
+@font-face {
+  font-family: 'Noto Sans Khmer';
+  src: url('/fonts/NotoSansKhmer-SemiBold.woff2') format('woff2');
+  font-weight: 500 900;
+  font-display: block;
+}
+@font-face {
+  font-family: 'Kantumruy Pro';
+  src: url('/fonts/KantumruyPro-SemiBold.woff2') format('woff2');
+  font-weight: 500 900;
+  font-display: block;
+}
+@font-face {
+  font-family: 'Noto Sans Khmer';
+  src: url('/fonts/NotoSansKhmer.woff2') format('woff2');
+  font-weight: 400;
+  font-display: block;
+}
+@font-face {
+  font-family: 'Kantumruy Pro';
+  src: url('/fonts/KantumruyPro.woff2') format('woff2');
+  font-weight: 400;
+  font-display: block;
+}
 :root {
   font-family: 'Noto Sans Khmer', 'Leelawadee UI', sans-serif;
   background: var(--background);

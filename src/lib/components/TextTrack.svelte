@@ -41,6 +41,7 @@
     min-height: 120px;
   }
   .cluster {
+    font-family: 'Kantumruy Pro', 'Noto Sans Khmer', sans-serif;
     font-size: var(--font-target);
     line-height: 1.9;
     min-width: 26px;

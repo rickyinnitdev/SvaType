@@ -1,6 +1,10 @@
 import app from '../../../content/app.json';
 
 export const km = {
+  diagnostics: 'ព័ត៌មានសាកល្បង',
+  keyLatency: 'រយៈពេលបង្ហាញការវាយ',
+  jsHeap: 'អង្គចងចាំ JavaScript',
+
   vocabulary: 'វាក្យសព្ទ',
   chooseCategory: 'ជ្រើសរើសប្រភេទ',
   typeWord: 'វាយពាក្យនេះ',
