@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/khmer_core", "src-tauri"]
+members = ["crates/khmer_core", "src-tauri", "scripts/dump-layout"]
 resolver = "2"
 
 [profile.release]

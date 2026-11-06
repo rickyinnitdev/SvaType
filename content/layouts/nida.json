@@ -1,0 +1,456 @@
+{
+  "id": "nida",
+  "keys": {
+    "Backquote": {
+      "altgr": "‍",
+      "base": "«",
+      "finger": "L5",
+      "row": 0,
+      "scan_code": 41,
+      "shift": "»",
+      "shift_altgr": null
+    },
+    "Backslash": {
+      "altgr": "\\",
+      "base": "ឮ",
+      "finger": "R5",
+      "row": 1,
+      "scan_code": 43,
+      "shift": "ឭ",
+      "shift_altgr": null
+    },
+    "BracketLeft": {
+      "altgr": "ឩ",
+      "base": "ៀ",
+      "finger": "R5",
+      "row": 1,
+      "scan_code": 26,
+      "shift": "ឿ",
+      "shift_altgr": null
+    },
+    "BracketRight": {
+      "altgr": "ឳ",
+      "base": "ឪ",
+      "finger": "R5",
+      "row": 1,
+      "scan_code": 27,
+      "shift": "ឧ",
+      "shift_altgr": null
+    },
+    "Comma": {
+      "altgr": ",",
+      "base": "ុំ",
+      "finger": "R3",
+      "row": 3,
+      "scan_code": 51,
+      "shift": "ុះ",
+      "shift_altgr": null
+    },
+    "Digit0": {
+      "altgr": "}",
+      "base": "០",
+      "finger": "R5",
+      "row": 0,
+      "scan_code": 11,
+      "shift": ")",
+      "shift_altgr": null
+    },
+    "Digit1": {
+      "altgr": "‌",
+      "base": "១",
+      "finger": "L5",
+      "row": 0,
+      "scan_code": 2,
+      "shift": "!",
+      "shift_altgr": null
+    },
+    "Digit2": {
+      "altgr": "@",
+      "base": "២",
+      "finger": "L4",
+      "row": 0,
+      "scan_code": 3,
+      "shift": "ៗ",
+      "shift_altgr": null
+    },
+    "Digit3": {
+      "altgr": "៑",
+      "base": "៣",
+      "finger": "L3",
+      "row": 0,
+      "scan_code": 4,
+      "shift": "\"",
+      "shift_altgr": null
+    },
+    "Digit4": {
+      "altgr": "$",
+      "base": "៤",
+      "finger": "L2",
+      "row": 0,
+      "scan_code": 5,
+      "shift": "៛",
+      "shift_altgr": null
+    },
+    "Digit5": {
+      "altgr": "€",
+      "base": "៥",
+      "finger": "L2",
+      "row": 0,
+      "scan_code": 6,
+      "shift": "%",
+      "shift_altgr": null
+    },
+    "Digit6": {
+      "altgr": "៙",
+      "base": "៦",
+      "finger": "R2",
+      "row": 0,
+      "scan_code": 7,
+      "shift": "៍",
+      "shift_altgr": null
+    },
+    "Digit7": {
+      "altgr": "៚",
+      "base": "៧",
+      "finger": "R2",
+      "row": 0,
+      "scan_code": 8,
+      "shift": "័",
+      "shift_altgr": null
+    },
+    "Digit8": {
+      "altgr": "*",
+      "base": "៨",
+      "finger": "R3",
+      "row": 0,
+      "scan_code": 9,
+      "shift": "៏",
+      "shift_altgr": null
+    },
+    "Digit9": {
+      "altgr": "{",
+      "base": "៩",
+      "finger": "R4",
+      "row": 0,
+      "scan_code": 10,
+      "shift": "(",
+      "shift_altgr": null
+    },
+    "Equal": {
+      "altgr": "៎",
+      "base": "ឲ",
+      "finger": "R5",
+      "row": 0,
+      "scan_code": 13,
+      "shift": "=",
+      "shift_altgr": null
+    },
+    "IntlBackslash": {
+      "altgr": null,
+      "base": null,
+      "finger": "L5",
+      "row": 3,
+      "scan_code": 86,
+      "shift": null,
+      "shift_altgr": null
+    },
+    "KeyA": {
+      "altgr": null,
+      "base": "ា",
+      "finger": "L5",
+      "row": 2,
+      "scan_code": 30,
+      "shift": "ាំ",
+      "shift_altgr": null
+    },
+    "KeyB": {
+      "altgr": null,
+      "base": "ប",
+      "finger": "L2",
+      "row": 3,
+      "scan_code": 48,
+      "shift": "ព",
+      "shift_altgr": null
+    },
+    "KeyC": {
+      "altgr": null,
+      "base": "ច",
+      "finger": "L3",
+      "row": 3,
+      "scan_code": 46,
+      "shift": "ជ",
+      "shift_altgr": null
+    },
+    "KeyD": {
+      "altgr": null,
+      "base": "ដ",
+      "finger": "L3",
+      "row": 2,
+      "scan_code": 32,
+      "shift": "ឌ",
+      "shift_altgr": null
+    },
+    "KeyE": {
+      "altgr": "ឯ",
+      "base": "េ",
+      "finger": "L3",
+      "row": 1,
+      "scan_code": 18,
+      "shift": "ែ",
+      "shift_altgr": null
+    },
+    "KeyF": {
+      "altgr": null,
+      "base": "ថ",
+      "finger": "L2",
+      "row": 2,
+      "scan_code": 33,
+      "shift": "ធ",
+      "shift_altgr": null
+    },
+    "KeyG": {
+      "altgr": null,
+      "base": "ង",
+      "finger": "L2",
+      "row": 2,
+      "scan_code": 34,
+      "shift": "អ",
+      "shift_altgr": null
+    },
+    "KeyH": {
+      "altgr": null,
+      "base": "ហ",
+      "finger": "R2",
+      "row": 2,
+      "scan_code": 35,
+      "shift": "ះ",
+      "shift_altgr": null
+    },
+    "KeyI": {
+      "altgr": "ឦ",
+      "base": "ិ",
+      "finger": "R3",
+      "row": 1,
+      "scan_code": 23,
+      "shift": "ី",
+      "shift_altgr": null
+    },
+    "KeyJ": {
+      "altgr": null,
+      "base": "្",
+      "finger": "R2",
+      "row": 2,
+      "scan_code": 36,
+      "shift": "ញ",
+      "shift_altgr": null
+    },
+    "KeyK": {
+      "altgr": null,
+      "base": "ក",
+      "finger": "R3",
+      "row": 2,
+      "scan_code": 37,
+      "shift": "គ",
+      "shift_altgr": null
+    },
+    "KeyL": {
+      "altgr": null,
+      "base": "ល",
+      "finger": "R4",
+      "row": 2,
+      "scan_code": 38,
+      "shift": "ឡ",
+      "shift_altgr": null
+    },
+    "KeyM": {
+      "altgr": null,
+      "base": "ម",
+      "finger": "R2",
+      "row": 3,
+      "scan_code": 50,
+      "shift": "ំ",
+      "shift_altgr": null
+    },
+    "KeyN": {
+      "altgr": null,
+      "base": "ន",
+      "finger": "R2",
+      "row": 3,
+      "scan_code": 49,
+      "shift": "ណ",
+      "shift_altgr": null
+    },
+    "KeyO": {
+      "altgr": "ឱ",
+      "base": "ោ",
+      "finger": "R4",
+      "row": 1,
+      "scan_code": 24,
+      "shift": "ៅ",
+      "shift_altgr": null
+    },
+    "KeyP": {
+      "altgr": "ឰ",
+      "base": "ផ",
+      "finger": "R5",
+      "row": 1,
+      "scan_code": 25,
+      "shift": "ភ",
+      "shift_altgr": null
+    },
+    "KeyQ": {
+      "altgr": null,
+      "base": "ឆ",
+      "finger": "L5",
+      "row": 1,
+      "scan_code": 16,
+      "shift": "ឈ",
+      "shift_altgr": null
+    },
+    "KeyR": {
+      "altgr": "ឫ",
+      "base": "រ",
+      "finger": "L2",
+      "row": 1,
+      "scan_code": 19,
+      "shift": "ឬ",
+      "shift_altgr": null
+    },
+    "KeyS": {
+      "altgr": null,
+      "base": "ស",
+      "finger": "L4",
+      "row": 2,
+      "scan_code": 31,
+      "shift": "ៃ",
+      "shift_altgr": null
+    },
+    "KeyT": {
+      "altgr": null,
+      "base": "ត",
+      "finger": "L2",
+      "row": 1,
+      "scan_code": 20,
+      "shift": "ទ",
+      "shift_altgr": null
+    },
+    "KeyU": {
+      "altgr": null,
+      "base": "ុ",
+      "finger": "R2",
+      "row": 1,
+      "scan_code": 22,
+      "shift": "ូ",
+      "shift_altgr": null
+    },
+    "KeyV": {
+      "altgr": null,
+      "base": "វ",
+      "finger": "L2",
+      "row": 3,
+      "scan_code": 47,
+      "shift": "េះ",
+      "shift_altgr": null
+    },
+    "KeyW": {
+      "altgr": null,
+      "base": "ឹ",
+      "finger": "L4",
+      "row": 1,
+      "scan_code": 17,
+      "shift": "ឺ",
+      "shift_altgr": null
+    },
+    "KeyX": {
+      "altgr": null,
+      "base": "ខ",
+      "finger": "L4",
+      "row": 3,
+      "scan_code": 45,
+      "shift": "ឃ",
+      "shift_altgr": null
+    },
+    "KeyY": {
+      "altgr": null,
+      "base": "យ",
+      "finger": "R2",
+      "row": 1,
+      "scan_code": 21,
+      "shift": "ួ",
+      "shift_altgr": null
+    },
+    "KeyZ": {
+      "altgr": null,
+      "base": "ឋ",
+      "finger": "L5",
+      "row": 3,
+      "scan_code": 44,
+      "shift": "ឍ",
+      "shift_altgr": null
+    },
+    "Minus": {
+      "altgr": "×",
+      "base": "ឥ",
+      "finger": "R5",
+      "row": 0,
+      "scan_code": 12,
+      "shift": "៌",
+      "shift_altgr": null
+    },
+    "Period": {
+      "altgr": ".",
+      "base": "។",
+      "finger": "R4",
+      "row": 3,
+      "scan_code": 52,
+      "shift": "៕",
+      "shift_altgr": null
+    },
+    "Quote": {
+      "altgr": "ៈ",
+      "base": "់",
+      "finger": "R5",
+      "row": 2,
+      "scan_code": 40,
+      "shift": "៉",
+      "shift_altgr": null
+    },
+    "Semicolon": {
+      "altgr": "៖",
+      "base": "ើ",
+      "finger": "R5",
+      "row": 2,
+      "scan_code": 39,
+      "shift": "ោះ",
+      "shift_altgr": null
+    },
+    "Slash": {
+      "altgr": "/",
+      "base": "៊",
+      "finger": "R5",
+      "row": 3,
+      "scan_code": 53,
+      "shift": "?",
+      "shift_altgr": null
+    },
+    "Space": {
+      "altgr": " ",
+      "base": "​",
+      "finger": "R1",
+      "row": 4,
+      "scan_code": 57,
+      "shift": " ",
+      "shift_altgr": null
+    }
+  },
+  "name": {
+    "en": "Khmer NiDA",
+    "km": "នីដា (NiDA)"
+  },
+  "source": {
+    "flags": 4,
+    "kind": "Windows ToUnicodeEx",
+    "klid": "00010453"
+  },
+  "verified": true
+}

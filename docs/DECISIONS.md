@@ -1,5 +1,20 @@
 # Decisions
 
+## M1 — Fingers and metric interpretation
+
+The sample layout in PLAN §4.4 assigns KeyJ to R1 and KeyK to R2, conflicting
+with the named finger convention (R1 is thumb). Use R2 index on KeyJ and R3
+middle on KeyK, matching the home-row instructions; thumbs use Space. Number
+row and ISO extra-key assignments are generated explicitly.
+
+For stop-on-error, repeated mistakes at one position count once in error and
+confusion aggregates, while every non-Backspace attempt remains in the accuracy
+denominator. This satisfies both the error-deduplication and accuracy definitions.
+Flow corrections also retain the original failed attempt in accuracy.
+
+The Windows layout snapshots were extracted locally from KLIDs 00010453 and 00000453. Their `verified` flag means successful Windows extraction; classroom
+hardware comparison remains a manual school-PC check.
+
 ## M0 — Static development protocol
 
 Tauri's CLI automatically starts a static HTTP server when `devUrl` is absent.

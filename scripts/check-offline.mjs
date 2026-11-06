@@ -55,7 +55,7 @@ function scan(path) {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const errors = ['src', 'src-tauri/src', 'dist'].flatMap(scan);
+  const errors = ['src', 'src-tauri/src', 'crates', 'dist'].flatMap(scan);
   errors.push(...violations(readFileSync('index.html', 'utf8')));
   const cargo = readFileSync('src-tauri/Cargo.toml', 'utf8');
   if (/tauri-plugin-(http|updater|shell|opener)/.test(cargo))
