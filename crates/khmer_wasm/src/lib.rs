@@ -48,6 +48,15 @@ pub struct WasmSession {
 }
 #[wasm_bindgen(js_class=Session)]
 impl WasmSession {
+    pub fn checkpoint(&self) -> String {
+        json(&self.inner.checkpoint())
+    }
+    pub fn restore(source: &str, layout: &WasmLayout) -> Result<WasmSession, JsValue> {
+        let snapshot = serde_json::from_str(source).map_err(error)?;
+        Ok(Self {
+            inner: Session::restore(snapshot, layout.inner.clone()).map_err(|e| error(json(&e)))?,
+        })
+    }
     #[wasm_bindgen(constructor)]
     pub fn new(text: &str, layout: &WasmLayout, flow: bool, strict: bool) -> Result<Self, JsValue> {
         Ok(Self {

@@ -95,6 +95,16 @@ h2 {
   display: grid;
   gap: 20px;
 }
+.page {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 32px;
+}
+@media (max-height: 750px) {
+  .page {
+    padding: 24px;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

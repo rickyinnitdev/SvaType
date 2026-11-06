@@ -6,7 +6,7 @@ import { initSync, Layout } from '../src/lib/wasm/khmer.js';
 initSync({ module: readFileSync('src/lib/wasm/khmer_bg.wasm') });
 const target = JSON.parse(readFileSync('content/playground.json', 'utf8')).text;
 const pages = await (await fetch('http://127.0.0.1:9223/json/list')).json();
-const page = pages.find((p) => p.url === 'http://tauri.localhost/');
+const page = pages.find((p) => p.url.startsWith('http://tauri.localhost/'));
 assert.ok(page, 'SvaType must be running with its local debugger');
 const socket = new WebSocket(page.webSocketDebuggerUrl);
 await new Promise((resolve, reject) => {
@@ -42,6 +42,7 @@ async function evaluate(expression) {
   return result.result.value;
 }
 try {
+  await call('Page.navigate', { url: 'http://tauri.localhost/?playground=1' });
   for (const layoutId of ['nida', 'khmer_legacy'])
     for (const flow of [false, true]) {
       await call('Page.reload');

@@ -19,6 +19,23 @@ function event(code: string, shift = false, altgr = false) {
   };
 }
 describe('real WASM engine', () => {
+  it('restores an aggregate checkpoint', () => {
+    const session = new TypingSession('កខ', nida as LayoutData, 'flow');
+    session.onKey(event('KeyK'), 0);
+    const snapshot = session.checkpoint();
+    session.free();
+    const restored = new TypingSession(
+      'កខ',
+      nida as LayoutData,
+      'flow',
+      false,
+      snapshot,
+    );
+    expect(restored.typed()).toBe('ក');
+    expect(restored.onKey(event('KeyX'), 1000).finished).toBe(true);
+    expect(restored.summary().correct).toBe(2);
+    restored.free();
+  });
   it('initializes only once', async () => {
     const first = loadEngine();
     expect(loadEngine()).toBe(first);

@@ -1,0 +1,65 @@
+{
+  "reviewed": false,
+  "avatars": [
+    {
+      "id": "0",
+      "name": "cat",
+      "file": "0.svg"
+    },
+    {
+      "id": "1",
+      "name": "bear",
+      "file": "1.svg"
+    },
+    {
+      "id": "2",
+      "name": "rabbit",
+      "file": "2.svg"
+    },
+    {
+      "id": "3",
+      "name": "fox",
+      "file": "3.svg"
+    },
+    {
+      "id": "4",
+      "name": "panda",
+      "file": "4.svg"
+    },
+    {
+      "id": "5",
+      "name": "frog",
+      "file": "5.svg"
+    },
+    {
+      "id": "6",
+      "name": "owl",
+      "file": "6.svg"
+    },
+    {
+      "id": "7",
+      "name": "elephant",
+      "file": "7.svg"
+    },
+    {
+      "id": "8",
+      "name": "tiger",
+      "file": "8.svg"
+    },
+    {
+      "id": "9",
+      "name": "monkey",
+      "file": "9.svg"
+    },
+    {
+      "id": "10",
+      "name": "bird",
+      "file": "10.svg"
+    },
+    {
+      "id": "11",
+      "name": "mouse",
+      "file": "11.svg"
+    }
+  ]
+}

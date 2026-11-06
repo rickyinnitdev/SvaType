@@ -49,7 +49,7 @@ pub struct KeyResult {
     pub typed: String,
     pub error_position: Option<usize>,
 }
-#[derive(Debug, Clone, Copy, Default)]
+#[derive(Debug, Clone, Copy, Default, Serialize, Deserialize)]
 struct Progress {
     cluster: u32,
     prefix: u16,
@@ -80,6 +80,15 @@ const UNKNOWN: u16 = u16::MAX - 1;
 struct TargetCluster {
     orders: Vec<String>,
 }
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SessionCheckpoint {
+    target: String,
+    policy: Policy,
+    strict: bool,
+    progress: Progress,
+    summary: SessionSummary,
+    typed: String,
+}
 pub struct Session {
     pub layout: PreparedLayout,
     pub policy: Policy,
@@ -93,6 +102,8 @@ pub struct Session {
     last_time: u64,
     pause_threshold: u64,
     error_at: Option<(u32, u16)>,
+    previous: SessionSummary,
+    previous_text: String,
 }
 impl Session {
     pub fn new(
@@ -133,6 +144,8 @@ impl Session {
             last_time: 0,
             pause_threshold: 10_000,
             error_at: None,
+            previous: SessionSummary::default(),
+            previous_text: String::new(),
         })
     }
     pub fn target(&self) -> &str {
@@ -145,6 +158,8 @@ impl Session {
         self.started = None;
         self.last_time = 0;
         self.error_at = None;
+        self.previous = SessionSummary::default();
+        self.previous_text.clear();
     }
     pub fn set_pause_threshold(&mut self, ms: u64) {
         self.pause_threshold = ms;
@@ -245,10 +260,51 @@ impl Session {
         }
     }
     pub fn typed(&self) -> String {
-        self.undo
-            .iter()
-            .map(|&i| self.record_output(&self.records[i]))
-            .collect()
+        let mut text = self.previous_text.clone();
+        text.extend(
+            self.undo
+                .iter()
+                .map(|&i| self.record_output(&self.records[i])),
+        );
+        text
+    }
+    pub fn checkpoint(&self) -> SessionCheckpoint {
+        SessionCheckpoint {
+            target: self.target.clone(),
+            policy: self.policy,
+            strict: self.strict,
+            progress: self.progress,
+            summary: self.summary(),
+            typed: self.typed(),
+        }
+    }
+    pub fn restore(snapshot: SessionCheckpoint, layout: PreparedLayout) -> Result<Self, PlanError> {
+        let mut session = Self::new(&snapshot.target, layout, snapshot.policy, snapshot.strict)?;
+        let p = snapshot.progress;
+        let valid = if p.cluster as usize == session.clusters.len() {
+            p.prefix == 0 && p.variant == 0
+        } else if let Some(c) = session.clusters.get(p.cluster as usize) {
+            c.orders.get(p.variant as usize).is_some_and(|text| {
+                text.is_char_boundary(p.prefix as usize) && usize::from(p.prefix) < text.len()
+            })
+        } else {
+            false
+        };
+        if !valid
+            || snapshot.typed.chars().count() > 40_000
+            || snapshot.summary.correct > snapshot.summary.keystrokes
+            || snapshot.summary.active_ms > snapshot.summary.duration_ms
+        {
+            return Err(PlanError {
+                code: "invalid_checkpoint".into(),
+                offset: 0,
+                character: String::new(),
+            });
+        }
+        session.progress = p;
+        session.previous = snapshot.summary;
+        session.previous_text = snapshot.typed;
+        Ok(session)
     }
     fn result(
         &self,
@@ -437,6 +493,12 @@ impl Session {
             .map(|r| u64::from(r.elapsed))
             .unwrap_or(0);
         summary.clusters_done = self.progress.cluster;
+        summary.duration_ms += self.previous.duration_ms;
+        summary.active_ms += self.previous.active_ms;
+        summary.keystrokes += self.previous.keystrokes;
+        summary.correct += self.previous.correct;
+        summary.errors += self.previous.errors;
+        summary.backspaces += self.previous.backspaces;
         summary.kpm = metrics::rate(summary.correct, summary.active_ms);
         summary.wpm_equivalent = summary.kpm / 5.0;
         summary.accuracy = metrics::accuracy(summary.correct, summary.keystrokes);
@@ -470,6 +532,36 @@ impl Session {
                 count,
             })
             .collect();
+        for old in &self.previous.per_key {
+            if let Some(current) = summary
+                .per_key
+                .iter_mut()
+                .find(|k| k.code == old.code && k.layer == old.layer)
+            {
+                let hits = current.hits + old.hits;
+                current.avg_hes_ms = if hits == 0 {
+                    0.0
+                } else {
+                    (current.avg_hes_ms * current.hits as f64 + old.avg_hes_ms * old.hits as f64)
+                        / hits as f64
+                };
+                current.hits = hits;
+                current.errors += old.errors;
+            } else {
+                summary.per_key.push(old.clone());
+            }
+        }
+        for old in &self.previous.confusions {
+            if let Some(current) = summary
+                .confusions
+                .iter_mut()
+                .find(|c| c.expected == old.expected && c.typed == old.typed)
+            {
+                current.count += old.count;
+            } else {
+                summary.confusions.push(old.clone());
+            }
+        }
         summary
     }
 }

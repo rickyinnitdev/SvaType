@@ -93,15 +93,13 @@ export class TypingSession {
     layout: LayoutData,
     policy: Policy,
     strict = false,
+    checkpoint?: string,
   ) {
     this.layout = Layout.from_json(JSON.stringify(layout));
     try {
-      this.session = new Session(
-        target,
-        this.layout,
-        policy === 'flow',
-        strict,
-      );
+      this.session = checkpoint
+        ? Session.restore(checkpoint, this.layout)
+        : new Session(target, this.layout, policy === 'flow', strict);
     } catch (error) {
       this.layout.free();
       throw error;
@@ -109,6 +107,9 @@ export class TypingSession {
   }
   expected(): Stroke | null {
     return JSON.parse(this.session.expected()) as Stroke | null;
+  }
+  checkpoint(): string {
+    return this.session.checkpoint();
   }
   onKey(
     event: Pick<

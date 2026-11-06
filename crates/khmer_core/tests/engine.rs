@@ -454,3 +454,39 @@ macro_rules! output_case {
     };
 }
 include!("fixtures/layout_cases.rs");
+
+#[test]
+fn checkpoint_restores_prefix_and_aggregates_without_raw_events() {
+    let l = layout("nida");
+    let mut s = Session::new("កខគ", l.clone(), Policy::Flow, false).unwrap();
+    type_text(&mut s, "កខ", &mut 0);
+    let encoded = serde_json::to_string(&s.checkpoint()).unwrap();
+    assert!(!encoded.contains("records"));
+    let mut resumed = Session::restore(serde_json::from_str(&encoded).unwrap(), l).unwrap();
+    assert_eq!(resumed.typed(), "កខ");
+    assert_eq!(resumed.cluster_index(), 2);
+    type_text(&mut resumed, "គ", &mut 0);
+    assert!(resumed.finished());
+    assert_eq!(resumed.summary().correct, 3);
+    assert_eq!(
+        resumed
+            .summary()
+            .per_key
+            .iter()
+            .map(|k| k.hits)
+            .sum::<u32>(),
+        3
+    );
+}
+#[test]
+fn restored_undo_preserves_checkpoint_boundary() {
+    let l = layout("nida");
+    let mut s = Session::new("កខ", l.clone(), Policy::Flow, false).unwrap();
+    type_text(&mut s, "ក", &mut 0);
+    let mut s = Session::restore(s.checkpoint(), l).unwrap();
+    s.on_key(KeyEvent::new("Backspace", 0));
+    assert_eq!(s.cluster_index(), 1);
+    assert_eq!(s.typed(), "ក");
+    type_text(&mut s, "ខ", &mut 0);
+    assert!(s.finished());
+}

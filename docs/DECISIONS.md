@@ -1,5 +1,44 @@
 # Decisions
 
+## M3 — Recovery without persisted raw keystrokes
+
+Checkpoints keep the aggregate summary, typed text, and Rust parser position;
+they do not store raw keystroke events in SQLite. Exact historical undo cannot
+be reconstructed from aggregates (a multi-character key and separate keys may
+produce the same text). After a crash, the recovered prefix is kept immutable;
+Backspace works for strokes entered after recovery. The recovery screen explains
+this boundary. Prior accuracy, errors and per-key aggregates survive, and the
+remaining exercise continues under the same idempotent session UID.
+
+The UI checkpoints every 30 seconds only while practice is active, and immediately
+when pausing. Timers stop on blur, completion and unmount. Explicit navigation
+saves abandoned activities over 20 seconds; shorter abandoned attempts are
+discarded. Completed activities are saved regardless of duration.
+
+## M3 — Database extensions and restore
+
+Migration 001 implements the planned schema; additive migration 002 adds stable
+session UIDs, full target text, cluster counts, and checkpoints. Backups use the
+SQLite online backup API. Restore validates schema and integrity first, keeps a
+`pre-restore-<timestamp>.db`, and uses SQLite's online restore on the existing
+connection so active WAL files are handled consistently. It never copies over an
+open database file. Existing export files are preserved; choose a new filename.
+
+Profile settings use the specified `p:<id>:<name>` keys. Public settings commands
+accept an allowlist, so they cannot read or write future teacher PIN secrets.
+The test-only data directory override exists only in debug builds.
+
+M3 verification on 2026-11-06: 19 storage tests pass, including an indexed
+10,000-session query under 100 ms, transactional rollback, migration preservation,
+WAL restart, profile isolation, backup/restore, CSV and checkpoint persistence.
+There are now 428 engine tests and 10 WASM/i18n tests. Native UI tests in an
+isolated `target/m3-smoke-data` directory created a profile through onboarding,
+saved and viewed a completed practice, reloaded the profile picker, changed and
+reloaded settings, restored a backup, and verified the CSV BOM. A real 30-second
+checkpoint was followed by force-terminating the native process; after restart,
+the UI recovered the first three correct strokes, finished with all 48 correct
+strokes, saved one result, and removed its checkpoint.
+
 ## M2 — Local WASM loading and CSP
 
 PLAN §6.1's `connect-src` omits `'self'`, which blocks its §9 requirement to
