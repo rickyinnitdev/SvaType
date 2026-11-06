@@ -32,13 +32,13 @@
     },
     {
       "id": "R1",
-      "color": "#0072b2",
+      "color": "#56b4e9",
       "pattern": "R1",
       "home_keys": ["Space"]
     },
     {
       "id": "R2",
-      "color": "#e69f00",
+      "color": "#cc79a7",
       "pattern": "R2",
       "home_keys": ["KeyJ"]
     },
@@ -50,13 +50,13 @@
     },
     {
       "id": "R4",
-      "color": "#cc79a7",
+      "color": "#e69f00",
       "pattern": "R4",
       "home_keys": ["KeyL"]
     },
     {
       "id": "R5",
-      "color": "#56b4e9",
+      "color": "#0072b2",
       "pattern": "R5",
       "home_keys": ["Semicolon"]
     }

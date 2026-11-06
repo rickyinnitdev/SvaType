@@ -74,4 +74,19 @@ for (const [word, file] of khmerWords) {
       `Mixed spelling: "${word}" (${file}) and "${other}" (${khmerWords.get(other)}). Use one.`,
     );
 }
+// Same finger on either hand must share one colour, otherwise the colour legend
+// lies for one hand (e.g. gold meaning left ring AND right index).
+const fingerColor = new Map();
+for (const f of JSON.parse(readFileSync('content/fingers.json', 'utf8'))
+  .fingers) {
+  const n = f.id.slice(1);
+  if (
+    fingerColor.has(n) &&
+    fingerColor.get(n).toLowerCase() !== f.color.toLowerCase()
+  )
+    throw new Error(
+      `Finger ${n} has different colours on each hand (${fingerColor.get(n)} vs ${f.color} on ${f.id}).`,
+    );
+  fingerColor.set(n, f.color);
+}
 console.log(`Validated ${count} content files.`);
