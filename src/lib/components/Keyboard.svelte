@@ -1,15 +1,17 @@
 <script lang="ts">
   import type { LayoutData, Stroke } from '../engine';
-  import { messages } from '../i18n/index.svelte';
+  import { messages, digits } from '../i18n/index.svelte';
   import fingers from '../../../content/fingers.json';
   let {
     layout,
     highlight = null,
     showFingers = true,
+    heat,
   }: {
     layout: LayoutData;
     highlight?: Stroke | null;
     showFingers?: boolean;
+    heat?: Record<string, number>;
   } = $props();
   const colors = Object.fromEntries(
     fingers.fingers.map((f) => [f.id, f.color]),
@@ -48,7 +50,12 @@
           class="key"
           class:space={code === 'Space'}
           class:highlight={highlight?.code === code}
+          class:medium-error={(heat?.[code] ?? 0) > 0.1}
+          class:high-error={(heat?.[code] ?? 0) > 0.3}
           style:--finger={colors[key.finger]}
+          title={heat
+            ? `${code}: ${digits(Math.round((heat[code] ?? 0) * 100))}%`
+            : code}
         >
           <span class="latin"
             >{code.startsWith('Key')
@@ -66,6 +73,9 @@
                 : key.base}</span
           >
           {#if showFingers}<span class="finger">{key.finger}</span>{/if}
+          {#if heat && heat[code] !== undefined}<span class="rate"
+              >{digits(Math.round(heat[code] * 100))}%</span
+            >{/if}
         </div>
       {/each}
       {#if index === 3}<div
@@ -115,6 +125,22 @@
     outline: 3px solid var(--primary);
     outline-offset: -3px;
     background: var(--surface-soft);
+  }
+  .key.medium-error {
+    background: #fff0c2;
+    border-bottom-color: #93660b;
+    color: #44330a;
+  }
+  .key.high-error {
+    background: var(--error-soft);
+    border-bottom-color: var(--error);
+    color: var(--error);
+  }
+  .rate {
+    position: absolute;
+    font: 10px sans-serif;
+    bottom: 0;
+    right: 3px;
   }
   .base-char {
     font-size: 26px;

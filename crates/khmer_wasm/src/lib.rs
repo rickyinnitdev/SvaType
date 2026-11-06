@@ -48,6 +48,28 @@ pub struct WasmSession {
 }
 #[wasm_bindgen(js_class=Session)]
 impl WasmSession {
+    pub fn observe_time(&mut self, timestamp_ms: f64) {
+        if timestamp_ms.is_finite() && timestamp_ms >= 0.0 {
+            self.inner.observe_time(timestamp_ms as u64);
+        }
+    }
+    pub fn cursor(&self) -> u32 {
+        self.inner.cluster_index() as u32
+    }
+    pub fn free_typing(layout: &WasmLayout) -> WasmSession {
+        Self {
+            inner: Session::free_typing(layout.inner.clone()),
+        }
+    }
+    pub fn next_round(&mut self) {
+        self.inner.next_round();
+    }
+    pub fn live(&self) -> String {
+        json(&self.inner.live())
+    }
+    pub fn tail(&self) -> String {
+        self.inner.tail(300)
+    }
     pub fn checkpoint(&self) -> String {
         json(&self.inner.checkpoint())
     }
@@ -112,4 +134,8 @@ impl WasmSession {
     pub fn restart(&mut self) {
         self.inner.restart();
     }
+}
+#[wasm_bindgen]
+pub fn prepare_target(text: &str) -> String {
+    plan::prepare_target(text)
 }

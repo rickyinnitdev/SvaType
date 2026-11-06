@@ -20,20 +20,43 @@
   import { api, type SessionInput } from '../lib/api';
   import { user } from '../lib/stores/profile.svelte';
   import { preferences } from '../lib/stores/settings.svelte';
+  import { activity } from '../lib/stores/activity.svelte';
   import { navigate, registerLeaveGuard } from '../lib/router.svelte';
   let {
     sandbox = false,
-    target = content.text,
-    kind = 'test',
-    refId = null,
+    target = activity.target ?? content.text,
+    kind = activity.kind,
+    refId = activity.refId,
+    free = activity.free,
+    durationMs = activity.durationMs,
   }: {
     sandbox?: boolean;
     target?: string;
     kind?: string;
     refId?: string | null;
+    free?: boolean;
+    durationMs?: number;
   } = $props();
   const restored = untrack(() => (sandbox ? null : user.resume));
   const owner = user.profile ? { ...user.profile } : null;
+  let isFree = $derived(restored?.session.kind === 'free' || free);
+  const totalDuration = untrack(() => restored?.remaining_ms ?? durationMs);
+  const hasTimer = untrack(
+    () => restored?.remaining_ms != null || durationMs > 0,
+  );
+  let remainingMs = $state(totalDuration);
+  let clock = $derived(
+    `${Math.floor(Math.ceil(remainingMs / 1000) / 60)}:${String(Math.ceil(remainingMs / 1000) % 60).padStart(2, '0')}`,
+  );
+  let freeText = $state('');
+  let liveStats = $state(false);
+  let liveSummary = $state<Summary | null>(null);
+  let copied = $state(false);
+  let freeDisplay = $state<HTMLDivElement>();
+  $effect(() => {
+    void freeText;
+    freeDisplay?.scrollTo({ top: 1_000_000 });
+  });
   let practiceText = $derived(restored?.session.target_text ?? target);
   let uid = restored?.session.uid ?? crypto.randomUUID();
   let startedAt = restored?.session.started_at ?? 0;
@@ -78,6 +101,7 @@
         policy,
         false,
         restored?.engine,
+        isFree,
       );
     } catch {
       failed = true;
@@ -85,7 +109,8 @@
     }
     session = current;
     clusters = segment(practiceText);
-    cursor = restored?.session.summary.clusters_done ?? 0;
+    cursor = current.cursor();
+    freeText = current.tail();
     expected = current.expected();
     summary = null;
     errors.clear();
@@ -125,7 +150,17 @@
     else if (policy === 'stop_on_error') next.delete(cursor);
     cursor = result.cluster_index;
     expected = result.expected_next;
+    if (isFree) freeText = session.tail();
+    if (liveStats) liveSummary = session.live();
+    copied = false;
     if (result.finished) {
+      if (hasTimer) {
+        session.nextRound();
+        cursor = 0;
+        expected = session.expected();
+        errors.clear();
+        return;
+      }
       running = false;
       summary = session.summary();
       if (!sandbox) void finish();
@@ -163,6 +198,7 @@
     };
   });
   function snapshot(completed: boolean): SessionInput {
+    session!.observeTime();
     const stats = session!.summary();
     stats.duration_ms = Math.max(
       stats.duration_ms,
@@ -178,7 +214,7 @@
       layout_id: layoutId,
       started_at: startedAt,
       completed,
-      target_text: practiceText,
+      target_text: isFree ? session!.typed() : practiceText,
       summary: stats,
       bookmark_step: null,
     };
@@ -189,7 +225,7 @@
       await api.checkpoint({
         session: snapshot(false),
         engine: session.checkpoint(),
-        remaining_ms: null,
+        remaining_ms: hasTimer ? remainingMs : null,
       });
     } catch {
       saveError = true;
@@ -232,6 +268,30 @@
       void checkpoint();
     };
   });
+  $effect(() => {
+    if (!running || !hasTimer) return;
+    let previous = performance.now();
+    const timer = setInterval(() => {
+      const now = performance.now();
+      remainingMs = Math.max(0, remainingMs - (now - previous));
+      previous = now;
+      if (remainingMs === 0) {
+        running = false;
+        summary = session?.summary() ?? null;
+        void finish();
+      }
+    }, 250);
+    return () => clearInterval(timer);
+  });
+  async function copy() {
+    if (!session) return;
+    try {
+      await navigator.clipboard.writeText(session.typed());
+      copied = true;
+    } catch {
+      saveError = true;
+    }
+  }
 </script>
 
 <div class="workspace stack">
@@ -264,19 +324,24 @@
           ></select
         ></label
       >
-      <div class="policy" role="group" aria-label={t.mode}>
-        <button
-          class:selected={policy === 'stop_on_error'}
-          onclick={() => (policy = 'stop_on_error')}
-          disabled={running || (!sandbox && hasStarted)}
-          aria-pressed={policy === 'stop_on_error'}>{t.stopOnError}</button
-        ><button
-          class:selected={policy === 'flow'}
-          onclick={() => (policy = 'flow')}
-          disabled={running || (!sandbox && hasStarted)}
-          aria-pressed={policy === 'flow'}>{t.flow}</button
-        >
-      </div>
+      {#if !isFree}<div class="policy" role="group" aria-label={t.mode}>
+          <button
+            class:selected={policy === 'stop_on_error'}
+            onclick={() => (policy = 'stop_on_error')}
+            disabled={running || (!sandbox && hasStarted)}
+            aria-pressed={policy === 'stop_on_error'}>{t.stopOnError}</button
+          ><button
+            class:selected={policy === 'flow'}
+            onclick={() => (policy = 'flow')}
+            disabled={running || (!sandbox && hasStarted)}
+            aria-pressed={policy === 'flow'}>{t.flow}</button
+          >
+        </div>{:else}<label class="row"
+          ><input type="checkbox" bind:checked={liveStats} />{t.showLive}</label
+        >{/if}
+      {#if hasTimer}<strong class="countdown"
+          >{t.timeLeft}: {digits(clock)}</strong
+        >{/if}
     </div>
     {#if summary}
       <section class="panel stack" aria-label={t.results}>
@@ -300,11 +365,21 @@
     {:else}
       <section class="panel practice">
         <div class="row progress">
-          <span class="muted">{t.target}</span><span
-            >{digits(cursor)} / {digits(clusters.length)}</span
-          >
+          <span class="muted">{isFree ? t.free : t.target}</span
+          >{#if !isFree}<span>{digits(cursor)} / {digits(clusters.length)}</span
+            >{/if}
         </div>
-        <TextTrack {clusters} {cursor} {errors} />
+        {#if isFree}<p class="muted free-hint" title={t.freeLimit}>
+            {t.freeHint}
+          </p>
+          <div class="free-text" bind:this={freeDisplay} aria-live="off">
+            {freeText || ' '}
+          </div>{:else}<TextTrack {clusters} {cursor} {errors} />{/if}
+        {#if liveStats && liveSummary}<p>
+            {t.kpm}: {digits(liveSummary.kpm.toFixed(1))} · {t.accuracy}: {digits(
+              liveSummary.accuracy.toFixed(1),
+            )}%
+          </p>{/if}
         <div
           bind:this={capture}
           class="capture"
@@ -333,14 +408,24 @@
           </p>
         </div>
         <div class="row practice-footer">
-          <p class="muted">
-            {t.nextKey}:
-            <strong
-              >{expected?.produces === ' '
-                ? t.space
-                : expected?.produces}</strong
-            ><span class="key-code">{expected?.code}</span>
-          </p>
+          {#if !isFree}<p class="muted">
+              {t.nextKey}:
+              <strong
+                >{expected?.produces === ' '
+                  ? t.space
+                  : expected?.produces}</strong
+              ><span class="key-code">{expected?.code}</span>
+            </p>{:else}<div class="row">
+              <button onclick={copy}>{copied ? t.copied : t.copyText}</button
+              ><button
+                onclick={() => {
+                  running = false;
+                  summary = session?.summary() ?? null;
+                  void finish();
+                }}
+                disabled={!hasStarted || saving}>{t.leavePractice}</button
+              >
+            </div>{/if}
           <button
             class="primary"
             onclick={() => {
@@ -360,6 +445,21 @@
 </div>
 
 <style>
+  .free-text {
+    font-size: var(--font-target);
+    line-height: 1.9;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    height: 200px;
+    overflow: auto;
+    contain: layout paint;
+  }
+  .free-hint {
+    font-size: 14px;
+  }
+  .countdown {
+    font-variant-numeric: tabular-nums;
+  }
   .workspace {
     max-width: 1160px;
     margin: 0 auto;

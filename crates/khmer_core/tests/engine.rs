@@ -490,3 +490,77 @@ fn restored_undo_preserves_checkpoint_boundary() {
     type_text(&mut s, "ខ", &mut 0);
     assert!(s.finished());
 }
+#[test]
+fn free_typing_has_no_wrong_answers() {
+    let mut s = Session::free_typing(layout("nida"));
+    assert!(!s.finished());
+    s.on_key(KeyEvent::new("KeyA", 0));
+    s.on_key(KeyEvent::new("KeyK", 1000));
+    assert_eq!(s.typed(), "ាក");
+    assert_eq!(s.summary().accuracy, 100.0);
+    assert_eq!(s.summary().errors, 0);
+    s.on_key(KeyEvent::new("Backspace", 1100));
+    assert_eq!(s.typed(), "ា");
+}
+#[test]
+fn live_counters_match_summary() {
+    let mut s = Session::new("កខគ", layout("nida"), Policy::Flow, false).unwrap();
+    for (time, code) in ["KeyA", "Backspace", "KeyK", "KeyX"].iter().enumerate() {
+        s.on_key(KeyEvent::new(code, time as u64 * 100));
+        let a = s.live();
+        let b = s.summary();
+        assert_eq!(
+            (a.kpm, a.correct, a.errors, a.backspaces),
+            (b.kpm, b.correct, b.errors, b.backspaces)
+        );
+    }
+}
+#[test]
+fn next_round_keeps_aggregate_metrics() {
+    let mut s = Session::new("កខ", layout("nida"), Policy::Flow, false).unwrap();
+    type_text(&mut s, "កខ", &mut 0);
+    s.next_round();
+    assert!(!s.finished());
+    type_text(&mut s, "កខ", &mut 500);
+    assert_eq!(s.summary().correct, 4);
+    assert_eq!(s.summary().clusters_done, 4);
+}
+#[test]
+fn free_checkpoint_restores_text() {
+    let l = layout("nida");
+    let mut s = Session::free_typing(l.clone());
+    s.on_key(KeyEvent::new("KeyK", 0));
+    let mut s = Session::restore(s.checkpoint(), l).unwrap();
+    assert!(!s.finished());
+    s.on_key(KeyEvent::new("KeyX", 100));
+    assert_eq!(s.typed(), "កខ");
+    assert_eq!(s.summary().correct, 2);
+}
+#[test]
+fn text_preparation_strips_only_invisible_breaks_and_cr() {
+    assert_eq!(
+        khmer_core::plan::prepare_target("ក\u{200b}ខ\r\nគ\rឃ"),
+        "កខ\nគ\nឃ"
+    );
+}
+#[test]
+fn wrong_key_stats_belong_to_expected_key() {
+    let mut s = Session::new("ក", layout("nida"), Policy::Flow, false).unwrap();
+    s.on_key(KeyEvent::new("KeyA", 0));
+    assert_eq!(s.summary().per_key[0].code, "KeyK");
+    assert_eq!(s.summary().per_key[0].errors, 1);
+}
+#[test]
+fn terminal_time_counts_short_gaps_but_excludes_long_pauses() {
+    let mut s = Session::free_typing(layout("nida"));
+    s.on_key(KeyEvent::new("KeyK", 100));
+    s.observe_time(5100);
+    assert_eq!(s.summary().active_ms, 5000);
+    assert_eq!(s.summary().duration_ms, 5000);
+    s.observe_time(15100);
+    assert_eq!(s.summary().active_ms, 0);
+    assert_eq!(s.summary().duration_ms, 15000);
+    s.on_key(KeyEvent::new("KeyK", 16100));
+    assert_eq!(s.summary().active_ms, 0);
+    assert_eq!(s.summary().duration_ms, 16000);
+}

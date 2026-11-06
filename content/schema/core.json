@@ -1,0 +1,120 @@
+[
+  {
+    "pattern": "^app\\.json$",
+    "schema": {
+      "type": "object",
+      "required": ["name"],
+      "properties": { "name": { "type": "string", "minLength": 1 } }
+    }
+  },
+  {
+    "pattern": "^avatars\\.json$",
+    "schema": {
+      "type": "object",
+      "required": ["reviewed", "avatars"],
+      "properties": {
+        "reviewed": { "type": "boolean" },
+        "avatars": {
+          "type": "array",
+          "minItems": 12,
+          "items": { "type": "object", "required": ["id", "name", "file"] }
+        }
+      }
+    }
+  },
+  {
+    "pattern": "^fingers\\.json$",
+    "schema": {
+      "type": "object",
+      "required": ["fingers"],
+      "properties": {
+        "fingers": {
+          "type": "array",
+          "minItems": 10,
+          "items": {
+            "type": "object",
+            "required": ["id", "color", "pattern", "home_keys"]
+          }
+        }
+      }
+    }
+  },
+  {
+    "pattern": "^layouts/.*\\.json$",
+    "schema": {
+      "type": "object",
+      "required": ["id", "name", "verified", "keys"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "$ref": "localized" },
+        "verified": { "type": "boolean" },
+        "keys": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "base",
+              "shift",
+              "altgr",
+              "shift_altgr",
+              "finger",
+              "row"
+            ],
+            "properties": {
+              "base": { "type": ["string", "null"] },
+              "shift": { "type": ["string", "null"] },
+              "altgr": { "type": ["string", "null"] },
+              "shift_altgr": { "type": ["string", "null"] },
+              "finger": { "type": "string" },
+              "row": { "type": "number", "enum": [0, 1, 2, 3, 4] }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "pattern": "^playground\\.json$",
+    "schema": {
+      "type": "object",
+      "required": ["id", "reviewed", "text"],
+      "properties": {
+        "reviewed": { "type": "boolean" },
+        "text": { "$ref": "target" }
+      }
+    }
+  },
+  {
+    "pattern": "^sentences/[1-5]\\.json$",
+    "schema": {
+      "type": "object",
+      "required": [
+        "id",
+        "level",
+        "reviewed",
+        "words",
+        "sentences",
+        "paragraphs"
+      ],
+      "properties": {
+        "level": { "type": "number", "enum": [1, 2, 3, 4, 5] },
+        "reviewed": { "type": "boolean" },
+        "words": {
+          "type": "array",
+          "minItems": 10,
+          "items": { "$ref": "target" }
+        },
+        "sentences": {
+          "type": "array",
+          "minItems": 5,
+          "items": { "$ref": "target" }
+        },
+        "paragraphs": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "target" }
+        }
+      }
+    }
+  }
+]

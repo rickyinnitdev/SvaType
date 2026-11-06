@@ -23,6 +23,11 @@
     history: () => import('./screens/History.svelte'),
     result: () => import('./screens/Result.svelte'),
     settings: () => import('./screens/Settings.svelte'),
+    free: () => import('./screens/Free.svelte'),
+    test: () => import('./screens/Test.svelte'),
+    custom: () => import('./screens/Custom.svelte'),
+    random: () => import('./screens/Random.svelte'),
+    analysis: () => import('./screens/Analysis.svelte'),
   };
   $effect(() => {
     if (!user.ready || sandbox) return;

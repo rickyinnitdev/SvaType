@@ -19,6 +19,33 @@ function event(code: string, shift = false, altgr = false) {
   };
 }
 describe('real WASM engine', () => {
+  it('supports free text, live counters and undo', () => {
+    const session = new TypingSession(
+      '',
+      nida as LayoutData,
+      'flow',
+      false,
+      undefined,
+      true,
+    );
+    session.onKey(event('KeyK'), 0);
+    session.onKey(event('KeyX'), 1000);
+    expect(session.tail()).toBe('កខ');
+    expect(session.live().kpm).toBe(120);
+    session.onKey(event('Backspace'), 1100);
+    expect(session.typed()).toBe('ក');
+    expect(session.summary().accuracy).toBe(100);
+    session.free();
+  });
+  it('keeps counters across timed text rounds', () => {
+    const session = new TypingSession('ក', nida as LayoutData, 'flow');
+    session.onKey(event('KeyK'), 0);
+    session.nextRound();
+    expect(session.cursor()).toBe(0);
+    session.onKey(event('KeyK'), 100);
+    expect(session.summary().correct).toBe(2);
+    session.free();
+  });
   it('restores an aggregate checkpoint', () => {
     const session = new TypingSession('កខ', nida as LayoutData, 'flow');
     session.onKey(event('KeyK'), 0);

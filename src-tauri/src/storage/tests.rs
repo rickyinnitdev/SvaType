@@ -406,3 +406,72 @@ fn mode_paths_priority() {
         exe.join("data")
     );
 }
+#[test]
+fn bundled_content_schema_and_layout_coverage() {
+    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .unwrap();
+    let result = std::process::Command::new("node")
+        .arg("scripts/validate-content.mjs")
+        .current_dir(root)
+        .output()
+        .unwrap();
+    assert!(
+        result.status.success(),
+        "{}",
+        String::from_utf8_lossy(&result.stderr)
+    );
+    let content = crate::content::Content::new(root.join("content"));
+    for level in 1..=5 {
+        let bank = content.bank(level).unwrap();
+        assert!(!bank.reviewed);
+        for id in ["nida", "khmer_legacy"] {
+            let layout = content.layout(id).unwrap();
+            for text in bank
+                .words
+                .iter()
+                .chain(bank.sentences.iter())
+                .chain(bank.paragraphs.iter())
+            {
+                khmer_core::plan::validate_target(&khmer_core::plan::prepare_target(text), &layout)
+                    .unwrap_or_else(|error| panic!("{id} level{level} {text}: {error:?}"));
+            }
+        }
+    }
+}
+#[test]
+fn custom_texts_are_profile_scoped_and_validated() {
+    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .unwrap();
+    let content = crate::content::Content::new(root.join("content"));
+    let conn = memory();
+    let a = profiles::create(&conn, input("A")).unwrap();
+    let b = profiles::create(&conn, input("B")).unwrap();
+    let entry = super::typing::CustomInput {
+        profile: a.id,
+        title: "My text".into(),
+        body: "ក\u{200b}ខ".into(),
+        layout_id: "nida".into(),
+    };
+    let id = super::typing::custom_save(&conn, &content, entry.clone()).unwrap();
+    assert_eq!(
+        super::typing::custom_list(&conn, a.id).unwrap()[0].body,
+        "កខ"
+    );
+    assert!(super::typing::custom_list(&conn, b.id).unwrap().is_empty());
+    super::typing::custom_delete(&conn, b.id, id).unwrap();
+    assert_eq!(super::typing::custom_list(&conn, a.id).unwrap().len(), 1);
+    let mut bad = entry;
+    bad.body = "🙂".into();
+    assert!(super::typing::custom_save(&conn, &content, bad).is_err());
+}
+#[test]
+fn analysis_reads_recent_aggregate_data() {
+    let mut c = memory();
+    let p = profiles::create(&c, input("A")).unwrap();
+    sessions::save(&mut c, &sample(p.id, "analysis")).unwrap();
+    let result = super::typing::analysis(&c, p.id, 50).unwrap();
+    assert_eq!(result.weak[0].code, "KeyK");
+    assert_eq!(result.confusions[0].count, 5);
+}

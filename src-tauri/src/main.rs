@@ -2,6 +2,7 @@
 
 use tauri::Manager;
 mod commands;
+mod content;
 mod error;
 mod paths;
 mod storage;
@@ -30,12 +31,27 @@ fn main() {
             commands::backup_create,
             commands::backup_restore,
             commands::export_csv,
-            commands::open_data_folder
+            commands::open_data_folder,
+            commands::custom_text_list,
+            commands::custom_text_save,
+            commands::custom_text_delete,
+            commands::analysis_get,
+            commands::weak_keys,
+            commands::practice_text,
+            commands::drill_generate
         ])
         .setup(|app| {
             let database = storage::db::Database::open(paths::data_dir()?)
                 .map_err(|error| std::io::Error::other(error.message))?;
             app.manage(std::sync::Arc::new(database));
+            #[cfg(debug_assertions)]
+            let content_root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+                .parent()
+                .unwrap()
+                .join("content");
+            #[cfg(not(debug_assertions))]
+            let content_root = app.path().resource_dir()?.join("content");
+            app.manage(std::sync::Arc::new(content::Content::new(content_root)));
             let window = app.get_webview_window("main").expect("main window exists");
             if window.primary_monitor()?.is_some_and(|monitor| {
                 f64::from(monitor.size().width) / monitor.scale_factor() <= 1366.0

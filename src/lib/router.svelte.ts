@@ -5,7 +5,12 @@ export type Screen =
   | 'practice'
   | 'history'
   | 'result'
-  | 'settings';
+  | 'settings'
+  | 'free'
+  | 'test'
+  | 'custom'
+  | 'random'
+  | 'analysis';
 export const router = $state<{
   screen: Screen;
   resultId: number | null;

@@ -8,6 +8,13 @@
   let progress = $state<Progress | null>(null);
   let checkpoints = $state<Checkpoint[]>([]);
   let failed = $state(false);
+  const typingCards = [
+    ['free', 'free', 'freeDescription'],
+    ['test', 'test', 'testDescription'],
+    ['custom', 'custom', 'customDescription'],
+    ['random', 'random', 'randomDescription'],
+    ['analysis', 'analysis', 'analysisDescription'],
+  ] as const;
   $effect(() => {
     const profile = user.profile;
     if (!profile) return;
@@ -52,15 +59,26 @@
         >{t.continue}</button
       >
     </div>{/if}
-  <div class="welcome panel">
-    <div>
-      <h2>{t.practiceDescription}</h2>
-      <p class="muted">{t.switchLater}</p>
-    </div>
-    <button class="primary" onclick={() => practice()}
-      >{t.practice} <span aria-hidden="true">→</span></button
-    >
-  </div>
+  {#if user.profile?.preferred_mode === 'typing'}<p class="muted">
+      {t.typingDescription}
+    </p>
+    <div class="typing-cards">
+      {#each typingCards as [screen, title, description], i (screen)}<button
+          class="typing-card"
+          onclick={() => navigate(screen)}
+          ><span class="badge" aria-hidden="true">{digits(i + 1)}</span>
+          <h2>{t[title]}</h2>
+          <p class="muted">{t[description]}</p></button
+        >{/each}
+    </div>{:else}<div class="welcome panel">
+      <div>
+        <h2>{t.practiceDescription}</h2>
+        <p class="muted">{t.switchLater}</p>
+      </div>
+      <button class="primary" onclick={() => practice()}
+        >{t.practice} <span aria-hidden="true">→</span></button
+      >
+    </div>{/if}
   <div class="tiles">
     {#each [[t.totalTime, digits(Math.round((progress?.duration_ms ?? 0) / 60000)), t.minutes], [t.lessonsDone, digits(progress?.lessons.filter((l) => l.completed_at !== null).length ?? 0), ''], [t.wordsLearned, digits(progress?.words_learned ?? 0), '']] as [label, value, unit] (label)}<div
         class="panel"
@@ -75,6 +93,35 @@
 </section>
 
 <style>
+  .typing-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .typing-card {
+    text-align: left;
+    display: grid;
+    gap: 12px;
+    align-content: start;
+    padding: 24px;
+    min-height: 220px;
+  }
+  .badge {
+    width: 34px;
+    height: 34px;
+    background: var(--surface-soft);
+    color: var(--primary);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 15px;
+  }
+  .typing-card h2 {
+    font-size: 21px;
+  }
+  .typing-card p {
+    font-size: 16px;
+  }
   .welcome {
     display: flex;
     align-items: center;

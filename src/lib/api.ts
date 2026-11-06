@@ -87,7 +87,46 @@ export interface Progress {
   words_learned: number;
   duration_ms: number;
 }
+export interface CustomText {
+  id: number;
+  title: string;
+  body: string;
+  created_at: number;
+}
+export interface Analysis {
+  keys: Summary['per_key'];
+  weak: { code: string; score: number }[];
+  confusions: Summary['confusions'];
+  slowest: Summary['per_key'];
+  heat: Record<string, number>;
+}
 export const api = {
+  customTexts: (profile: number) =>
+    invoke<CustomText[]>('custom_text_list', { profile }),
+  saveCustomText: (
+    profile: number,
+    title: string,
+    body: string,
+    layoutId: string,
+  ) =>
+    invoke<number>('custom_text_save', {
+      input: { profile, title, body, layout_id: layoutId },
+    }),
+  deleteCustomText: (profile: number, id: number) =>
+    invoke<void>('custom_text_delete', { profile, id }),
+  analysis: (profile: number) =>
+    invoke<Analysis>('analysis_get', { profile, n: 50 }),
+  practiceText: (
+    profile: number,
+    level: number,
+    kind: string,
+    weak = false,
+    long = false,
+    seed = Date.now(),
+  ) =>
+    invoke<string>('practice_text', { profile, level, kind, weak, long, seed }),
+  drill: (profile: number, seed = Date.now()) =>
+    invoke<string>('drill_generate', { profile, seed }),
   profiles: () => invoke<Profile[]>('profiles_list'),
   createProfile: (input: ProfileInput) =>
     invoke<Profile>('profiles_create', { input }),

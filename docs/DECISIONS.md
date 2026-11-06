@@ -1,5 +1,32 @@
 # Decisions
 
+## M4 — Typing metrics and text bounds
+
+Per-key errors are attributed to the expected key/layer, while confusion pairs
+retain the actual produced text. This makes the weak-key heatmap target the
+missing skill rather than the accidental key press. Live metrics use constant-time
+counters; per-key/confusion aggregation runs only for results and checkpoints.
+
+Free typing treats every supported output as correct, records Backspace use and
+speed, and has live metrics off by default. A page is capped at 20,000 characters
+to keep persistence and rendering bounded on school PCs; finish to start another
+page. Its viewport shows a bounded tail, while Copy and History retain the full
+text. Timed tests repeat their text when needed and preserve aggregate metrics
+between rounds. Countdown timers stop when paused or unfocused.
+
+Custom text preparation is Rust-only: normalize line endings and ignore ZWSP,
+then validate the selected layout. The source banks are generated data marked
+`reviewed: false`. They require a Khmer teacher's review before classroom use.
+
+M4 verification: 435 engine tests, 22 storage/content tests, 12 WASM/i18n tests,
+the frontend checks and offline scan pass. Optimized WASM is 195,321 bytes.
+`smoke-typing.mjs` verifies all five Typing Mode flows in the native WebView:
+free typing/undo/copy (with clipboard mocked), custom text save/reuse, random
+practice, analysis heatmap/drill, and a one-minute timed test expired with CDP's
+virtual clock. Each completed activity appears in SQLite History. Terminal clock
+observation includes trailing gaps up to the pause threshold and excludes longer
+pauses, with a hand-computed engine test.
+
 ## M3 — Recovery without persisted raw keystrokes
 
 Checkpoints keep the aggregate summary, typed text, and Rust parser position;

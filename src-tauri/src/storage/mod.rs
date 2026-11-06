@@ -4,3 +4,4 @@ pub mod profiles;
 pub mod sessions;
 #[cfg(test)]
 mod tests;
+pub mod typing;

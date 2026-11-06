@@ -88,6 +88,10 @@ pub struct SessionCheckpoint {
     progress: Progress,
     summary: SessionSummary,
     typed: String,
+    #[serde(default)]
+    free: bool,
+    #[serde(default)]
+    completed_clusters: u32,
 }
 pub struct Session {
     pub layout: PreparedLayout,
@@ -104,6 +108,11 @@ pub struct Session {
     error_at: Option<(u32, u16)>,
     previous: SessionSummary,
     previous_text: String,
+    free: bool,
+    free_chars: usize,
+    completed_clusters: u32,
+    counts: SessionSummary,
+    terminal_gap: u64,
 }
 impl Session {
     pub fn new(
@@ -146,6 +155,11 @@ impl Session {
             error_at: None,
             previous: SessionSummary::default(),
             previous_text: String::new(),
+            free: false,
+            free_chars: 0,
+            completed_clusters: 0,
+            counts: SessionSummary::default(),
+            terminal_gap: 0,
         })
     }
     pub fn target(&self) -> &str {
@@ -160,12 +174,21 @@ impl Session {
         self.error_at = None;
         self.previous = SessionSummary::default();
         self.previous_text.clear();
+        self.free_chars = 0;
+        self.completed_clusters = 0;
+        self.counts = SessionSummary::default();
+        self.terminal_gap = 0;
     }
     pub fn set_pause_threshold(&mut self, ms: u64) {
         self.pause_threshold = ms;
     }
+    pub fn observe_time(&mut self, timestamp_ms: u64) {
+        if self.started.is_some() && timestamp_ms >= self.last_time {
+            self.terminal_gap = timestamp_ms - self.last_time;
+        }
+    }
     pub fn finished(&self) -> bool {
-        self.progress.cluster as usize >= self.clusters.len()
+        !self.free && self.progress.cluster as usize >= self.clusters.len()
     }
     pub fn cluster_index(&self) -> usize {
         self.progress.cluster as usize
@@ -276,10 +299,14 @@ impl Session {
             progress: self.progress,
             summary: self.summary(),
             typed: self.typed(),
+            free: self.free,
+            completed_clusters: self.completed_clusters,
         }
     }
     pub fn restore(snapshot: SessionCheckpoint, layout: PreparedLayout) -> Result<Self, PlanError> {
         let mut session = Self::new(&snapshot.target, layout, snapshot.policy, snapshot.strict)?;
+        session.free = snapshot.free;
+        session.completed_clusters = snapshot.completed_clusters;
         let p = snapshot.progress;
         let valid = if p.cluster as usize == session.clusters.len() {
             p.prefix == 0 && p.variant == 0
@@ -304,7 +331,85 @@ impl Session {
         session.progress = p;
         session.previous = snapshot.summary;
         session.previous_text = snapshot.typed;
+        session.free_chars = session.previous_text.chars().count();
         Ok(session)
+    }
+    pub fn free_typing(layout: PreparedLayout) -> Self {
+        let mut session =
+            Self::new("", layout, Policy::Flow, false).expect("empty target is valid");
+        session.free = true;
+        session
+    }
+    pub fn next_round(&mut self) {
+        if self.free || !self.finished() {
+            return;
+        }
+        let summary = self.summary();
+        self.restart();
+        self.completed_clusters = summary.clusters_done;
+        self.previous = summary;
+    }
+    pub fn tail(&self, events: usize) -> String {
+        let mut tail = String::new();
+        if self.undo.len() < events {
+            let prefix: Vec<_> = self
+                .previous_text
+                .chars()
+                .rev()
+                .take((events - self.undo.len()) * 2)
+                .collect();
+            tail.extend(prefix.into_iter().rev());
+        }
+        for &i in self
+            .undo
+            .iter()
+            .skip(self.undo.len().saturating_sub(events))
+        {
+            tail.push_str(self.record_output(&self.records[i]));
+        }
+        tail
+    }
+    fn count_record(&mut self, r: &StrokeRecord) {
+        let now = u64::from(r.elapsed);
+        let previous = self
+            .records
+            .last()
+            .map(|r| u64::from(r.elapsed))
+            .unwrap_or(0);
+        let gap = now.saturating_sub(previous);
+        if gap <= self.pause_threshold {
+            self.counts.active_ms += gap;
+        }
+        self.counts.duration_ms = now;
+        if r.flags & BACKSPACE != 0 {
+            self.counts.backspaces += 1;
+        } else {
+            self.counts.keystrokes += 1;
+            if r.flags & CORRECT != 0 {
+                self.counts.correct += 1;
+            } else if r.flags & DUPLICATE == 0 {
+                self.counts.errors += 1;
+            }
+        }
+    }
+    pub fn live(&self) -> SessionSummary {
+        let mut s = SessionSummary {
+            duration_ms: self.previous.duration_ms + self.counts.duration_ms,
+            active_ms: self.previous.active_ms + self.counts.active_ms,
+            correct: self.previous.correct + self.counts.correct,
+            keystrokes: self.previous.keystrokes + self.counts.keystrokes,
+            errors: self.previous.errors + self.counts.errors,
+            backspaces: self.previous.backspaces + self.counts.backspaces,
+            ..Default::default()
+        };
+        s.duration_ms += self.terminal_gap;
+        if self.terminal_gap <= self.pause_threshold {
+            s.active_ms += self.terminal_gap;
+        }
+        s.kpm = metrics::rate(s.correct, s.active_ms);
+        s.wpm_equivalent = s.kpm / 5.0;
+        s.accuracy = metrics::accuracy(s.correct, s.keystrokes);
+        s
     }
     fn result(
         &self,
@@ -368,7 +473,14 @@ impl Session {
         {
             return self.result(true, false, String::new(), false, None);
         }
+        if self.free
+            && event.code != "Backspace"
+            && (produced.is_empty() || self.free_chars + produced.chars().count() > 20_000)
+        {
+            return self.result(true, false, String::new(), false, None);
+        }
         let start = *self.started.get_or_insert(event.timestamp_ms);
+        self.terminal_gap = 0;
         self.last_time = event.timestamp_ms;
         let elapsed = event
             .timestamp_ms
@@ -393,6 +505,11 @@ impl Session {
         if event.code == "Backspace" {
             record.flags = BACKSPACE;
             if let Some(index) = self.undo.pop() {
+                if self.free {
+                    self.free_chars = self
+                        .free_chars
+                        .saturating_sub(self.record_output(&self.records[index]).chars().count());
+                }
                 let old = &mut self.records[index];
                 old.flags |= REMOVED;
                 self.progress = Progress {
@@ -402,14 +519,22 @@ impl Session {
                 };
                 self.error_at = None;
             }
+            self.count_record(&record);
             self.records.push(record);
             return self.result(false, true, String::new(), false, None);
         }
         let expected = self.expected_next();
-        let applied = self.apply(&produced);
+        let applied = if self.free {
+            Some(self.progress)
+        } else {
+            self.apply(&produced)
+        };
         let correct = !produced.is_empty() && applied.is_some();
         let position = (before.cluster, before.prefix);
         if correct {
+            if self.free {
+                self.free_chars += produced.chars().count();
+            }
             record.flags = CORRECT;
             self.progress = applied.unwrap();
             self.error_at = None;
@@ -428,6 +553,7 @@ impl Session {
             }
         }
         let index = self.records.len();
+        self.count_record(&record);
         self.records.push(record);
         if correct || self.policy == Policy::Flow {
             self.undo.push(index);
@@ -462,7 +588,29 @@ impl Session {
                 continue;
             }
             summary.keystrokes += 1;
-            let entry = keys.entry((r.key, r.layer)).or_default();
+            let expected_stroke = if r.flags & CORRECT == 0 {
+                self.expected_at(Progress {
+                    cluster: r.cluster,
+                    prefix: r.prefix,
+                    variant: r.variant,
+                })
+            } else {
+                None
+            };
+            let (key, layer) = expected_stroke
+                .as_ref()
+                .map(|stroke| {
+                    (
+                        if stroke.code == "Enter" {
+                            ENTER
+                        } else {
+                            *self.layout.key_indices.get(&stroke.code).unwrap_or(&r.key)
+                        },
+                        stroke.layer as u8,
+                    )
+                })
+                .unwrap_or((r.key, r.layer));
+            let entry = keys.entry((key, layer)).or_default();
             if r.flags & CORRECT != 0 {
                 summary.correct += 1;
                 entry.0 += 1;
@@ -492,7 +640,15 @@ impl Session {
             .last()
             .map(|r| u64::from(r.elapsed))
             .unwrap_or(0);
-        summary.clusters_done = self.progress.cluster;
+        summary.duration_ms += self.terminal_gap;
+        if self.terminal_gap <= self.pause_threshold {
+            summary.active_ms += self.terminal_gap;
+        }
+        summary.clusters_done = if self.free {
+            segment(&self.typed()).len() as u32
+        } else {
+            self.completed_clusters + self.progress.cluster
+        };
         summary.duration_ms += self.previous.duration_ms;
         summary.active_ms += self.previous.active_ms;
         summary.keystrokes += self.previous.keystrokes;

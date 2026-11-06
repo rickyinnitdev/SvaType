@@ -23,6 +23,11 @@ pub struct PlanError {
 pub fn validate_target(text: &str, layout: &PreparedLayout) -> Result<(), PlanError> {
     plan(text, layout).map(|_| ())
 }
+pub fn prepare_target(text: &str) -> String {
+    text.replace("\r\n", "\n")
+        .replace('\r', "\n")
+        .replace('\u{200b}', "")
+}
 pub fn plan(text: &str, layout: &PreparedLayout) -> Result<Vec<PlannedStroke>, PlanError> {
     if let Some(offset) = text.find("េា") {
         return Err(PlanError {

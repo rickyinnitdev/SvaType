@@ -30,6 +30,7 @@
     }
   },
   "bundle": {
+    "resources": { "../content/": "content/" },
     "active": true,
     "targets": ["nsis"],
     "windows": {

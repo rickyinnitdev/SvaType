@@ -3,6 +3,7 @@ import init, {
   Layout,
   Session,
   segment as wasmSegment,
+  prepare_target,
 } from './wasm/khmer';
 
 export type Layer = 'base' | 'shift' | 'altgr' | 'shift_altgr';
@@ -94,12 +95,15 @@ export class TypingSession {
     policy: Policy,
     strict = false,
     checkpoint?: string,
+    free = false,
   ) {
     this.layout = Layout.from_json(JSON.stringify(layout));
     try {
       this.session = checkpoint
         ? Session.restore(checkpoint, this.layout)
-        : new Session(target, this.layout, policy === 'flow', strict);
+        : free
+          ? Session.free_typing(this.layout)
+          : new Session(target, this.layout, policy === 'flow', strict);
     } catch (error) {
       this.layout.free();
       throw error;
@@ -110,6 +114,21 @@ export class TypingSession {
   }
   checkpoint(): string {
     return this.session.checkpoint();
+  }
+  live(): Summary {
+    return JSON.parse(this.session.live()) as Summary;
+  }
+  observeTime(timestamp = performance.now()) {
+    this.session.observe_time(timestamp);
+  }
+  cursor(): number {
+    return this.session.cursor();
+  }
+  tail(): string {
+    return this.session.tail();
+  }
+  nextRound() {
+    this.session.next_round();
   }
   onKey(
     event: Pick<
@@ -145,4 +164,7 @@ export class TypingSession {
     this.session.free();
     this.layout.free();
   }
+}
+export function prepareTarget(text: string): string {
+  return prepare_target(text);
 }

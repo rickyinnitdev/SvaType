@@ -3,6 +3,7 @@
   import { router, navigate } from '../lib/router.svelte';
   import { messages, digits, locale } from '../lib/i18n/index.svelte';
   import { formatDate } from '../lib/i18n/format';
+  import { retryActivity } from '../lib/stores/activity.svelte';
   let t = $derived(messages());
   let detail = $state<HistoryDetail | null>(null);
   let failed = $state(false);
@@ -37,7 +38,10 @@
     <div class="row">
       <button onclick={() => navigate('history')}>{t.history}</button><button
         class="primary"
-        onclick={() => navigate('practice')}>{t.retry}</button
+        onclick={() => {
+          if (detail) retryActivity(detail);
+          void navigate('practice');
+        }}>{t.retry}</button
       >
     </div>
   </header>

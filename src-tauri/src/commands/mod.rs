@@ -13,6 +13,99 @@ use serde_json::{json, Value};
 use std::sync::Arc;
 use tauri::State;
 type DbState<'a> = State<'a, Arc<Database>>;
+type ContentState<'a> = State<'a, Arc<crate::content::Content>>;
+#[tauri::command]
+pub async fn custom_text_list(
+    db: DbState<'_>,
+    profile: i64,
+) -> AppResult<Vec<crate::storage::typing::CustomText>> {
+    query(db, move |conn| {
+        crate::storage::typing::custom_list(conn, profile)
+    })
+    .await
+}
+#[tauri::command]
+pub async fn custom_text_save(
+    db: DbState<'_>,
+    content: ContentState<'_>,
+    input: crate::storage::typing::CustomInput,
+) -> AppResult<i64> {
+    let content = Arc::clone(content.inner());
+    query(db, move |conn| {
+        crate::storage::typing::custom_save(conn, &content, input)
+    })
+    .await
+}
+#[tauri::command]
+pub async fn custom_text_delete(db: DbState<'_>, profile: i64, id: i64) -> AppResult<()> {
+    query(db, move |conn| {
+        crate::storage::typing::custom_delete(conn, profile, id)
+    })
+    .await
+}
+#[tauri::command]
+pub async fn analysis_get(
+    db: DbState<'_>,
+    profile: i64,
+    n: u32,
+) -> AppResult<crate::storage::typing::Analysis> {
+    query(db, move |conn| {
+        crate::storage::typing::analysis(conn, profile, n)
+    })
+    .await
+}
+#[tauri::command]
+pub async fn weak_keys(
+    db: DbState<'_>,
+    profile: i64,
+    n: u32,
+) -> AppResult<Vec<khmer_core::analysis::WeakKey>> {
+    query(db, move |conn| {
+        Ok(crate::storage::typing::analysis(conn, profile, n)?.weak)
+    })
+    .await
+}
+#[tauri::command]
+#[allow(clippy::too_many_arguments)]
+pub async fn practice_text(
+    db: DbState<'_>,
+    content: ContentState<'_>,
+    profile: i64,
+    level: u8,
+    kind: String,
+    seed: u64,
+    weak: bool,
+    long: bool,
+) -> AppResult<String> {
+    let content = Arc::clone(content.inner());
+    query(db, move |conn| {
+        let layout: String = conn.query_row(
+            "SELECT layout_id FROM profiles WHERE id=?1",
+            [profile],
+            |r| r.get(0),
+        )?;
+        let weak = if weak {
+            crate::storage::typing::analysis(conn, profile, 50)?
+                .weak
+                .into_iter()
+                .map(|key| key.code)
+                .collect()
+        } else {
+            vec![]
+        };
+        content.practice(level, &kind, &layout, seed, &weak, long)
+    })
+    .await
+}
+#[tauri::command]
+pub async fn drill_generate(
+    db: DbState<'_>,
+    content: ContentState<'_>,
+    profile: i64,
+    seed: u64,
+) -> AppResult<String> {
+    practice_text(db, content, profile, 2, "words".into(), seed, true, false).await
+}
 async fn query<T: Send + 'static>(
     db: DbState<'_>,
     operation: impl FnOnce(&mut rusqlite::Connection) -> AppResult<T> + Send + 'static,
