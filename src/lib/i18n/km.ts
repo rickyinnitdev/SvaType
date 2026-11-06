@@ -1,6 +1,15 @@
 import app from '../../../content/app.json';
 
 export const km = {
+  vocabulary: 'វាក្យសព្ទ',
+  chooseCategory: 'ជ្រើសរើសប្រភេទ',
+  typeWord: 'វាយពាក្យនេះ',
+  meaning: 'អត្ថន័យ',
+  example: 'ឧទាហរណ៍',
+  playAudio: 'ស្ដាប់សំឡេង',
+  previousWord: 'ពាក្យមុន',
+  nextWord: 'ពាក្យបន្ទាប់',
+
   appName: app.name,
   learning: 'រៀនវាយអក្សរ',
   typing: 'ហាត់វាយអក្សរ',

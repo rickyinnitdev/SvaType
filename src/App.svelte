@@ -32,6 +32,7 @@
     lesson: () => import('./screens/LessonPlayer.svelte'),
     intro: () => import('./screens/KeyboardIntro.svelte'),
     progress: () => import('./screens/Progress.svelte'),
+    vocabulary: () => import('./screens/Vocabulary.svelte'),
   };
   $effect(() => {
     if (!user.ready || sandbox) return;

@@ -2,6 +2,15 @@ import app from '../../../content/app.json';
 import type { Messages } from './km';
 
 export const en: Messages = {
+  vocabulary: 'Vocabulary',
+  chooseCategory: 'Choose a category',
+  typeWord: 'Type this word',
+  meaning: 'Meaning',
+  example: 'Example',
+  playAudio: 'Play recording',
+  previousWord: 'Previous word',
+  nextWord: 'Next word',
+
   appName: app.name,
   learning: 'Learn to type',
   typing: 'Typing practice',

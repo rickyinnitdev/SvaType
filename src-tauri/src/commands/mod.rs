@@ -37,6 +37,14 @@ pub async fn content_lesson(content: ContentState<'_>, id: String) -> AppResult<
     content_file(content, "lessons", id).await
 }
 #[tauri::command]
+pub async fn content_vocab_index(content: ContentState<'_>) -> AppResult<Value> {
+    content_file(content, "", "vocabulary_index".into()).await
+}
+#[tauri::command]
+pub async fn content_vocab(content: ContentState<'_>, category: String) -> AppResult<Value> {
+    content_file(content, "vocabulary", category).await
+}
+#[tauri::command]
 pub async fn lesson_draft_get(
     db: DbState<'_>,
     profile: i64,

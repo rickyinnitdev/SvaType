@@ -84,6 +84,7 @@
   <div class="row">
     <button onclick={() => navigate('path')}>{t.learningPath}</button><button
       onclick={() => navigate('intro')}>{t.keyboardIntro}</button
+    ><button onclick={() => navigate('vocabulary')}>{t.vocabulary}</button
     ><button onclick={() => navigate('progress')}>{t.myProgress}</button
     >{#if weak}<button onclick={drill}>{t.drillThese}</button>{/if}
   </div>

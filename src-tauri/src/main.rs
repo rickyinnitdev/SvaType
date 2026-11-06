@@ -45,6 +45,8 @@ fn main() {
             commands::lesson_draft_get,
             commands::lesson_progress_set,
             commands::lesson_session_save,
+            commands::content_vocab_index,
+            commands::content_vocab,
             commands::learning_options
         ])
         .setup(|app| {

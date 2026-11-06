@@ -1,0 +1,40 @@
+[
+  {
+    "pattern": "^vocabulary_index\\.json$",
+    "schema": {
+      "type": "object",
+      "required": ["categories", "reviewed"],
+      "properties": {
+        "categories": {
+          "type": "array",
+          "minItems": 11
+        }
+      }
+    }
+  },
+  {
+    "pattern": "^vocabulary/[^/]+\\.json$",
+    "schema": {
+      "type": "object",
+      "required": ["id", "title", "words", "reviewed"],
+      "properties": {
+        "words": {
+          "type": "array",
+          "minItems": 25,
+          "items": {
+            "type": "object",
+            "required": ["id", "word", "meaning_km", "example_km", "reviewed"],
+            "properties": {
+              "word": {
+                "$ref": "target"
+              },
+              "reviewed": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

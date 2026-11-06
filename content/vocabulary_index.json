@@ -1,0 +1,93 @@
+{
+  "reviewed": false,
+  "categories": [
+    {
+      "id": "animals",
+      "title": {
+        "km": "សត្វ",
+        "en": "Animals"
+      },
+      "icon": "animals.svg"
+    },
+    {
+      "id": "fruits",
+      "title": {
+        "km": "ផ្លែឈើ",
+        "en": "Fruits"
+      },
+      "icon": "fruits.svg"
+    },
+    {
+      "id": "family",
+      "title": {
+        "km": "គ្រួសារ",
+        "en": "Family"
+      },
+      "icon": "family.svg"
+    },
+    {
+      "id": "school",
+      "title": {
+        "km": "សាលារៀន",
+        "en": "School"
+      },
+      "icon": "school.svg"
+    },
+    {
+      "id": "nature",
+      "title": {
+        "km": "ធម្មជាតិ",
+        "en": "Nature"
+      },
+      "icon": "nature.svg"
+    },
+    {
+      "id": "body",
+      "title": {
+        "km": "រាងកាយ",
+        "en": "Body"
+      },
+      "icon": "body.svg"
+    },
+    {
+      "id": "colours",
+      "title": {
+        "km": "ពណ៌",
+        "en": "Colours"
+      },
+      "icon": "colours.svg"
+    },
+    {
+      "id": "numbers",
+      "title": {
+        "km": "ចំនួន",
+        "en": "Numbers"
+      },
+      "icon": "numbers.svg"
+    },
+    {
+      "id": "food",
+      "title": {
+        "km": "អាហារ",
+        "en": "Food"
+      },
+      "icon": "food.svg"
+    },
+    {
+      "id": "home",
+      "title": {
+        "km": "ផ្ទះ",
+        "en": "Home"
+      },
+      "icon": "home.svg"
+    },
+    {
+      "id": "actions",
+      "title": {
+        "km": "សកម្មភាពប្រចាំថ្ងៃ",
+        "en": "Everyday actions"
+      },
+      "icon": "actions.svg"
+    }
+  ]
+}

@@ -157,7 +157,32 @@ export interface LessonDraft {
   started_at: number;
   layout_id: string;
 }
+export interface VocabWord {
+  id: string;
+  word: string;
+  level: number;
+  image: string | null;
+  emoji: string;
+  audio: string | null;
+  meaning_km: string;
+  meaning_en: string;
+  example_km: string;
+  grade: number[];
+  reviewed: boolean;
+}
+export interface VocabCategory {
+  id: string;
+  title: Localized;
+  icon: string;
+  words: VocabWord[];
+}
 export const api = {
+  vocabIndex: () =>
+    invoke<{ categories: Omit<VocabCategory, 'words'>[] }>(
+      'content_vocab_index',
+    ),
+  vocab: (category: string) =>
+    invoke<VocabCategory>('content_vocab', { category }),
   contentIndex: () => invoke<ContentIndex>('content_index'),
   path: (id: string) => invoke<LearningPath>('content_path', { id }),
   lesson: (id: string) => invoke<Lesson>('content_lesson', { id }),

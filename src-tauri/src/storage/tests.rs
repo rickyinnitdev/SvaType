@@ -581,3 +581,54 @@ fn every_lesson_target_plans_and_paths_resolve() {
         }
     }
 }
+
+#[test]
+fn vocabulary_coverage_and_words_learned() {
+    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .unwrap();
+    let content = crate::content::Content::new(root.join("content"));
+    let index = content.json("", "vocabulary_index").unwrap();
+    assert_eq!(index["categories"].as_array().unwrap().len(), 11);
+    let mut ids = std::collections::HashSet::new();
+    for category in index["categories"].as_array().unwrap() {
+        let data = content
+            .json("vocabulary", category["id"].as_str().unwrap())
+            .unwrap();
+        for word in data["words"].as_array().unwrap() {
+            assert!(ids.insert(word["id"].as_str().unwrap().to_owned()));
+            assert_eq!(word["reviewed"], false);
+            for layout in ["nida", "khmer_legacy"] {
+                for text in [
+                    word["word"].as_str().unwrap(),
+                    word["example_km"].as_str().unwrap(),
+                ] {
+                    khmer_core::plan::validate_target(text, &content.layout(layout).unwrap())
+                        .unwrap_or_else(|e| panic!("{layout} {text}: {e:?}"));
+                }
+            }
+        }
+    }
+    assert_eq!(ids.len(), 275);
+    let mut c = memory();
+    let p = profiles::create(&c, input("Learner")).unwrap();
+    let mut entry = sample(p.id, "word-attempt");
+    entry.kind = "vocab".into();
+    entry.ref_id = Some("animals_1".into());
+    sessions::save(&mut c, &entry).unwrap();
+    sessions::save(&mut c, &entry).unwrap();
+    assert_eq!(
+        c.query_row("SELECT times_typed FROM words_learned", [], |r| r
+            .get::<_, u32>(0))
+            .unwrap(),
+        1
+    );
+    entry.uid = "word-repeat".into();
+    sessions::save(&mut c, &entry).unwrap();
+    assert_eq!(
+        c.query_row("SELECT times_typed FROM words_learned", [], |r| r
+            .get::<_, u32>(0))
+            .unwrap(),
+        2
+    );
+}

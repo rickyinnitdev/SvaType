@@ -1,5 +1,19 @@
 # Decisions
 
+## M6 — Vocabulary
+
+The eleven categories contain 25 unreviewed words each (275 total), with Khmer
+category explanations, English glosses and Khmer examples. Original small SVG
+category markers and the specified Windows emoji fallback avoid downloaded art.
+Some abstract words use a category symbol; these are teaching aids, not image
+recognition tests. No audio is bundled; buttons appear only for recordings that
+exist in the local build. Category content loads lazily through the native cache.
+
+All words and examples validate on both layouts. The native smoke test checks
+11 categories, the cat card, hidden missing audio, typing, one learned word and
+a completed vocabulary History row. Duplicate saves do not inflate learned counts.
+435 engine tests and 25 storage/content tests pass.
+
 ## M5 — Lesson attempts and curriculum
 
 74 generated, unreviewed lessons cover seven paths and all eight step types.
