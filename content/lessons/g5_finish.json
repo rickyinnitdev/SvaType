@@ -26,12 +26,12 @@
     },
     {
       "type": "type_sentence",
-      "text": "ឪពុក និង ម្តាយ ទៅ ផ្សារ ។",
+      "text": "ឪពុក និង ម្ដាយ ទៅ ផ្សារ ។",
       "policy": "stop_on_error"
     },
     {
       "type": "challenge",
-      "text": "ឪពុក និង ម្តាយ ទៅ ផ្សារ ។",
+      "text": "ឪពុក និង ម្ដាយ ទៅ ផ្សារ ។",
       "min_accuracy": 85
     }
   ]

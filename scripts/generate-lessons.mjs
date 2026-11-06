@@ -273,7 +273,7 @@ const g4 = [
     'family_words',
     'ពាក្យគ្រួសារ',
     'Family words',
-    'ម្តាយ ឪពុក បង ប្អូន',
+    'ម្ដាយ ឪពុក បង ប្អូន',
     ['KeyM', 'KeyB', 'KeyN'],
   ],
   [
@@ -370,7 +370,7 @@ function lesson(entry, index, group) {
     );
   if (id === 'space' || id === 'zwsp_awareness')
     explain = localized(
-      'ក្តារចុចនីដា ប្រើ Space សម្រាប់ចន្លោះមើលមិនឃើញ។ ប្រើ Shift + Space សម្រាប់ចន្លោះដែលមើលឃើញ។ ការហាត់អត្ថបទមិនតម្រូវឱ្យវាយចន្លោះមើលមិនឃើញទេ។',
+      'ក្ដារចុចនីដា ប្រើ Space សម្រាប់ចន្លោះមើលមិនឃើញ។ ប្រើ Shift + Space សម្រាប់ចន្លោះដែលមើលឃើញ។ ការហាត់អត្ថបទមិនតម្រូវឱ្យវាយចន្លោះមើលមិនឃើញទេ។',
       'On NiDA, Space produces an invisible word break. Use Shift + Space for a visible space. Text practice does not require invisible word breaks.',
     );
   if (id.startsWith('register'))

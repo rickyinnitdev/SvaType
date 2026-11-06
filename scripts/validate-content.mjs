@@ -54,9 +54,24 @@ function walk(dir) {
     const name = relative('content', file).replaceAll('\\', '/');
     const schema = schemas.find((s) => new RegExp(s.pattern).test(name));
     if (!schema) throw new Error(`No schema for ${name}`);
-    validate(JSON.parse(readFileSync(file, 'utf8')), schema.schema, name);
+    const text = readFileSync(file, 'utf8');
+    validate(JSON.parse(text), schema.schema, name);
+    for (const word of text.match(/[ក-៿]+/g) ?? [])
+      if (!khmerWords.has(word)) khmerWords.set(word, name);
     count++;
   }
 }
+// One spelling per word: students must not see ម្តាយ in one lesson and ម្ដាយ in another.
+const khmerWords = new Map();
 walk('content');
+const COENG_TA = '្ត';
+const COENG_DA = '្ដ';
+for (const [word, file] of khmerWords) {
+  if (!word.includes(COENG_TA)) continue;
+  const other = word.replaceAll(COENG_TA, COENG_DA);
+  if (khmerWords.has(other))
+    throw new Error(
+      `Mixed spelling: "${word}" (${file}) and "${other}" (${khmerWords.get(other)}). Use one.`,
+    );
+}
 console.log(`Validated ${count} content files.`);

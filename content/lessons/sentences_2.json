@@ -26,12 +26,12 @@
     },
     {
       "type": "type_sentence",
-      "text": "កូន អាន សៀវភៅ ជាមួយ ម្តាយ ។",
+      "text": "កូន អាន សៀវភៅ ជាមួយ ម្ដាយ ។",
       "policy": "stop_on_error"
     },
     {
       "type": "challenge",
-      "text": "កូន អាន សៀវភៅ ជាមួយ ម្តាយ ។",
+      "text": "កូន អាន សៀវភៅ ជាមួយ ម្ដាយ ។",
       "min_accuracy": 85
     }
   ]

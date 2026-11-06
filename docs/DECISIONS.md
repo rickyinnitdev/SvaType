@@ -41,6 +41,7 @@ generated lesson/vocabulary/sentence content still requires teacher review.
 Automatic approval review rejected removal of the disposable installer-test
 registry preference (HKCU\Software\svatype\SvaType), reason: "blocked by policy".
 It remains pointed at D:\SvaType\target\install-smoke; no learner data is there.
+Update 2026-11-06: re-checked; the key no longer exists, so nothing is left behind.
 
 ## M10 — Local teacher controls
 
@@ -340,3 +341,17 @@ The engine crate is an empty workspace member until M1. WASM begins in M2.
 The dialog plugin is local-only and supplies exactly the planned file dialogs.
 Full installers, icons, fonts and release WebView2 lockdown remain in their
 specified later milestones.
+
+## Review 2026-11-06 — spelling consistency
+
+Vocabulary used ម្ដាយ / ក្ដារចុច (coeng DA) while generated lessons and sentences
+used ម្តាយ / ក្តារចុច (coeng TA). Both spellings exist in Khmer, but showing a
+child two spellings of one word is confusing. The content now uses the coeng-DA
+form everywhere (as the vocabulary and most content already did), and
+`scripts/validate-content.mjs` fails if any word appears in both forms. Teachers
+may choose the other convention during review; change it in the generators and
+vocabulary together.
+
+Build note: `cargo test` must be able to find the Windows SDK `rc.exe` when the
+Tauri build script reruns (for example after a content change). Use a
+"Developer PowerShell for VS" or add `C:\Program Files (x86)\Windows Kits\10\bin\<ver>\x64` to PATH.

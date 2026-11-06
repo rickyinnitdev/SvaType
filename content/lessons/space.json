@@ -11,7 +11,7 @@
     {
       "type": "explain",
       "text": {
-        "km": "ក្តារចុចនីដា ប្រើ Space សម្រាប់ចន្លោះមើលមិនឃើញ។ ប្រើ Shift + Space សម្រាប់ចន្លោះដែលមើលឃើញ។ ការហាត់អត្ថបទមិនតម្រូវឱ្យវាយចន្លោះមើលមិនឃើញទេ។",
+        "km": "ក្ដារចុចនីដា ប្រើ Space សម្រាប់ចន្លោះមើលមិនឃើញ។ ប្រើ Shift + Space សម្រាប់ចន្លោះដែលមើលឃើញ។ ការហាត់អត្ថបទមិនតម្រូវឱ្យវាយចន្លោះមើលមិនឃើញទេ។",
         "en": "On NiDA, Space produces an invisible word break. Use Shift + Space for a visible space. Text practice does not require invisible word breaks."
       }
     },
