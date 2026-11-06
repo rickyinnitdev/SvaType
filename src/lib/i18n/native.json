@@ -6,5 +6,9 @@
   "webview_missing": {
     "km": "ត្រូវដំឡើង WebView2។ សូមប្រើ SvaType-Setup-Full-x64.exe ពី USB។",
     "en": "Microsoft WebView2 is missing. Run SvaType-Setup-Full-x64.exe from your USB drive, then start SvaType again. No internet is required."
+  },
+  "reset_marker": {
+    "km": "បិទ SvaType ហើយលុបឯកសារ reset-pin.txt នេះ ដើម្បីកំណត់ PIN គ្រូឡើងវិញ។ មិនមាន PIN នៅក្នុងឯកសារនេះទេ។",
+    "en": "To reset a forgotten teacher PIN, close SvaType, delete this reset-pin.txt file, then start SvaType again. This file contains no PIN."
   }
 }

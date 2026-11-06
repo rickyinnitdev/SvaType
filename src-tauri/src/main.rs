@@ -16,6 +16,7 @@ fn main() {
     };
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
+        .manage(std::sync::Arc::new(storage::teacher::Gate::default()))
         .invoke_handler(tauri::generate_handler![
             commands::profiles_list,
             commands::profiles_create,
@@ -59,6 +60,22 @@ fn main() {
             commands::game_session_save,
             commands::achievements_get,
             commands::content_achievements,
+            commands::teacher::teacher_pin_status,
+            commands::teacher::teacher_unlock_status,
+            commands::teacher::teacher_pin_verify,
+            commands::teacher::teacher_pin_set,
+            commands::teacher::teacher_pin_clear,
+            commands::teacher::teacher_lock,
+            commands::teacher::class_overview,
+            commands::teacher::teacher_reset_progress,
+            commands::teacher::assignments_list,
+            commands::teacher::assignments_save,
+            commands::teacher::assignments_delete,
+            commands::teacher::teacher_unlock_all,
+            commands::teacher::content_overrides_list,
+            commands::teacher::content_override_save,
+            commands::teacher::content_override_delete,
+            commands::teacher::content_overrides_export,
             commands::learning_options
         ])
         .setup(|app| {

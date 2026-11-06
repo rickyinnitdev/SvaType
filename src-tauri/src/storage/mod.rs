@@ -9,3 +9,6 @@ pub mod typing;
 
 pub mod achievements;
 pub mod games;
+
+pub mod overrides;
+pub mod teacher;

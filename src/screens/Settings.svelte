@@ -179,6 +179,7 @@
       >
     </div>
   </div>
+  <button onclick={() => navigate('teacher')}>{t.teacher}</button>
   {#if feedback || failed}<p
       class:error={failed}
       role={failed ? 'alert' : 'status'}

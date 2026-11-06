@@ -14,6 +14,7 @@
   let path = $state<LearningPath | null>(null);
   let index = $state<ContentIndex | null>(null);
   let progress = $state<Progress | null>(null);
+  let pinned = $state<string | null>(null);
   let weak = $state(false);
   let failed = $state(false);
   $effect(() => {
@@ -25,10 +26,12 @@
       api.contentIndex(),
       api.progress(profile.id),
       api.analysis(profile.id),
+      api.assignments(profile.id),
     ])
-      .then(([p, i, r, a]) => {
+      .then(([p, i, r, a, assigned]) => {
         if (alive) {
           path = p;
+          pinned = assigned[0]?.lesson_id ?? null;
           index = i;
           progress = r;
           weak = a.weak.length > 0;
@@ -42,14 +45,16 @@
     };
   });
   let next = $derived(
-    path?.units
-      .flatMap((unit) => unit.lessons)
-      .find(
-        (id) =>
-          !progress?.lessons.some(
-            (p) => p.lesson_id === id && p.best_stars > 0,
-          ),
-      ) ?? null,
+    pinned ??
+      path?.units
+        .flatMap((unit) => unit.lessons)
+        .find(
+          (id) =>
+            !progress?.lessons.some(
+              (p) => p.lesson_id === id && p.best_stars > 0,
+            ),
+        ) ??
+      null,
   );
   let title = $derived(
     index?.lessons.find((lesson) => lesson.id === next)?.title[locale.language],

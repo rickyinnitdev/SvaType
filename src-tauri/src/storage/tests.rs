@@ -761,3 +761,155 @@ fn all_game_targets_and_missing_clusters_plan() {
         }
     }
 }
+
+#[test]
+fn teacher_pin_hash_gate_rate_limit_and_file_reset() {
+    let dir = Temp::new();
+    let mut c = memory();
+    let gate = super::teacher::Gate::default();
+    assert!(!super::teacher::configured(&c).unwrap());
+    assert!(super::teacher::set_pin(&mut c, &dir.0, &gate, b"12").is_err());
+    super::teacher::set_pin(&mut c, &dir.0, &gate, b"1234").unwrap();
+    let first = db::setting(&c, "teacher_pin_hash").unwrap().unwrap();
+    assert!(first.starts_with("$argon2id$v=19$"));
+    assert_ne!(first, "1234");
+    assert!(dir.0.join("reset-pin.txt").exists());
+    gate.lock();
+    assert!(gate.require(&c).is_err());
+    assert!(super::teacher::set_pin(&mut c, &dir.0, &gate, b"9999").is_err());
+    for _ in 0..5 {
+        assert!(gate.verify(&c, b"0000").is_err());
+    }
+    assert_eq!(gate.verify(&c, b"1234").unwrap_err().code, "pin_wait");
+    let restarted = super::teacher::Gate::default();
+    restarted.verify(&c, b"1234").unwrap();
+    super::teacher::set_pin(&mut c, &dir.0, &restarted, b"1234").unwrap();
+    assert_ne!(first, db::setting(&c, "teacher_pin_hash").unwrap().unwrap());
+    std::fs::remove_file(dir.0.join("reset-pin.txt")).unwrap();
+    super::teacher::handle_reset(&c, &dir.0).unwrap();
+    assert!(!super::teacher::configured(&c).unwrap());
+    assert!(super::teacher::Gate::default().require(&c).is_ok());
+}
+#[test]
+fn teacher_class_of_40_and_progress_reset_keep_history() {
+    let mut c = memory();
+    let mut people = vec![];
+    for i in 0..40 {
+        people.push(profiles::create(&c, input(&format!("Student {i:02}"))).unwrap());
+    }
+    for (i, p) in people.iter().take(3).enumerate() {
+        for attempt in 0..5 {
+            let mut entry = sample(p.id, &format!("class-{i}-{attempt}"));
+            entry.started_at = db::now() - if i == 2 { 8 * 86_400_000 } else { 0 };
+            if i == 1 {
+                entry.summary.correct = 70;
+                entry.summary.errors = 30;
+                entry.summary.accuracy = 70.0;
+                entry.summary.stars = 1;
+            }
+            sessions::save(&mut c, &entry).unwrap();
+        }
+    }
+    let start = Instant::now();
+    let overview = super::teacher::overview(&c).unwrap();
+    assert!(start.elapsed().as_millis() < 100);
+    let rows = overview["students"].as_array().unwrap();
+    assert_eq!(rows.len(), 40);
+    assert_eq!(rows[0]["needs_help"], false);
+    assert_eq!(rows[1]["needs_help"], true);
+    assert_eq!(rows[2]["needs_help"], true);
+    assert_eq!(rows[3]["needs_help"], true);
+    assert!(!overview["keys"].as_array().unwrap().is_empty());
+    super::teacher::reset_progress(&mut c, people[0].id).unwrap();
+    assert_eq!(
+        sessions::history(&c, people[0].id, &HistoryFilter::default(), 0)
+            .unwrap()
+            .total,
+        5
+    );
+    assert_eq!(
+        c.query_row(
+            "SELECT COUNT(*) FROM lesson_progress WHERE profile_id=?1",
+            [people[0].id],
+            |r| r.get::<_, u32>(0)
+        )
+        .unwrap(),
+        0
+    );
+}
+#[test]
+fn teacher_assignments_scope_and_content_overrides() {
+    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .unwrap();
+    let content = crate::content::Content::new(root.join("content"));
+    let mut c = memory();
+    let a = profiles::create(&c, input("A")).unwrap();
+    let b = profiles::create(&c, input("B")).unwrap();
+    super::teacher::assign(&mut c, &content, Some(a.id), Some("sitting".into()), None).unwrap();
+    super::teacher::assign(&mut c, &content, None, None, Some("grade4".into())).unwrap();
+    assert_eq!(
+        super::teacher::assignments(&c, Some(a.id)).unwrap()[0]["lesson_id"],
+        "sitting"
+    );
+    assert_eq!(
+        super::teacher::assignments(&c, Some(b.id)).unwrap().len(),
+        1
+    );
+    assert!(profiles::list(&c)
+        .unwrap()
+        .iter()
+        .all(|p| p.path_id.as_deref() == Some("grade4")));
+    let value = serde_json::json!({"id":"animals_1","word":"ក","meaning_km":"អក្សរ ក","example_km":"ក ។","reviewed":true});
+    let id =
+        super::overrides::save(&mut c, &content, None, "word", "animals", value.clone()).unwrap();
+    let merged =
+        super::overrides::apply_vocab(&c, content.json("vocabulary", "animals").unwrap()).unwrap();
+    assert_eq!(merged["words"][0]["word"], "ក");
+    assert_eq!(
+        content.json("vocabulary", "animals").unwrap()["words"][0]["word"],
+        "ឆ្មា"
+    );
+    let mut bad = value;
+    bad["id"] = serde_json::json!("bad/path");
+    assert!(super::overrides::save(&mut c, &content, None, "word", "animals", bad).is_err());
+    assert_eq!(super::overrides::list(&c).unwrap().len(), 1);
+    let sentence = serde_json::json!({"text":"កូន មាន បាយ ។","reviewed":false});
+    super::overrides::save(&mut c, &content, None, "sentence", "1", sentence).unwrap();
+    assert_eq!(
+        super::overrides::sentences(&c, 1).unwrap(),
+        vec!["កូន មាន បាយ ។"]
+    );
+    let mut edit = super::overrides::list(&c)
+        .unwrap()
+        .into_iter()
+        .find(|v| v["id"] == id)
+        .unwrap()["value"]
+        .clone();
+    edit["word"] = serde_json::json!("🙂");
+    assert!(super::overrides::save(&mut c, &content, Some(id), "word", "animals", edit).is_err());
+    assert_eq!(super::overrides::list(&c).unwrap().len(), 2);
+}
+
+#[test]
+fn restored_teacher_pin_keeps_recovery_marker() {
+    let source = Temp::new();
+    let db = Database::open(source.0.clone()).unwrap();
+    let gate = super::teacher::Gate::default();
+    {
+        let mut conn = db.connection.lock().unwrap();
+        super::teacher::set_pin(&mut conn, &source.0, &gate, b"5678").unwrap();
+        backup::create(&conn, &source.0.join("class.svabak")).unwrap();
+    }
+    let target = Temp::new();
+    let restored = Database::open(target.0.clone()).unwrap();
+    backup::restore(&restored, &source.0.join("class.svabak")).unwrap();
+    assert!(target.0.join("reset-pin.txt").exists());
+    drop(restored);
+    let reopened = Database::open(target.0.clone()).unwrap();
+    let conn = reopened.connection.lock().unwrap();
+    assert!(super::teacher::configured(&conn).unwrap());
+    super::teacher::Gate::default()
+        .verify(&conn, b"5678")
+        .unwrap();
+}

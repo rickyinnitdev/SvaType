@@ -1,5 +1,37 @@
 # Decisions
 
+## M10 — Local teacher controls
+
+Argon2id uses the RustCrypto argon2 crate, because implementing a password hash
+correctly is not a suitable 50-line substitute. OS randomness comes from the
+already-transitive getrandom crate. Only salted PHC hashes enter SQLite; PIN input
+buffers are cleared after use. Five failed verifications impose a one-minute
+wait. Authorization lasts at most 30 minutes, is checked on each teacher command,
+and is cleared when leaving Teacher or restoring a backup. No idle timer runs.
+
+Setting a PIN creates reset-pin.txt beside the database, containing bilingual
+recovery instructions only. Closing the app, deleting that marker and restarting
+resets the PIN as the plan requests. Restore recreates the marker so a restored
+PIN survives the next restart. Public settings cannot read PIN/unlock/reset keys.
+Profile deletion, archival, protected profile edits and class exports check the
+gate. Normal name-only profile creation and mode/layout/path selection remain
+available to learners.
+
+Teacher tools manage students, show indexed class summaries/needs-help flags and
+aggregate difficult keys/confusions, pin lessons/paths for one or all learners,
+unlock lessons, reset progress without deleting History, and export class CSV.
+Content edits are validated by Rust on both layouts, stored transactionally as DB
+overrides, merged into vocabulary/practice, and exported as JSON. Bundled content
+is never rewritten. Progress reset also resets achievement evaluation's baseline.
+
+Native verification manages 40 profiles, creates and renames a student, changes
+grade/path, resets progress while retaining History, assigns/unlocks a lesson,
+saves word/sentence overrides, exports BOM CSV/JSON, changes/removes a PIN and
+checks automatic locking and the pinned student Home. Tests also cover rate
+limiting, salt uniqueness, file reset, restored PIN markers, scoped assignments,
+override rollback and a <100 ms 40-profile class query. All generated content
+remains unreviewed until a teacher explicitly marks it reviewed.
+
 ## M9 — Games and achievements
 
 All four games share one GameLoop. It schedules frames only while running,

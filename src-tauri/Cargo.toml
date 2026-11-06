@@ -17,6 +17,8 @@ khmer_core = { path = "../crates/khmer_core" }
 rusqlite = { version = "0.38", features = ["bundled", "backup"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+argon2 = { version="0.5.3", default-features=false, features= ["alloc", "password-hash"] }
+getrandom = "0.3"
 
 [target.'cfg(windows)'.dependencies]
 # Already used transitively by Tauri; needed for native offline startup/lockdown.

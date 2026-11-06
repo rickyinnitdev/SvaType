@@ -192,7 +192,68 @@ export interface GameDraft {
   layout_id: string;
   lives: number;
 }
+export interface Assignment {
+  id: number;
+  profile_id: number | null;
+  lesson_id: string | null;
+  path_id: string | null;
+  created_at: number;
+}
+export interface ClassOverview {
+  students: {
+    id: number;
+    name: string;
+    grade: number | null;
+    path_id: string | null;
+    lessons: number;
+    accuracy: number;
+    week_ms: number;
+    last_at: number | null;
+    needs_help: boolean;
+  }[];
+  keys: { code: string; layer: string; hits: number; errors: number }[];
+  confusions: { expected: string; typed: string; count: number }[];
+}
+export interface ContentOverride {
+  id: number;
+  kind: string;
+  category: string;
+  value: Record<string, unknown>;
+}
 export const api = {
+  teacherUnlockStatus: (profile: number | null) =>
+    invoke<{ enabled: boolean }>('teacher_unlock_status', { profile }),
+  teacherStatus: () =>
+    invoke<{ configured: boolean; authorized: boolean }>('teacher_pin_status'),
+  teacherVerify: (pin: string) => invoke<void>('teacher_pin_verify', { pin }),
+  teacherSetPin: (pin: string) => invoke<void>('teacher_pin_set', { pin }),
+  teacherClearPin: () => invoke<void>('teacher_pin_clear'),
+  teacherLock: () => invoke<void>('teacher_lock'),
+  classOverview: () => invoke<ClassOverview>('class_overview'),
+  resetProgress: (profile: number) =>
+    invoke<void>('teacher_reset_progress', { profile }),
+  assignments: (profile: number | null) =>
+    invoke<Assignment[]>('assignments_list', { profile }),
+  assign: (
+    profile: number | null,
+    lesson: string | null,
+    path: string | null,
+  ) => invoke<void>('assignments_save', { profile, lesson, path }),
+  deleteAssignment: (id: number) => invoke<void>('assignments_delete', { id }),
+  unlockAll: (profile: number | null, enabled: boolean) =>
+    invoke<void>('teacher_unlock_all', { profile, enabled }),
+  overrides: () => invoke<ContentOverride[]>('content_overrides_list'),
+  saveOverride: (
+    id: number | null,
+    kind: string,
+    category: string,
+    value: Record<string, unknown>,
+  ) => invoke<number>('content_override_save', { id, kind, category, value }),
+  deleteOverride: (id: number) =>
+    invoke<void>('content_override_delete', { id }),
+  exportOverrides: (path: string) =>
+    invoke<void>('content_overrides_export', { path }),
+  deleteProfile: (id: number) => invoke<void>('profiles_delete', { id }),
   games: () => invoke<{ games: GameContent[] }>('content_games'),
   gameDraft: (profile: number, game: string) =>
     invoke<GameDraft | null>('game_draft_get', { profile, game }),

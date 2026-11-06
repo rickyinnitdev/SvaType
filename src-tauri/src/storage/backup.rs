@@ -37,6 +37,7 @@ pub fn restore(database: &Database, path: &Path) -> AppResult<()> {
     conn.restore("main", path, None::<fn(rusqlite::backup::Progress)>)?;
     db::configure(&conn)?;
     db::migrate(&mut conn)?;
+    super::teacher::restore_marker(&conn, &database.dir)?;
     Ok(())
 }
 fn cell(value: &str) -> String {

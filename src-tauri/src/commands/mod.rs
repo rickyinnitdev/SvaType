@@ -1,3 +1,4 @@
+pub mod teacher;
 use crate::{
     error::{AppError, AppResult},
     storage::{
@@ -41,8 +42,16 @@ pub async fn content_vocab_index(content: ContentState<'_>) -> AppResult<Value> 
     content_file(content, "", "vocabulary_index".into()).await
 }
 #[tauri::command]
-pub async fn content_vocab(content: ContentState<'_>, category: String) -> AppResult<Value> {
-    content_file(content, "vocabulary", category).await
+pub async fn content_vocab(
+    db: DbState<'_>,
+    content: ContentState<'_>,
+    category: String,
+) -> AppResult<Value> {
+    let content = Arc::clone(content.inner());
+    query(db, move |conn| {
+        crate::storage::overrides::apply_vocab(conn, content.json("vocabulary", &category)?)
+    })
+    .await
 }
 #[tauri::command]
 pub async fn lesson_draft_get(
@@ -195,7 +204,18 @@ pub async fn practice_text(
         } else {
             vec![]
         };
-        content.practice(level, &kind, &layout, seed, &weak, long)
+        let extra = if kind == "sentences" || kind == "paragraphs" {
+            crate::storage::overrides::sentences(conn, level)?
+        } else {
+            crate::storage::overrides::list(conn)?
+                .into_iter()
+                .filter(|v| {
+                    v["kind"] == "word" && v["value"]["level"].as_u64() == Some(level as u64)
+                })
+                .filter_map(|v| v["value"]["word"].as_str().map(str::to_owned))
+                .collect()
+        };
+        content.practice(level, &kind, &layout, seed, &weak, long, &extra)
     })
     .await
 }
@@ -232,16 +252,40 @@ pub async fn profiles_create(db: DbState<'_>, input: ProfileInput) -> AppResult<
     query(db, move |conn| profiles::create(conn, input)).await
 }
 #[tauri::command]
-pub async fn profiles_update(db: DbState<'_>, id: i64, input: ProfileInput) -> AppResult<()> {
-    query(db, move |conn| profiles::update(conn, id, input)).await
+pub async fn profiles_update(
+    db: DbState<'_>,
+    gate: teacher::GateState<'_>,
+    id: i64,
+    input: ProfileInput,
+) -> AppResult<()> {
+    let gate = Arc::clone(gate.inner());
+    query(db, move |conn| {
+        let old = profiles::list(conn)?
+            .into_iter()
+            .find(|p| p.id == id)
+            .ok_or_else(|| AppError::invalid("profile_missing"))?;
+        if old.name != input.name || old.avatar != input.avatar || old.grade != input.grade {
+            gate.require(conn)?;
+        }
+        profiles::update(conn, id, input)
+    })
+    .await
 }
 #[tauri::command]
-pub async fn profiles_archive(db: DbState<'_>, id: i64) -> AppResult<()> {
-    query(db, move |conn| profiles::archive(conn, id)).await
+pub async fn profiles_archive(
+    db: DbState<'_>,
+    gate: teacher::GateState<'_>,
+    id: i64,
+) -> AppResult<()> {
+    teacher::guarded(db, gate, move |conn| profiles::archive(conn, id)).await
 }
 #[tauri::command]
-pub async fn profiles_delete(db: DbState<'_>, id: i64) -> AppResult<()> {
-    query(db, move |conn| profiles::delete(conn, id)).await
+pub async fn profiles_delete(
+    db: DbState<'_>,
+    gate: teacher::GateState<'_>,
+    id: i64,
+) -> AppResult<()> {
+    teacher::guarded(db, gate, move |conn| profiles::delete(conn, id)).await
 }
 #[tauri::command]
 pub async fn profile_touch(db: DbState<'_>, id: i64) -> AppResult<()> {
@@ -353,15 +397,29 @@ pub async fn backup_create(db: DbState<'_>, path: String) -> AppResult<()> {
     .await
 }
 #[tauri::command]
-pub async fn backup_restore(db: DbState<'_>, path: String) -> AppResult<()> {
+pub async fn backup_restore(
+    db: DbState<'_>,
+    gate: teacher::GateState<'_>,
+    path: String,
+) -> AppResult<()> {
+    gate.lock();
     let db = Arc::clone(db.inner());
     tauri::async_runtime::spawn_blocking(move || backup::restore(&db, std::path::Path::new(&path)))
         .await
         .map_err(|_| AppError::invalid("database_worker_failed"))?
 }
 #[tauri::command]
-pub async fn export_csv(db: DbState<'_>, path: String, profile: Option<i64>) -> AppResult<()> {
+pub async fn export_csv(
+    gate: teacher::GateState<'_>,
+    db: DbState<'_>,
+    path: String,
+    profile: Option<i64>,
+) -> AppResult<()> {
+    let gate = Arc::clone(gate.inner());
     query(db, move |conn| {
+        if profile.is_none() {
+            gate.require(conn)?;
+        }
         backup::export_csv(conn, std::path::Path::new(&path), profile)
     })
     .await

@@ -17,6 +17,7 @@
     oncancel: () => void;
     busy?: boolean;
   } = $props();
+  const titleId = $props.id();
   let dialog = $state<HTMLDialogElement>();
   let t = $derived(messages());
   $effect(() => {
@@ -32,10 +33,10 @@
     e.preventDefault();
     if (!busy) oncancel();
   }}
-  aria-labelledby="confirmation-title"
+  aria-labelledby={titleId}
 >
   <div class="stack">
-    <h2 id="confirmation-title">{title}</h2>
+    <h2 id={titleId}>{title}</h2>
     <p class="muted">{description}</p>
     <div class="row actions">
       <button onclick={oncancel} disabled={busy}>{t.cancel}</button><button

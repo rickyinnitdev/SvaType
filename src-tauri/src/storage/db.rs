@@ -72,6 +72,7 @@ impl Database {
             )?;
         }
         migrate(&mut conn)?;
+        super::teacher::handle_reset(&conn, &dir)?;
         let last = setting(&conn, "last_auto_backup")?
             .and_then(|s| s.parse::<i64>().ok())
             .unwrap_or(0);

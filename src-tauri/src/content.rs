@@ -99,15 +99,17 @@ impl Content {
         seed: u64,
         weak: &[String],
         long: bool,
+        extra: &[String],
     ) -> AppResult<String> {
         let bank = self.bank(level)?;
         let layout = self.layout(layout_id)?;
-        let source = match kind {
+        let mut source = match kind {
             "words" => bank.words,
             "sentences" => bank.sentences,
             "paragraphs" => bank.paragraphs,
             _ => return Err(AppError::invalid("invalid_bank_kind")),
         };
+        source.extend_from_slice(extra);
         let mut entries = Vec::new();
         for text in source {
             let text = prepare_target(&text);

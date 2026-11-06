@@ -52,7 +52,8 @@
     const at = ids.indexOf(id);
     return unlock || at === 0 || stars(id) > 0 || stars(ids[at - 1]) > 0;
   }
-  async function choose() {
+  async function choose(value: string) {
+    pathId = value;
     if (!user.profile) return;
     try {
       const profile = { ...user.profile, path_id: pathId };
@@ -73,7 +74,9 @@
   <header class="row heading">
     <h1>{t.learningPath}</h1>
     <label
-      >{t.choosePath}<select bind:value={pathId} onchange={choose}
+      >{t.choosePath}<select
+        bind:value={pathId}
+        onchange={(event) => choose(event.currentTarget.value)}
         >{#each index?.paths ?? [] as item (item.id)}<option value={item.id}
             >{item.title[locale.language]}</option
           >{/each}</select
