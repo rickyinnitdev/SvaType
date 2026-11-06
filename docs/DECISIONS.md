@@ -1,5 +1,26 @@
 # Decisions
 
+## M9 — Games and achievements
+
+All four games share one GameLoop. It schedules frames only while running,
+pauses on blur/hidden state, and caps Low-end updates at 30 fps. Falling uses one
+DOM sprite (well below the 12-sprite cap), transform-only movement, three chances
+and accuracy-adjusted speed. Missing a falling item consumes a chance without
+inventing a physical keystroke in accuracy statistics. Picture hints reveal the
+word/next key. Complete-the-Word targets are derived by Rust cluster segmentation.
+Journey saves each of ten stops. All targets remain unreviewed content data.
+
+Migration 004 adds game drafts. Round summaries and checkpoints resume under one
+UID; finishing upgrades the unfinished History row. Six data-driven achievements
+are evaluated in the same native save transaction, with idempotent awards and
+local-calendar streaks. Empty games do not award the first-game achievement.
+
+Verification: all four native games finish into History; Journey leaves after
+four stops and resumes at stop five. Blur/hide pause and the Low-end frame cap
+pass; the first-game award appears once. Rust has 435 engine and 29 storage/content
+tests; 14 WASM/UI-logic tests include scheduler cancellation and pause-time handling.
+Both layouts cover every game target and derived missing cluster.
+
 ## M8 — Offline packages and available-machine acceptance
 
 `npm run build` creates both installers, a clean portable ZIP and SHA-256 hashes

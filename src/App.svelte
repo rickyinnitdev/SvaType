@@ -33,6 +33,7 @@
     lesson: () => import('./screens/LessonPlayer.svelte'),
     intro: () => import('./screens/KeyboardIntro.svelte'),
     progress: () => import('./screens/Progress.svelte'),
+    games: () => import('./screens/Games.svelte'),
     vocabulary: () => import('./screens/Vocabulary.svelte'),
   };
   $effect(() => {

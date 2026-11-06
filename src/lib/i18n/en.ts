@@ -2,6 +2,15 @@ import app from '../../../content/app.json';
 import type { Messages } from './km';
 
 export const en: Messages = {
+  games: 'Games',
+  gameHint: 'Show hint',
+  gameLives: 'Chances',
+  gameEncouragement: 'Good practice! Take your time and try again.',
+  gameStop: 'Finish game',
+  gameRound: 'Round',
+  gameResume: 'Resume game',
+  achievements: 'Achievements',
+
   diagnostics: 'Diagnostics',
   keyLatency: 'Key to DOM update',
   jsHeap: 'JavaScript heap',

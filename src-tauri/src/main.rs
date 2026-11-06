@@ -53,6 +53,12 @@ fn main() {
             commands::lesson_session_save,
             commands::content_vocab_index,
             commands::content_vocab,
+            commands::content_games,
+            commands::game_draft_get,
+            commands::game_draft_set,
+            commands::game_session_save,
+            commands::achievements_get,
+            commands::content_achievements,
             commands::learning_options
         ])
         .setup(|app| {

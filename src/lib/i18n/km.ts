@@ -1,6 +1,15 @@
 import app from '../../../content/app.json';
 
 export const km = {
+  games: 'ល្បែង',
+  gameHint: 'បង្ហាញជំនួយ',
+  gameLives: 'ឱកាស',
+  gameEncouragement: 'ហាត់បានល្អ! វាយយឺតៗ ហើយសាកល្បងម្ដងទៀត។',
+  gameStop: 'បញ្ចប់ល្បែង',
+  gameRound: 'ជុំ',
+  gameResume: 'បន្តល្បែង',
+  achievements: 'សមិទ្ធផល',
+
   diagnostics: 'ព័ត៌មានសាកល្បង',
   keyLatency: 'រយៈពេលបង្ហាញការវាយ',
   jsHeap: 'អង្គចងចាំ JavaScript',

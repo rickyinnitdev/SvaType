@@ -378,3 +378,64 @@ pub async fn open_data_folder(db: DbState<'_>) -> AppResult<()> {
     .await
     .map_err(|_| AppError::invalid("folder_open_failed"))?
 }
+
+#[tauri::command]
+pub async fn content_games(content: ContentState<'_>) -> AppResult<Value> {
+    let content = Arc::clone(content.inner());
+    tauri::async_runtime::spawn_blocking(move || {
+        let mut value = content.json("", "games")?;
+        if let Some(games) = value["games"].as_array_mut() {
+            for game in games {
+                if game["id"] == "complete" {
+                    for round in game["rounds"].as_array_mut().into_iter().flatten() {
+                        let text = round["text"].as_str().unwrap_or("").to_owned();
+                        if let Some(last) = khmer_core::cluster::segment(&text).last() {
+                            round["target"] = json!(&text[last.start..last.end]);
+                            round["prompt"] = json!(format!("{}___", &text[..last.start]));
+                        }
+                    }
+                }
+            }
+        }
+        Ok(value)
+    })
+    .await
+    .map_err(|_| AppError::invalid("content_worker_failed"))?
+}
+#[tauri::command]
+pub async fn game_draft_get(
+    db: DbState<'_>,
+    profile: i64,
+    game: String,
+) -> AppResult<Option<crate::storage::games::Draft>> {
+    query(db, move |conn| {
+        crate::storage::games::get(conn, profile, &game)
+    })
+    .await
+}
+#[tauri::command]
+pub async fn game_draft_set(db: DbState<'_>, draft: crate::storage::games::Draft) -> AppResult<()> {
+    query(db, move |conn| crate::storage::games::set(conn, &draft)).await
+}
+#[tauri::command]
+pub async fn game_session_save(
+    db: DbState<'_>,
+    profile: i64,
+    game: String,
+    extra: Option<khmer_core::metrics::SessionSummary>,
+    text: Option<String>,
+    completed: bool,
+) -> AppResult<Option<i64>> {
+    query(db, move |conn| {
+        crate::storage::games::save(conn, profile, &game, extra, text, completed)
+    })
+    .await
+}
+#[tauri::command]
+pub async fn achievements_get(db: DbState<'_>, profile: i64) -> AppResult<Vec<Value>> {
+    query(db,move|conn|Ok(conn.prepare("SELECT achievement_id,earned_at FROM achievements WHERE profile_id=?1 ORDER BY earned_at DESC")?.query_map([profile],|r|Ok(json!({"id":r.get::<_,String>(0)?,"earned_at":r.get::<_,i64>(1)?})))?.collect::<Result<_,_>>()?)).await
+}
+#[tauri::command]
+pub async fn content_achievements(content: ContentState<'_>) -> AppResult<Value> {
+    content_file(content, "", "achievements".into()).await
+}

@@ -1,12 +1,38 @@
 <script lang="ts">
-  import { api, type Progress, type Analysis, type Trend } from '../lib/api';
+  import {
+    api,
+    type Progress,
+    type Analysis,
+    type Localized,
+    type Trend,
+  } from '../lib/api';
   import { user } from '../lib/stores/profile.svelte';
-  import { messages, digits } from '../lib/i18n/index.svelte';
+  import { messages, digits, locale } from '../lib/i18n/index.svelte';
   import SvgChart from '../lib/components/SvgChart.svelte';
   let t = $derived(messages());
   let progress = $state<Progress | null>(null);
   let analysis = $state<Analysis | null>(null);
   let trend = $state<Trend[]>([]);
+  let badges = $state<{ id: string; title: Localized }[]>([]);
+  let earned = $state<string[]>([]);
+  $effect(() => {
+    const id = user.profile?.id;
+    if (!id) return;
+    let alive = true;
+    void Promise.all([api.achievementContent(), api.achievements(id)])
+      .then(([catalog, awards]) => {
+        if (alive) {
+          badges = catalog.achievements;
+          earned = awards.map((a) => a.id);
+        }
+      })
+      .catch(() => {
+        if (alive) failed = true;
+      });
+    return () => {
+      alive = false;
+    };
+  });
   let failed = $state(false);
   $effect(() => {
     const id = user.profile?.id;
@@ -41,6 +67,15 @@
       </div>{/each}
   </div>
   <p>{t.starsHelp}</p>
+  <section class="panel stack">
+    <h2>{t.achievements}</h2>
+    {#each badges as badge (badge.id)}<p
+        class:muted={!earned.includes(badge.id)}
+      >
+        {earned.includes(badge.id) ? '★' : '○'}
+        {badge.title[locale.language]}
+      </p>{/each}
+  </section>
   <section class="panel">
     <h2>{t.accuracy}</h2>
     <SvgChart values={trend.map((row) => row.accuracy)} label={t.accuracy} />

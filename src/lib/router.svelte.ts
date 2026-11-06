@@ -15,7 +15,8 @@ export type Screen =
   | 'lesson'
   | 'intro'
   | 'progress'
-  | 'vocabulary';
+  | 'vocabulary'
+  | 'games';
 export const router = $state<{
   screen: Screen;
   resultId: number | null;

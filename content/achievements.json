@@ -1,0 +1,77 @@
+{
+  "reviewed": false,
+  "achievements": [
+    {
+      "id": "first_lesson",
+      "title": {
+        "km": "មេរៀនដំបូង",
+        "en": "First lesson"
+      },
+      "rule": {
+        "kind": "lessons",
+        "target": 1
+      },
+      "reviewed": false
+    },
+    {
+      "id": "ten_lessons",
+      "title": {
+        "km": "មេរៀន១០",
+        "en": "Ten lessons"
+      },
+      "rule": {
+        "kind": "lessons",
+        "target": 10
+      },
+      "reviewed": false
+    },
+    {
+      "id": "hundred_words",
+      "title": {
+        "km": "ពាក្យ១០០",
+        "en": "One hundred words"
+      },
+      "rule": {
+        "kind": "words",
+        "target": 100
+      },
+      "reviewed": false
+    },
+    {
+      "id": "seven_days",
+      "title": {
+        "km": "ហាត់៧ថ្ងៃជាប់គ្នា",
+        "en": "Seven day streak"
+      },
+      "rule": {
+        "kind": "streak",
+        "target": 7
+      },
+      "reviewed": false
+    },
+    {
+      "id": "accurate_test",
+      "title": {
+        "km": "ភាពត្រឹមត្រូវ៩៥%",
+        "en": "Accurate test"
+      },
+      "rule": {
+        "kind": "accuracy_test",
+        "target": 95
+      },
+      "reviewed": false
+    },
+    {
+      "id": "first_game",
+      "title": {
+        "km": "ល្បែងដំបូង",
+        "en": "First game"
+      },
+      "rule": {
+        "kind": "games",
+        "target": 1
+      },
+      "reviewed": false
+    }
+  ]
+}

@@ -659,3 +659,105 @@ fn upgrade_creates_pre_migration_backup() {
     assert_eq!(db::version(&backup).unwrap(), 1);
     assert_eq!(profiles::list(&backup).unwrap().len(), 1);
 }
+
+#[test]
+fn games_resume_complete_and_award_once() {
+    let mut c = memory();
+    let p = profiles::create(&c, input("Gamer")).unwrap();
+    let stats = sample(p.id, "unused").summary;
+    let mut d = super::games::Draft {
+        profile_id: p.id,
+        game_id: "journey".into(),
+        uid: "journey-attempt".into(),
+        step: 1,
+        summaries: vec![stats.clone()],
+        texts: vec!["ក".into()],
+        started_at: db::now(),
+        layout_id: "nida".into(),
+        lives: 3,
+    };
+    super::games::set(&mut c, &d).unwrap();
+    assert_eq!(
+        super::games::get(&c, p.id, "journey")
+            .unwrap()
+            .unwrap()
+            .step,
+        1
+    );
+    let partial = super::games::save(&mut c, p.id, "journey", None, None, false)
+        .unwrap()
+        .unwrap();
+    d.step = 10;
+    d.summaries.push(stats);
+    d.texts.push("ខ".into());
+    super::games::set(&mut c, &d).unwrap();
+    assert_eq!(
+        super::games::save(&mut c, p.id, "journey", None, None, true).unwrap(),
+        Some(partial)
+    );
+    assert!(super::games::get(&c, p.id, "journey").unwrap().is_none());
+    assert_eq!(
+        sessions::history(&c, p.id, &HistoryFilter::default(), 0)
+            .unwrap()
+            .total,
+        1
+    );
+    assert_eq!(
+        c.query_row(
+            "SELECT COUNT(*) FROM achievements WHERE achievement_id='first_game'",
+            [],
+            |r| r.get::<_, u32>(0)
+        )
+        .unwrap(),
+        1
+    );
+    super::achievements::evaluate(&c, p.id).unwrap();
+    assert_eq!(
+        c.query_row("SELECT COUNT(*) FROM achievements", [], |r| r
+            .get::<_, u32>(0))
+            .unwrap(),
+        1
+    );
+}
+#[test]
+fn achievement_streak_and_test_accuracy() {
+    let mut c = memory();
+    let p = profiles::create(&c, input("Regular practice")).unwrap();
+    for day in 0..7 {
+        let mut entry = sample(p.id, &format!("day-{day}"));
+        entry.kind = "test".into();
+        entry.started_at = db::now() - day * 86_400_000;
+        sessions::save(&mut c, &entry).unwrap();
+    }
+    let ids: Vec<String> = c
+        .prepare("SELECT achievement_id FROM achievements ORDER BY achievement_id")
+        .unwrap()
+        .query_map([], |r| r.get(0))
+        .unwrap()
+        .collect::<Result<_, _>>()
+        .unwrap();
+    assert_eq!(ids, vec!["accurate_test", "seven_days"]);
+}
+#[test]
+fn all_game_targets_and_missing_clusters_plan() {
+    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .unwrap();
+    let content = crate::content::Content::new(root.join("content"));
+    let data = content.json("", "games").unwrap();
+    for game in data["games"].as_array().unwrap() {
+        assert_eq!(game["rounds"].as_array().unwrap().len(), 10);
+        for round in game["rounds"].as_array().unwrap() {
+            let text = round["target"].as_str().unwrap();
+            let last = khmer_core::cluster::segment(text)
+                .last()
+                .unwrap()
+                .to_owned();
+            for layout in ["nida", "khmer_legacy"] {
+                let prepared = content.layout(layout).unwrap();
+                khmer_core::plan::validate_target(text, &prepared).unwrap();
+                khmer_core::plan::validate_target(&text[last.start..last.end], &prepared).unwrap();
+            }
+        }
+    }
+}

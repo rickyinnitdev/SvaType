@@ -1,0 +1,28 @@
+[
+  {
+    "pattern": "^games\\.json$",
+    "schema": {
+      "type": "object",
+      "required": ["games", "reviewed"],
+      "properties": {
+        "games": {
+          "type": "array",
+          "minItems": 4
+        }
+      }
+    }
+  },
+  {
+    "pattern": "^achievements\\.json$",
+    "schema": {
+      "type": "object",
+      "required": ["achievements", "reviewed"],
+      "properties": {
+        "achievements": {
+          "type": "array",
+          "minItems": 6
+        }
+      }
+    }
+  }
+]

@@ -190,6 +190,12 @@ pub fn save(conn: &mut Connection, input: &SessionInput) -> AppResult<i64> {
     if input.kind == "lesson" && input.completed {
         tx.execute("DELETE FROM lesson_drafts WHERE uid=?1", [&input.uid])?;
     }
+    if input.completed {
+        if input.kind == "game" {
+            tx.execute("DELETE FROM game_drafts WHERE uid=?1", [&input.uid])?;
+        }
+        super::achievements::evaluate(&tx, input.profile_id)?;
+    }
     tx.commit()?;
     Ok(id)
 }

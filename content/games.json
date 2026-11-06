@@ -1,0 +1,285 @@
+{
+  "reviewed": false,
+  "games": [
+    {
+      "id": "falling",
+      "title": {
+        "km": "អក្សរធ្លាក់",
+        "en": "Falling Characters"
+      },
+      "reviewed": false,
+      "rounds": [
+        {
+          "text": "ក",
+          "target": "ក",
+          "emoji": "🔤",
+          "reviewed": false
+        },
+        {
+          "text": "ខ",
+          "target": "ខ",
+          "emoji": "🔤",
+          "reviewed": false
+        },
+        {
+          "text": "ច",
+          "target": "ច",
+          "emoji": "🔤",
+          "reviewed": false
+        },
+        {
+          "text": "ង",
+          "target": "ង",
+          "emoji": "🔤",
+          "reviewed": false
+        },
+        {
+          "text": "ត",
+          "target": "ត",
+          "emoji": "🔤",
+          "reviewed": false
+        },
+        {
+          "text": "ន",
+          "target": "ន",
+          "emoji": "🔤",
+          "reviewed": false
+        },
+        {
+          "text": "ប",
+          "target": "ប",
+          "emoji": "🔤",
+          "reviewed": false
+        },
+        {
+          "text": "ម",
+          "target": "ម",
+          "emoji": "🔤",
+          "reviewed": false
+        },
+        {
+          "text": "ល",
+          "target": "ល",
+          "emoji": "🔤",
+          "reviewed": false
+        },
+        {
+          "text": "ស",
+          "target": "ស",
+          "emoji": "🔤",
+          "reviewed": false
+        }
+      ]
+    },
+    {
+      "id": "picture",
+      "title": {
+        "km": "ផ្គូផ្គងរូបភាព",
+        "en": "Match the Picture"
+      },
+      "reviewed": false,
+      "rounds": [
+        {
+          "text": "ឆ្មា",
+          "target": "ឆ្មា",
+          "emoji": "🐈",
+          "reviewed": false
+        },
+        {
+          "text": "ឆ្កែ",
+          "target": "ឆ្កែ",
+          "emoji": "🐕",
+          "reviewed": false
+        },
+        {
+          "text": "ត្រី",
+          "target": "ត្រី",
+          "emoji": "🐟",
+          "reviewed": false
+        },
+        {
+          "text": "គោ",
+          "target": "គោ",
+          "emoji": "🐄",
+          "reviewed": false
+        },
+        {
+          "text": "ទា",
+          "target": "ទា",
+          "emoji": "🦆",
+          "reviewed": false
+        },
+        {
+          "text": "សេះ",
+          "target": "សេះ",
+          "emoji": "🐎",
+          "reviewed": false
+        },
+        {
+          "text": "មាន់",
+          "target": "មាន់",
+          "emoji": "🐓",
+          "reviewed": false
+        },
+        {
+          "text": "ស្វា",
+          "target": "ស្វា",
+          "emoji": "🐒",
+          "reviewed": false
+        },
+        {
+          "text": "ដំរី",
+          "target": "ដំរី",
+          "emoji": "🐘",
+          "reviewed": false
+        },
+        {
+          "text": "ខ្លា",
+          "target": "ខ្លា",
+          "emoji": "🐅",
+          "reviewed": false
+        }
+      ]
+    },
+    {
+      "id": "complete",
+      "title": {
+        "km": "បំពេញពាក្យ",
+        "en": "Complete the Word"
+      },
+      "reviewed": false,
+      "rounds": [
+        {
+          "text": "សាលា",
+          "target": "សាលា",
+          "emoji": "📝",
+          "reviewed": false
+        },
+        {
+          "text": "សៀវភៅ",
+          "target": "សៀវភៅ",
+          "emoji": "📝",
+          "reviewed": false
+        },
+        {
+          "text": "កូន",
+          "target": "កូន",
+          "emoji": "📝",
+          "reviewed": false
+        },
+        {
+          "text": "មាតា",
+          "target": "មាតា",
+          "emoji": "📝",
+          "reviewed": false
+        },
+        {
+          "text": "បិតា",
+          "target": "បិតា",
+          "emoji": "📝",
+          "reviewed": false
+        },
+        {
+          "text": "សិស្ស",
+          "target": "សិស្ស",
+          "emoji": "📝",
+          "reviewed": false
+        },
+        {
+          "text": "អាហារ",
+          "target": "អាហារ",
+          "emoji": "📝",
+          "reviewed": false
+        },
+        {
+          "text": "កុមារ",
+          "target": "កុមារ",
+          "emoji": "📝",
+          "reviewed": false
+        },
+        {
+          "text": "ពេលវេលា",
+          "target": "ពេលវេលា",
+          "emoji": "📝",
+          "reviewed": false
+        },
+        {
+          "text": "ភាសា",
+          "target": "ភាសា",
+          "emoji": "📝",
+          "reviewed": false
+        }
+      ]
+    },
+    {
+      "id": "journey",
+      "title": {
+        "km": "ដំណើរវាយអក្សរ",
+        "en": "Typing Journey"
+      },
+      "reviewed": false,
+      "rounds": [
+        {
+          "text": "ឆ្មា",
+          "target": "ឆ្មា",
+          "emoji": "🐈",
+          "reviewed": false
+        },
+        {
+          "text": "ឆ្កែ",
+          "target": "ឆ្កែ",
+          "emoji": "🐕",
+          "reviewed": false
+        },
+        {
+          "text": "ត្រី",
+          "target": "ត្រី",
+          "emoji": "🐟",
+          "reviewed": false
+        },
+        {
+          "text": "គោ",
+          "target": "គោ",
+          "emoji": "🐄",
+          "reviewed": false
+        },
+        {
+          "text": "ទា",
+          "target": "ទា",
+          "emoji": "🦆",
+          "reviewed": false
+        },
+        {
+          "text": "សេះ",
+          "target": "សេះ",
+          "emoji": "🐎",
+          "reviewed": false
+        },
+        {
+          "text": "មាន់",
+          "target": "មាន់",
+          "emoji": "🐓",
+          "reviewed": false
+        },
+        {
+          "text": "ស្វា",
+          "target": "ស្វា",
+          "emoji": "🐒",
+          "reviewed": false
+        },
+        {
+          "text": "ដំរី",
+          "target": "ដំរី",
+          "emoji": "🐘",
+          "reviewed": false
+        },
+        {
+          "text": "ខ្លា",
+          "target": "ខ្លា",
+          "emoji": "🐅",
+          "reviewed": false
+        }
+      ]
+    }
+  ]
+}

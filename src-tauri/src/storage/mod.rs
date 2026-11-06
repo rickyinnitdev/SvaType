@@ -6,3 +6,6 @@ pub mod sessions;
 #[cfg(test)]
 mod tests;
 pub mod typing;
+
+pub mod achievements;
+pub mod games;

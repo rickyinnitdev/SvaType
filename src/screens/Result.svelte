@@ -3,6 +3,7 @@
   import { router, navigate } from '../lib/router.svelte';
   import { messages, digits, locale } from '../lib/i18n/index.svelte';
   import { formatDate } from '../lib/i18n/format';
+  import { gameSelection } from '../lib/stores/game.svelte';
   import { learning } from '../lib/stores/learning.svelte';
   import { user } from '../lib/stores/profile.svelte';
   import { retryActivity } from '../lib/stores/activity.svelte';
@@ -74,6 +75,11 @@
       <button onclick={() => navigate('history')}>{t.history}</button><button
         class="primary"
         onclick={() => {
+          if (detail?.session.kind === 'game' && detail.session.ref_id) {
+            gameSelection.id = detail.session.ref_id;
+            void navigate('games');
+            return;
+          }
           if (detail?.session.kind === 'lesson' && detail.session.ref_id) {
             learning.lessonId = detail.session.ref_id;
             user.resume = null;

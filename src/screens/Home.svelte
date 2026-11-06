@@ -3,6 +3,7 @@
   import { user } from '../lib/stores/profile.svelte';
   import { messages, digits } from '../lib/i18n/index.svelte';
   import { navigate } from '../lib/router.svelte';
+  import { gameSelection } from '../lib/stores/game.svelte';
   import LearningHome from './LearningHome.svelte';
   import { learning } from '../lib/stores/learning.svelte';
   import Avatar from '../lib/components/Avatar.svelte';
@@ -40,6 +41,12 @@
     if (checkpoint?.session.kind === 'lesson' && checkpoint.session.ref_id) {
       learning.lessonId = checkpoint.session.ref_id;
       void navigate('lesson');
+    } else if (
+      checkpoint?.session.kind === 'game' &&
+      checkpoint.session.ref_id
+    ) {
+      gameSelection.id = checkpoint.session.ref_id;
+      void navigate('games');
     } else void navigate('practice');
   }
 </script>

@@ -176,7 +176,50 @@ export interface VocabCategory {
   icon: string;
   words: VocabWord[];
 }
+export interface GameContent {
+  id: string;
+  title: Localized;
+  rounds: { text: string; target: string; prompt?: string; emoji: string }[];
+}
+export interface GameDraft {
+  profile_id: number;
+  game_id: string;
+  uid: string;
+  step: number;
+  summaries: Summary[];
+  texts: string[];
+  started_at: number;
+  layout_id: string;
+  lives: number;
+}
 export const api = {
+  games: () => invoke<{ games: GameContent[] }>('content_games'),
+  gameDraft: (profile: number, game: string) =>
+    invoke<GameDraft | null>('game_draft_get', { profile, game }),
+  saveGameDraft: (draft: GameDraft) =>
+    invoke<void>('game_draft_set', { draft }),
+  saveGameSession: (
+    profile: number,
+    game: string,
+    extra: Summary | null = null,
+    text: string | null = null,
+    completed = false,
+  ) =>
+    invoke<number | null>('game_session_save', {
+      profile,
+      game,
+      extra,
+      text,
+      completed,
+    }),
+  achievements: (profile: number) =>
+    invoke<{ id: string; earned_at: number }[]>('achievements_get', {
+      profile,
+    }),
+  achievementContent: () =>
+    invoke<{ achievements: { id: string; title: Localized }[] }>(
+      'content_achievements',
+    ),
   vocabIndex: () =>
     invoke<{ categories: Omit<VocabCategory, 'words'>[] }>(
       'content_vocab_index',
