@@ -150,7 +150,7 @@ pub fn validate_file(path: &Path) -> AppResult<()> {
         conn.prepare("SELECT uid,profile_id,payload,updated_at FROM session_checkpoints LIMIT 0")?;
     }
     if version(&conn)? >= 3 {
-        conn.prepare("SELECT profile_id,lesson_id,uid,step,summaries_json,texts_json,started_at FROM lesson_drafts LIMIT 0")?;
+        conn.prepare("SELECT profile_id,lesson_id,uid,step,summaries_json,texts_json,started_at,layout_id FROM lesson_drafts LIMIT 0")?;
     }
     if conn.prepare("PRAGMA foreign_key_check")?.exists([])? {
         return Err(AppError::invalid("invalid_backup"));

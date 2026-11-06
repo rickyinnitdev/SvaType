@@ -1,0 +1,118 @@
+{
+  "addOrReinstall": {
+    "km": "ដំឡើងឡើងវិញ",
+    "en": "Add/Reinstall components"
+  },
+  "alreadyInstalled": {
+    "km": "បានដំឡើងរួច",
+    "en": "Already Installed"
+  },
+  "alreadyInstalledLong": {
+    "km": "ជ្រើសរើសសកម្មភាព ហើយចុច Next។",
+    "en": "${PRODUCTNAME} ${VERSION} is already installed. Select the operation you want to perform and click Next to continue."
+  },
+  "appRunning": {
+    "km": "សូមបិទ SvaType មុនពេលបន្ត។",
+    "en": "${PRODUCTNAME} is running! Please close it first then try again."
+  },
+  "appRunningOkKill": {
+    "km": "ចុច OK ដើម្បីបិទ SvaType។",
+    "en": "${PRODUCTNAME} is running!$\\nClick OK to kill it"
+  },
+  "chooseMaintenanceOption": {
+    "km": "ជ្រើសរើសសកម្មភាព។",
+    "en": "Choose the maintenance option to perform."
+  },
+  "chooseHowToInstall": {
+    "km": "ជ្រើសរើសរបៀបដំឡើង។",
+    "en": "Choose how you want to install ${PRODUCTNAME}."
+  },
+  "createDesktop": {
+    "km": "បង្កើតរូបតំណាងលើផ្ទៃតុ",
+    "en": "Create desktop shortcut"
+  },
+  "dontUninstall": {
+    "km": "រក្សាកម្មវិធីបច្ចុប្បន្ន",
+    "en": "Do not uninstall"
+  },
+  "dontUninstallDowngrade": {
+    "km": "មិនអនុញ្ញាតឱ្យដំឡើងកំណែចាស់ទេ។",
+    "en": "Do not uninstall (Downgrading without uninstall is disabled for this installer)"
+  },
+  "failedToKillApp": {
+    "km": "មិនអាចបិទកម្មវិធីបានទេ។ សូមបិទដោយខ្លួនឯង។",
+    "en": "Failed to kill ${PRODUCTNAME}. Please close it first then try again"
+  },
+  "installingWebview2": {
+    "km": "កំពុងដំឡើង WebView2",
+    "en": "Installing WebView2..."
+  },
+  "newerVersionInstalled": {
+    "km": "មានកំណែថ្មីជាងនេះរួចហើយ។",
+    "en": "A newer version of ${PRODUCTNAME} is already installed! It is not recommended that you install an older version. If you really want to install this older version, it's better to uninstall the current version first. Select the operation you want to perform and click Next to continue."
+  },
+  "older": {
+    "km": "ចាស់ជាង",
+    "en": "older"
+  },
+  "olderOrUnknownVersionInstalled": {
+    "km": "មានកំណែចាស់ ឬមិនស្គាល់។",
+    "en": "An $R4 version of ${PRODUCTNAME} is installed on your system. It's recommended that you uninstall the current version before installing. Select the operation you want to perform and click Next to continue."
+  },
+  "silentDowngrades": {
+    "km": "មិនអនុញ្ញាតឱ្យដំឡើងកំណែចាស់ទេ។",
+    "en": "Downgrades are disabled for this installer, can't proceed with the silent installer, please use the graphical interface installer instead.$\\n"
+  },
+  "unableToUninstall": {
+    "km": "មិនអាចលុបកម្មវិធីបានទេ។",
+    "en": "Unable to uninstall!"
+  },
+  "uninstallApp": {
+    "km": "លុប SvaType",
+    "en": "Uninstall ${PRODUCTNAME}"
+  },
+  "uninstallBeforeInstalling": {
+    "km": "លុបកម្មវិធីមុនដំឡើង",
+    "en": "Uninstall before installing"
+  },
+  "unknown": {
+    "km": "មិនស្គាល់",
+    "en": "unknown"
+  },
+  "webview2AbortError": {
+    "km": "មិនអាចដំឡើង WebView2 បានទេ។ សូមសាកល្បងម្ដងទៀត។",
+    "en": "Failed to install WebView2! The app can't run without it. Try restarting the installer."
+  },
+  "webview2DownloadError": {
+    "km": "មិនអាចទាញយក WebView2 បានទេ។",
+    "en": "Error: Downloading WebView2 Failed - $0"
+  },
+  "webview2DownloadSuccess": {
+    "km": "បានទាញយក WebView2 រួច។",
+    "en": "WebView2 bootstrapper downloaded successfully"
+  },
+  "webview2Downloading": {
+    "km": "កំពុងរៀបចំ WebView2",
+    "en": "Downloading WebView2 bootstrapper..."
+  },
+  "webview2InstallError": {
+    "km": "មិនអាចដំឡើង WebView2 បានទេ។",
+    "en": "Error: Installing WebView2 failed with exit code $1"
+  },
+  "webview2InstallSuccess": {
+    "km": "បានដំឡើង WebView2 រួច។",
+    "en": "WebView2 installed successfully"
+  },
+  "deleteAppData": {
+    "km": "លុបទិន្នន័យរបស់ខ្ញុំ (ប្រវត្តិ និងវឌ្ឍនភាពទាំងអស់)",
+    "en": "Delete the application data"
+  },
+  "welcome": {
+    "km": "សូមស្វាគមន៍មកកាន់ SvaType",
+    "en": "Welcome to SvaType"
+  },
+  "instructions": {
+    "km": "រៀនវាយអក្សរខ្មែរដោយមិនប្រើអ៊ីនធឺណិត។ ប្រវត្តិនិងវឌ្ឍនភាពរក្សាទុកលើកុំព្យូទ័រនេះ។",
+    "en": "Offline Khmer typing and learning. History and progress stay on this computer. Installing a newer version keeps your data."
+  }
+}

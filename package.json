@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node scripts/tauri.mjs dev",
-    "build": "node scripts/tauri.mjs build",
+    "build": "node scripts/package.mjs",
     "build:wasm": "node scripts/build-wasm.mjs",
     "build:frontend": "npm run build:wasm && vite build",
     "build:frontend:dev": "npm run build:wasm && vite build --mode development",

@@ -1,0 +1,20 @@
+SvaType — portable / កំណែចល័ត
+
+Extract the whole folder onto a writable USB drive or local folder.
+Keep SvaType.exe, content, and portable.txt together. Start SvaType.exe.
+Microsoft WebView2 must already be installed. If it is missing, run
+SvaType-Setup-Full-x64.exe first; it contains the offline runtime installer.
+
+Profiles, History and progress are in data/svatype.db next to the executable.
+Close SvaType before copying or moving this folder. Copy the entire data folder,
+including backups. Do not remove portable.txt: without it SvaType uses the
+Windows user's local application-data folder instead.
+
+Update: close the app, keep data and portable.txt, and replace only the EXE and
+content folder from the newer package. Back up from Settings before updating.
+Never copy an example database over your data. All generated lessons and words
+await teacher review.
+
+សូមស្រង់ថតទាំងមូលទៅ USB ឬថតដែលអាចសរសេរបាន ហើយបើក SvaType.exe។
+រក្សា portable.txt និង content ជាមួយកម្មវិធី។ ប្រវត្តិនិងវឌ្ឍនភាពនៅក្នុងថត data។
+បិទកម្មវិធីមុនចម្លងថត។ សូមបម្រុងទុកតាម Settings មុនដំឡើងកំណែថ្មី។

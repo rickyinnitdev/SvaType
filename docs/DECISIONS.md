@@ -1,5 +1,39 @@
 # Decisions
 
+## M8 — Offline packages and available-machine acceptance
+
+`npm run build` creates both installers, a clean portable ZIP and SHA-256 hashes
+under target/packages. The current Microsoft offline WebView2 installer is
+214,927,568 bytes, larger than the plan's approximate 130 MB; the Full package
+is 220,300,068 bytes. The slim installer remains 2,573,342 bytes. Do not apply the
+slim 10 MB budget to the Full installer.
+
+NSIS 3.13 has no Khmer/Cambodian language pack. Rather than invent a partial
+language implementation, use its standard English wizard chrome plus bilingual
+Khmer/English welcome text and custom messages, generated from the i18n table.
+This is the chosen substitute for the requested two installer languages.
+
+The default Tauri uninstaller deletes bundle-ID cache folders only. Our database
+uses LocalAppData/SvaType, so a hook removes that directory only when the explicit
+Delete my data checkbox is checked and this is not an update. Ordinary uninstall
+and every update preserve it. Per-user uninstall never removes shared or portable
+class data. A migration test verifies the old-schema backup precedes the upgrade.
+
+Available-machine verification: on Windows 11, the slim installer installs into
+an isolated workspace directory; a profile and completed History row survive a
+Full reinstall, default uninstall, then slim reinstall. The extracted portable
+ZIP starts and creates its database beside the EXE. Hash/resource checks pass;
+no learner database is bundled. Native visual inspection confirms bundled Khmer
+fonts and the Learning Home render in the installed app.
+
+A licensed clean Windows 10 VM with networking disabled and WebView2 absent is
+not available here. Creating one is not possible from the supplied environment.
+The chosen development substitute is Windows 11 install/reinstall/uninstall plus
+process-scoped external-host blocking, with the exact clean-VM test retained as
+an outstanding release gate in TESTING_ON_SCHOOL_PCS.md. It is not recorded as a
+passed Windows 10 test. Continue implementation under the plan's instruction to
+record impossible environment requirements and proceed.
+
 ## M7 — Windows integration and performance measurement
 
 The native Windows APIs and WebView2 bindings already present through Tauri are

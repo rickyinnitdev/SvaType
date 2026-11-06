@@ -632,3 +632,30 @@ fn vocabulary_coverage_and_words_learned() {
         2
     );
 }
+
+#[test]
+fn upgrade_creates_pre_migration_backup() {
+    let dir = Temp::new();
+    let conn = Connection::open(dir.0.join("svatype.db")).unwrap();
+    conn.execute_batch(db::MIGRATIONS[0]).unwrap();
+    profiles::create(&conn, input("Preserved student")).unwrap();
+    drop(conn);
+    let database = Database::open(dir.0.clone()).unwrap();
+    assert_eq!(
+        profiles::list(&database.connection.lock().unwrap()).unwrap()[0].name,
+        "Preserved student"
+    );
+    let path = std::fs::read_dir(dir.0.join("backups"))
+        .unwrap()
+        .map(|entry| entry.unwrap().path())
+        .find(|path| {
+            path.file_name()
+                .unwrap()
+                .to_string_lossy()
+                .starts_with("pre-migration-")
+        })
+        .unwrap();
+    let backup = Connection::open(path).unwrap();
+    assert_eq!(db::version(&backup).unwrap(), 1);
+    assert_eq!(profiles::list(&backup).unwrap().len(), 1);
+}
