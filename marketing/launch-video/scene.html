@@ -1,0 +1,1297 @@
+<!doctype html>
+<html lang="km">
+  <head>
+    <meta charset="utf-8" />
+    <title>SvaType launch video</title>
+    <style>
+      @font-face {
+        font-family: 'Kantumruy Pro';
+        src: url('/public/fonts/KantumruyPro-SemiBold.woff2') format('woff2');
+        font-weight: 600;
+      }
+      @font-face {
+        font-family: 'Kantumruy Pro';
+        src: url('/public/fonts/KantumruyPro.woff2') format('woff2');
+        font-weight: 400;
+      }
+      @font-face {
+        font-family: 'Noto Sans Khmer';
+        src: url('/public/fonts/NotoSansKhmer-SemiBold.woff2') format('woff2');
+        font-weight: 600;
+      }
+      @font-face {
+        font-family: 'Noto Sans Khmer';
+        src: url('/public/fonts/NotoSansKhmer.woff2') format('woff2');
+        font-weight: 400;
+      }
+      :root {
+        --teal: #176b62;
+        --teal-2: #1f8a7e;
+        --mint: #8bdbc2;
+        --gold: #e9b94c;
+        --ink: #071c19;
+        --paper: #f7f8fa;
+        --muted: #a9c7bf;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--ink);
+      }
+      body {
+        font-family: 'Kantumruy Pro', 'Noto Sans Khmer', 'Segoe UI', sans-serif;
+        color: var(--paper);
+      }
+      #stage {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        background: radial-gradient(
+          1200px 800px at 50% 40%,
+          #145a52 0%,
+          #0b2f2b 55%,
+          #061714 100%
+        );
+      }
+      .abs {
+        position: absolute;
+      }
+      .center {
+        left: 50%;
+        top: 50%;
+      }
+      .layer {
+        position: absolute;
+        inset: 0;
+      }
+      .glyph {
+        position: absolute;
+        font-family: 'Noto Sans Khmer';
+        font-weight: 600;
+        color: var(--mint);
+        will-change: transform, opacity;
+      }
+      .km {
+        font-family: 'Kantumruy Pro', 'Noto Sans Khmer';
+      }
+      .en {
+        font-family: 'Segoe UI', 'Kantumruy Pro', sans-serif;
+        letter-spacing: 0.01em;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 28px;
+        border-radius: 999px;
+        background: rgba(139, 219, 194, 0.14);
+        border: 2px solid rgba(139, 219, 194, 0.45);
+        font-size: 30px;
+        font-weight: 600;
+        color: var(--mint);
+      }
+      .heading {
+        width: 100%;
+        text-align: center;
+      }
+      .heading .km {
+        font-size: 58px;
+        font-weight: 600;
+        line-height: 1.6;
+      }
+      .heading .en {
+        font-size: 30px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+
+      /* intro */
+      #logo {
+        width: 230px;
+        height: 230px;
+        margin: -115px 0 0 -115px;
+      }
+      #ring {
+        width: 240px;
+        height: 240px;
+        margin: -120px 0 0 -120px;
+        border-radius: 60px;
+        border: 4px solid var(--gold);
+      }
+      #title {
+        width: 100%;
+        text-align: center;
+        top: 640px;
+        font-size: 128px;
+        font-weight: 600;
+        font-family: 'Segoe UI', sans-serif;
+        letter-spacing: 0.02em;
+      }
+      #title span {
+        display: inline-block;
+      }
+      #subtitle {
+        width: 100%;
+        text-align: center;
+        top: 810px;
+        font-size: 54px;
+        font-weight: 600;
+        color: var(--mint);
+        line-height: 1.6;
+      }
+      #subtitle-en {
+        width: 100%;
+        text-align: center;
+        top: 905px;
+        font-size: 30px;
+        color: var(--muted);
+      }
+      .spark {
+        width: 14px;
+        height: 14px;
+        margin: -7px 0 0 -7px;
+        border-radius: 50%;
+        background: var(--gold);
+      }
+
+      /* keyboard scene */
+      #track {
+        left: 50%;
+        top: 250px;
+        width: 1100px;
+        margin-left: -550px;
+        height: 170px;
+        border-radius: 28px;
+        background: rgba(247, 248, 250, 0.07);
+        border: 2px solid rgba(247, 248, 250, 0.16);
+      }
+      #track .txt {
+        position: absolute;
+        left: 60px;
+        top: 14px;
+        font-family: 'Noto Sans Khmer';
+        font-size: 84px;
+        font-weight: 600;
+        line-height: 1.6;
+        white-space: pre;
+      }
+      #target {
+        color: rgba(247, 248, 250, 0.28);
+      }
+      #typed {
+        color: var(--gold);
+      }
+      #caret {
+        position: absolute;
+        top: 38px;
+        width: 6px;
+        height: 96px;
+        border-radius: 3px;
+        background: var(--paper);
+      }
+      #badge {
+        right: 34px;
+        top: 46px;
+        height: 78px;
+        padding: 0 26px;
+        border-radius: 40px;
+        background: var(--gold);
+        color: var(--ink);
+        font-size: 40px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      #kb {
+        left: 50%;
+        top: 470px;
+      }
+      .key {
+        position: absolute;
+        border-radius: 14px;
+        background: #f3f6f5;
+        color: #11302c;
+        overflow: hidden;
+        box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25);
+      }
+      .key .bar {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 9px;
+      }
+      .key .base {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 14px;
+        text-align: center;
+        font-family: 'Noto Sans Khmer';
+        font-size: 34px;
+        font-weight: 600;
+        line-height: 1.5;
+      }
+      .key .shift {
+        position: absolute;
+        left: 10px;
+        top: 2px;
+        font-family: 'Noto Sans Khmer';
+        font-size: 19px;
+        color: #5d736f;
+        line-height: 1.5;
+      }
+      .key .lbl {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        margin-top: -14px;
+        text-align: center;
+        font-size: 20px;
+        font-family: 'Segoe UI';
+        color: #5d736f;
+      }
+      .key .fill {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+      }
+      .key.pressed .base,
+      .key.pressed .lbl,
+      .key.pressed .shift {
+        color: #fff;
+      }
+      .tag {
+        position: absolute;
+        padding: 6px 18px;
+        border-radius: 999px;
+        color: #fff;
+        font-size: 24px;
+        font-weight: 600;
+        white-space: nowrap;
+        line-height: 1.5;
+      }
+      #legend {
+        left: 50%;
+        top: 958px;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 34px;
+        font-size: 26px;
+        white-space: nowrap;
+      }
+      #legend div {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      #legend i {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+
+      /* learning */
+      .card {
+        width: 440px;
+        height: 420px;
+        border-radius: 34px;
+        background: var(--paper);
+        color: #11302c;
+        padding: 40px 40px;
+      }
+      .card .g {
+        font-size: 30px;
+        color: var(--teal);
+        font-weight: 600;
+      }
+      .card .big {
+        font-size: 64px;
+        font-weight: 600;
+        line-height: 1.5;
+        margin-top: 4px;
+      }
+      .card .sub {
+        font-size: 28px;
+        color: #5d736f;
+      }
+      .card .stars {
+        display: flex;
+        gap: 16px;
+        margin-top: 36px;
+      }
+      .card .stars svg {
+        width: 70px;
+        height: 70px;
+      }
+      .card .bar {
+        margin-top: 34px;
+        height: 16px;
+        border-radius: 8px;
+        background: #dfe9e6;
+        overflow: hidden;
+      }
+      .card .bar b {
+        display: block;
+        height: 100%;
+        width: 0;
+        background: var(--teal);
+        border-radius: 8px;
+      }
+
+      /* typing stats */
+      .stat {
+        width: 470px;
+        height: 470px;
+        border-radius: 40px;
+        background: rgba(247, 248, 250, 0.07);
+        border: 2px solid rgba(247, 248, 250, 0.16);
+      }
+      .stat .label {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 38px;
+        text-align: center;
+        font-size: 30px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+      .stat .num {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 120px;
+        text-align: center;
+        font-size: 150px;
+        font-weight: 600;
+        font-family: 'Segoe UI';
+        color: var(--paper);
+      }
+      .stat .unit {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 300px;
+        text-align: center;
+        font-size: 32px;
+        color: var(--gold);
+        font-weight: 600;
+      }
+
+      /* features */
+      .tile {
+        width: 760px;
+        height: 210px;
+        border-radius: 34px;
+        background: var(--paper);
+        color: #11302c;
+        display: flex;
+        align-items: center;
+        gap: 34px;
+        padding: 0 44px;
+      }
+      .tile .ico {
+        width: 124px;
+        height: 124px;
+        flex: none;
+        border-radius: 30px;
+        background: var(--teal);
+        display: grid;
+        place-items: center;
+      }
+      .tile .ico svg {
+        width: 72px;
+        height: 72px;
+      }
+      .tile .km {
+        font-size: 44px;
+        font-weight: 600;
+        line-height: 1.55;
+      }
+      .tile .en {
+        font-size: 28px;
+        color: #5d736f;
+      }
+
+      /* end */
+      #end-logo {
+        width: 260px;
+        height: 260px;
+        margin: -130px 0 0 -130px;
+      }
+      #end-title {
+        width: 100%;
+        text-align: center;
+        top: 600px;
+        font-size: 140px;
+        font-weight: 600;
+        font-family: 'Segoe UI';
+      }
+      #end-km {
+        width: 100%;
+        text-align: center;
+        top: 790px;
+        font-size: 52px;
+        font-weight: 600;
+        color: var(--mint);
+        line-height: 1.6;
+      }
+      #chips {
+        left: 50%;
+        top: 905px;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 22px;
+      }
+      #chips span {
+        padding: 12px 30px;
+        border-radius: 999px;
+        border: 2px solid var(--gold);
+        color: var(--gold);
+        font-size: 30px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      #fade {
+        position: absolute;
+        inset: 0;
+        background: #000;
+        opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="bg" class="layer"></div>
+      <div id="s1" class="layer"></div>
+      <div id="s2" class="layer"></div>
+      <div id="s3" class="layer"></div>
+      <div id="s4" class="layer"></div>
+      <div id="s5" class="layer"></div>
+      <div id="s6" class="layer"></div>
+      <div id="fade"></div>
+    </div>
+    <script>
+      'use strict';
+      // ---------- helpers ----------
+      const FPS = 30,
+        DURATION = 31;
+      const clamp = (v) => Math.min(1, Math.max(0, v));
+      const p = (t, a, b) => clamp((t - a) / (b - a));
+      const E = {
+        out: (x) => 1 - Math.pow(1 - x, 3),
+        in: (x) => x * x * x,
+        inOut: (x) =>
+          x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2,
+        back: (x) => {
+          const c1 = 1.9,
+            c3 = c1 + 1;
+          return x <= 0
+            ? 0
+            : 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+        },
+        elastic: (x) =>
+          x <= 0
+            ? 0
+            : x >= 1
+              ? 1
+              : Math.pow(2, -10 * x) *
+                  Math.sin(((x * 10 - 0.75) * (2 * Math.PI)) / 3) +
+                1,
+      };
+      const lerp = (a, b, x) => a + (b - a) * x;
+      const $ = (id) => document.getElementById(id);
+      function el(tag, cls, parent, html) {
+        const e = document.createElement(tag);
+        if (cls) e.className = cls;
+        if (html !== undefined) e.innerHTML = html;
+        (parent || document.body).appendChild(e);
+        return e;
+      }
+      function set(e, { x = 0, y = 0, s = 1, r = 0, o = 1 } = {}) {
+        e.style.transform = `translate(${x}px, ${y}px) scale(${s}) rotate(${r}deg)`;
+        e.style.opacity = o;
+      }
+      // in/out envelope: fades up between a..a+d, out between b..b+d2
+      function life(t, a, d, b, d2) {
+        return Math.min(E.out(p(t, a, a + d)), 1 - E.in(p(t, b, b + d2)));
+      }
+      let seed = 7;
+      const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+      const toKm = (n) => String(n).replace(/[0-9]/g, (d) => '០១២៣៤៥៦៧៨៩'[d]);
+
+      const CUES = [];
+      const cue = (t, type, extra) =>
+        CUES.push(Object.assign({ t, type }, extra || {}));
+
+      const LOGO = `<svg viewBox="0 0 256 256" width="100%" height="100%"><rect width="256" height="256" rx="56" fill="#176b62"/><rect x="32" y="64" width="192" height="128" rx="16" fill="#f7f8fa"/><g fill="#176b62"><path d="M52 84h24v24H52zm32 0h24v24H84zm32 0h24v24h-24zm32 0h24v24h-24zm32 0h24v24h-24zM52 116h24v24H52zm32 0h24v24H84zm32 0h24v24h-24zm32 0h24v24h-24zm32 0h24v24h-24z"/><rect x="68" y="152" width="120" height="20" rx="4"/></g><rect x="4" y="4" width="248" height="248" rx="54" fill="none" stroke="#8bdbc2" stroke-width="6" opacity=".55"/></svg>`;
+      const STAR = (on) =>
+        `<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z" fill="${on ? '#e9b94c' : '#dfe9e6'}" stroke="${on ? '#c79a2e' : '#c9d6d2'}" stroke-width="1" stroke-linejoin="round"/></svg>`;
+
+      // ---------- background ----------
+      const GLYPHS = 'កខគឃងចឆជឈញដឋឌឍណតថទធនបផពភមយរលវសហឡអ';
+      const bgGlyphs = [];
+      for (let i = 0; i < 34; i++) {
+        const g = el(
+          'div',
+          'glyph',
+          $('bg'),
+          GLYPHS[Math.floor(rnd() * GLYPHS.length)],
+        );
+        const size = 40 + rnd() * 110;
+        g.style.fontSize = size + 'px';
+        bgGlyphs.push({
+          e: g,
+          x: rnd() * 1920,
+          y: rnd() * 1080,
+          v: 10 + rnd() * 26,
+          a: 0.04 + rnd() * 0.07,
+          ph: rnd() * 6.28,
+          d: size / 150,
+        });
+      }
+      function renderBg(t) {
+        for (const g of bgGlyphs) {
+          const y =
+            ((((g.y - t * g.v * (0.6 + g.d)) % 1240) + 1240) % 1240) - 120;
+          const x = g.x + Math.sin(t * 0.5 + g.ph) * 18;
+          const dim = 1 - 0.55 * E.inOut(p(t, 26.2, 27.2));
+          set(g.e, {
+            x,
+            y,
+            r: Math.sin(t * 0.3 + g.ph) * 8,
+            o: g.a * Math.min(1, t / 1.2) * dim,
+          });
+        }
+      }
+
+      // ---------- scene 1: intro ----------
+      const s1 = $('s1');
+      const ring = el('div', 'abs center', s1);
+      ring.id = 'ring';
+      const sparks = [];
+      for (let i = 0; i < 18; i++)
+        sparks.push({
+          e: el('div', 'abs center spark', s1),
+          a: (i / 18) * Math.PI * 2 + rnd() * 0.3,
+          d: 220 + rnd() * 160,
+          s: 0.5 + rnd() * 0.9,
+        });
+      const logo = el('div', 'abs center', s1, LOGO);
+      logo.id = 'logo';
+      const title = el('div', 'abs', s1);
+      title.id = 'title';
+      const titleChars = [...'SvaType'].map((c) => el('span', '', title, c));
+      const sub = el('div', 'abs km', s1, 'កម្មវិធីរៀនវាយអក្សរខ្មែរ');
+      sub.id = 'subtitle';
+      const subEn = el(
+        'div',
+        'abs en',
+        s1,
+        'Learn &amp; practise Khmer typing — for everyone',
+      );
+      subEn.id = 'subtitle-en';
+      cue(0.25, 'whoosh', { len: 0.9 });
+      cue(0.62, 'pop', { pitch: 0.8 });
+      cue(0.7, 'sparkle');
+      cue(1.15, 'shimmer');
+      cue(3.55, 'whoosh', { len: 0.7, gain: 0.6 });
+      function renderS1(t) {
+        if (t > 4.4) {
+          s1.style.display = 'none';
+          return;
+        }
+        s1.style.display = '';
+        const out = E.inOut(p(t, 3.55, 4.25));
+        const lift = -lerp(0, 160, out);
+        const k = E.back(p(t, 0.35, 1.0));
+        set(logo, {
+          y: -150 + lift,
+          s: k * (1 - out * 0.2),
+          r: lerp(-14, 0, E.out(p(t, 0.35, 1.1))),
+          o: clamp(k * 3) * (1 - out),
+        });
+        const rp = p(t, 0.62, 1.5);
+        set(ring, {
+          y: -150 + lift,
+          s: lerp(0.9, 2.1, E.out(rp)),
+          o: (1 - rp) * (rp > 0 ? 0.9 : 0),
+        });
+        for (const sp of sparks) {
+          const q = p(t, 0.65, 1.6),
+            d = sp.d * E.out(q);
+          set(sp.e, {
+            x: Math.cos(sp.a) * d,
+            y: -150 + Math.sin(sp.a) * d + lift,
+            s: sp.s * (1 - q),
+            o: q > 0 && q < 1 ? 1 : 0,
+          });
+        }
+        titleChars.forEach((c, i) => {
+          const q = E.back(p(t, 1.1 + i * 0.06, 1.6 + i * 0.06));
+          set(c, { y: lerp(90, 0, q), o: clamp(q * 1.5), s: lerp(0.6, 1, q) });
+        });
+        set(title, { y: lift, o: 1 - out });
+        set(sub, {
+          y: lerp(40, 0, E.out(p(t, 1.75, 2.4))) + lift,
+          o: E.out(p(t, 1.75, 2.4)) * (1 - out),
+        });
+        set(subEn, {
+          y: lerp(30, 0, E.out(p(t, 2.05, 2.7))) + lift,
+          o: E.out(p(t, 2.05, 2.7)) * (1 - out),
+        });
+      }
+
+      // ---------- scene 2: keyboard + typing ----------
+      const s2 = $('s2');
+      const head2 = el(
+        'div',
+        'abs heading',
+        s2,
+        '<div class="km">រៀនគ្រប់គ្រាប់ចុច និងម្រាមដៃដែលត្រូវប្រើ</div><div class="en">Learn every key — and the right finger for it</div>',
+      );
+      head2.style.top = '70px';
+      const track = el('div', 'abs', s2);
+      track.id = 'track';
+      const targetEl = el('div', 'txt', track);
+      targetEl.id = 'target';
+      const typedEl = el('div', 'txt', track);
+      typedEl.id = 'typed';
+      const caret = el('div', '', track);
+      caret.id = 'caret';
+      const badge = el('div', 'abs', track, '✓ <span class="km">១០០%</span>');
+      badge.id = 'badge';
+      const kb = el('div', 'abs', s2);
+      kb.id = 'kb';
+      const legend = el('div', 'abs', s2);
+      legend.id = 'legend';
+
+      let FINGERS = {},
+        LAYOUT = {};
+      const FINGER_NAME = {
+        5: 'កូនដៃ',
+        4: 'ម្រាមនាង',
+        3: 'ម្រាមកណ្ដាល',
+        2: 'ម្រាមចង្អុល',
+        1: 'មេដៃ',
+      };
+      const U = 80,
+        GAP = 8;
+      const ROWS = [
+        [
+          ['Backquote'],
+          ['Digit1'],
+          ['Digit2'],
+          ['Digit3'],
+          ['Digit4'],
+          ['Digit5'],
+          ['Digit6'],
+          ['Digit7'],
+          ['Digit8'],
+          ['Digit9'],
+          ['Digit0'],
+          ['Minus'],
+          ['Equal'],
+          ['Backspace', 2, '⌫', 'R5'],
+        ],
+        [
+          ['Tab', 1.5, 'Tab', 'L5'],
+          ['KeyQ'],
+          ['KeyW'],
+          ['KeyE'],
+          ['KeyR'],
+          ['KeyT'],
+          ['KeyY'],
+          ['KeyU'],
+          ['KeyI'],
+          ['KeyO'],
+          ['KeyP'],
+          ['BracketLeft'],
+          ['BracketRight'],
+          ['Backslash', 1.5],
+        ],
+        [
+          ['CapsLock', 1.75, 'Caps', 'L5'],
+          ['KeyA'],
+          ['KeyS'],
+          ['KeyD'],
+          ['KeyF'],
+          ['KeyG'],
+          ['KeyH'],
+          ['KeyJ'],
+          ['KeyK'],
+          ['KeyL'],
+          ['Semicolon'],
+          ['Quote'],
+          ['Enter', 2.25, 'Enter', 'R5'],
+        ],
+        [
+          ['ShiftLeft', 2.25, 'Shift', 'L5'],
+          ['KeyZ'],
+          ['KeyX'],
+          ['KeyC'],
+          ['KeyV'],
+          ['KeyB'],
+          ['KeyN'],
+          ['KeyM'],
+          ['Comma'],
+          ['Period'],
+          ['Slash'],
+          ['ShiftRight', 2.75, 'Shift', 'R5'],
+        ],
+        [
+          ['CtrlL', 1.25, 'Ctrl'],
+          ['Win', 1.25, '⊞'],
+          ['Alt', 1.25, 'Alt'],
+          ['Space', 6.25, '', 'L1'],
+          ['AltGr', 1.25, 'AltGr'],
+          ['Fn', 1.25, 'Fn'],
+          ['Menu', 1.25, '☰'],
+          ['CtrlR', 1.25, 'Ctrl'],
+        ],
+      ];
+      const KEYS = {};
+      const KB_W = 15 * U + 14 * GAP;
+      function buildKeyboard() {
+        kb.style.marginLeft = -KB_W / 2 + 'px';
+        ROWS.forEach((row, ri) => {
+          let x = 0;
+          for (const [code, w = 1, label, fingerOverride] of row) {
+            const width = w * U + (w - 1) * GAP;
+            const k = el('div', 'key', kb);
+            k.style.left = x + 'px';
+            k.style.top = ri * (U + GAP) + 'px';
+            k.style.width = width + 'px';
+            k.style.height = U + 'px';
+            const def = LAYOUT[code];
+            const finger = fingerOverride || (def && def.finger);
+            // same colour for the same finger on both hands, so the legend is true for every key
+            const color = finger ? FINGERS['L' + finger[1]] : '#9fb1ad';
+            const fill = el('div', 'fill', k);
+            fill.style.background = color;
+            el('div', 'bar', k).style.background = color;
+            if (def && code !== 'Space') {
+              el(
+                'div',
+                'shift',
+                k,
+                def.shift && def.shift !== ' ' ? def.shift : '',
+              );
+              el('div', 'base', k, def.base === '​' ? '' : def.base);
+            } else {
+              el(
+                'div',
+                'lbl',
+                k,
+                code === 'Space' ? 'ដកឃ្លា' : label || '',
+              ).classList.toggle('km', code === 'Space');
+            }
+            KEYS[code] = {
+              e: k,
+              fill,
+              x: x + width / 2,
+              y: ri * (U + GAP),
+              color,
+              finger,
+            };
+            x += width + GAP;
+          }
+        });
+        const order = [
+          ['L5', 5],
+          ['L4', 4],
+          ['L3', 3],
+          ['L2', 2],
+          ['L1', 1],
+        ];
+        for (const [f, n] of order)
+          el(
+            'div',
+            'km',
+            legend,
+            `<i style="background:${FINGERS[f]}"></i>${FINGER_NAME[n]}`,
+          );
+      }
+      const tag = el('div', 'tag km', s2);
+
+      // The word typed on screen and the NiDA keys that produce it (planned from content/layouts/nida.json).
+      const PHRASE = 'សួស្ដី កម្ពុជា';
+      let STROKES = [];
+      const TYPE_START = 5.25,
+        TYPE_STEP = 0.3;
+      function planStrokes() {
+        const rev = new Map();
+        for (const [code, v] of Object.entries(LAYOUT))
+          for (const layer of ['base', 'shift'])
+            if (v[layer] && !rev.has(v[layer]))
+              rev.set(v[layer], [code, layer]);
+        const chars = [...PHRASE];
+        let i = 0,
+          n = 0;
+        while (i < chars.length) {
+          for (let len = 3; len > 0; len--) {
+            const s = chars.slice(i, i + len).join('');
+            if (rev.has(s)) {
+              const [code, layer] = rev.get(s);
+              i += len;
+              STROKES.push({
+                code,
+                layer,
+                upto: i,
+                t: TYPE_START + n * TYPE_STEP,
+              });
+              n++;
+              break;
+            }
+            if (len === 1) throw new Error('cannot plan ' + chars[i]);
+          }
+        }
+        for (const st of STROKES)
+          cue(st.t, 'key', { shift: st.layer === 'shift' });
+      }
+      const DONE_T = () => STROKES[STROKES.length - 1].t + 0.45;
+      function shiftFor(code) {
+        const f = LAYOUT[code] && LAYOUT[code].finger;
+        return f && f.startsWith('L') ? 'ShiftRight' : 'ShiftLeft';
+      }
+      function renderS2(t) {
+        if (t < 3.9 || t > 11.6) {
+          s2.style.display = 'none';
+          return;
+        }
+        s2.style.display = '';
+        const out = E.inOut(p(t, 10.85, 11.5));
+        set(head2, {
+          y: lerp(-40, 0, E.out(p(t, 4.1, 4.7))) - out * 60,
+          o: E.out(p(t, 4.1, 4.7)) * (1 - out),
+        });
+        const kIn = E.out(p(t, 3.95, 4.85));
+        set(kb, { y: lerp(620, 0, kIn) + out * 640, o: 1 });
+        set(legend, {
+          y: lerp(200, 0, E.out(p(t, 4.4, 5.1))) + out * 300,
+          o: E.out(p(t, 4.4, 5.1)) * (1 - out),
+        });
+        set(track, {
+          s: lerp(0.85, 1, E.back(p(t, 4.5, 5.1))),
+          o: E.out(p(t, 4.5, 5.0)) * (1 - out),
+        });
+        // typed text
+        let upto = 0,
+          cur = null;
+        for (const st of STROKES)
+          if (t >= st.t) {
+            upto = st.upto;
+            cur = st;
+          }
+        const chars = [...PHRASE];
+        targetEl.textContent = PHRASE;
+        typedEl.textContent = chars.slice(0, upto).join('');
+        caret.style.left = 60 + typedEl.offsetWidth + 4 + 'px';
+        caret.style.opacity =
+          t < DONE_T()
+            ? Math.floor(t * 2.4) % 2 === 0 || (cur && t - cur.t < 0.25)
+              ? 1
+              : 0.15
+            : 0;
+        const bq = E.back(p(t, DONE_T(), DONE_T() + 0.5));
+        set(badge, { s: bq, o: clamp(bq * 2) });
+        // key presses
+        const next = STROKES.find((st) => st.t > t);
+        for (const code in KEYS) {
+          const k = KEYS[code];
+          let press = 0;
+          for (const st of STROKES) {
+            const hit =
+              st.code === code ||
+              (st.layer === 'shift' && shiftFor(st.code) === code);
+            if (hit && t >= st.t - 0.02 && t < st.t + 0.4)
+              press = Math.max(press, 1 - p(t, st.t + 0.08, st.t + 0.4));
+          }
+          // soft hint glow on the next key before it is pressed
+          let hint = 0;
+          if (next && next.code === code && t > next.t - TYPE_STEP + 0.12)
+            hint = 0.35;
+          k.fill.style.opacity = Math.max(press, hint);
+          k.e.classList.toggle('pressed', press > 0.5);
+          const dip =
+            press > 0
+              ? 1 -
+                0.08 * Math.sin(Math.PI * clamp((t - (cur ? cur.t : 0)) / 0.18))
+              : 1;
+          k.e.style.transform = `scale(${press > 0 ? dip : 1})`;
+        }
+        // finger tag above the current key
+        if (cur && t < cur.t + 0.42 && t < DONE_T()) {
+          const k = KEYS[cur.code];
+          const n = +k.finger[1];
+          tag.innerHTML =
+            (k.finger[0] === 'L' ? 'ដៃឆ្វេង · ' : 'ដៃស្ដាំ · ') +
+            FINGER_NAME[n];
+          tag.style.background = k.color;
+          const q = E.back(p(t, cur.t, cur.t + 0.18));
+          const kbRect = { x: 960 - KB_W / 2, y: 470 };
+          tag.style.left = kbRect.x + k.x - tag.offsetWidth / 2 + 'px';
+          tag.style.top = kbRect.y + k.y - 58 + 'px';
+          tag.style.transform = `scale(${q})`;
+          tag.style.opacity = 1 - p(t, cur.t + 0.3, cur.t + 0.42);
+        } else tag.style.opacity = 0;
+      }
+
+      // ---------- scene 3: learning mode ----------
+      const s3 = $('s3');
+      const head3 = el(
+        'div',
+        'abs heading',
+        s3,
+        '<div><span class="pill km">រៀនវាយអក្សរ · Learning Mode</span></div><div class="km" style="margin-top:26px">មេរៀនតាមថ្នាក់ ជំហានម្ដងមួយៗ</div><div class="en">Step-by-step lessons for Grades 3, 4 and 5 — and beginners of any age</div>',
+      );
+      head3.style.top = '96px';
+      const line3 = el(
+        'div',
+        'abs',
+        s3,
+        '<svg width="1500" height="20"><line x1="0" y1="10" x2="1500" y2="10" stroke="#8bdbc2" stroke-width="6" stroke-dasharray="4 18" stroke-linecap="round"/></svg>',
+      );
+      line3.style.left = '210px';
+      line3.style.top = '680px';
+      const cards = [3, 4, 5].map((g, i) => {
+        const c = el(
+          'div',
+          'abs card',
+          s3,
+          `<div class="g km">ថ្នាក់ទី${toKm(g)} · Grade ${g}</div><div class="big km">${['ព្យញ្ជនៈ', 'ជើងអក្សរ', 'ប្រយោគ'][i]}</div><div class="sub en">${['Home row & first letters', 'Subscripts & short words', 'Sentences & paragraphs'][i]}</div><div class="stars">${STAR(0)}${STAR(0)}${STAR(0)}</div><div class="bar"><b></b></div>`,
+        );
+        c.style.left = 960 - 3 * 220 - 60 + i * 500 + 'px';
+        c.style.top = '470px';
+        return {
+          c,
+          stars: [...c.querySelectorAll('.stars svg')],
+          bar: c.querySelector('.bar b'),
+        };
+      });
+      cue(11.2, 'whoosh', { len: 0.8 });
+      cards.forEach((_, i) => cue(11.75 + i * 0.18, 'swish'));
+      const STAR_T = (ci, si) => 12.75 + ci * 0.55 + si * 0.14;
+      cards.forEach((_, ci) =>
+        [0, 1, 2].forEach((si) =>
+          cue(STAR_T(ci, si), 'pop', { pitch: 1 + si * 0.25 + ci * 0.12 }),
+        ),
+      );
+      cue(14.6, 'chime');
+      function renderS3(t) {
+        if (t < 11.0 || t > 16.8) {
+          s3.style.display = 'none';
+          return;
+        }
+        s3.style.display = '';
+        const out = E.inOut(p(t, 16.0, 16.65));
+        set(head3, {
+          y: lerp(-50, 0, E.out(p(t, 11.2, 11.8))) - out * 80,
+          o: E.out(p(t, 11.2, 11.8)) * (1 - out),
+        });
+        const lq = E.out(p(t, 12.1, 13.2));
+        line3.style.clipPath = `inset(0 ${100 - lq * 100}% 0 0)`;
+        line3.style.opacity = 1 - out;
+        cards.forEach((c, ci) => {
+          const q = E.back(p(t, 11.75 + ci * 0.18, 12.45 + ci * 0.18));
+          set(c.c, {
+            y: lerp(380, 0, q) + out * 500,
+            r: lerp(6, 0, q),
+            o: clamp(q * 2) * (1 - out * 0.4),
+          });
+          c.stars.forEach((s, si) => {
+            const st = STAR_T(ci, si),
+              sq = E.back(p(t, st, st + 0.35));
+            const on = t >= st;
+            if (s.dataset.on !== String(on)) {
+              s.innerHTML = STAR(on).replace(/^<svg[^>]*>|<\/svg>$/g, '');
+              s.dataset.on = String(on);
+            }
+            s.style.transform = `scale(${on ? lerp(1.6, 1, sq) : 1}) rotate(${on ? lerp(-40, 0, sq) : 0}deg)`;
+          });
+          c.bar.style.width =
+            E.inOut(p(t, 12.6 + ci * 0.55, 13.5 + ci * 0.55)) * 100 + '%';
+        });
+      }
+
+      // ---------- scene 4: typing mode ----------
+      const s4 = $('s4');
+      const head4 = el(
+        'div',
+        'abs heading',
+        s4,
+        '<div><span class="pill km">ហាត់វាយអក្សរ · Typing Mode</span></div><div class="km" style="margin-top:26px">តេស្តល្បឿន អត្ថបទផ្ទាល់ខ្លួន និងវិភាគកំហុស</div><div class="en">Speed tests, your own text, and mistake analysis</div>',
+      );
+      head4.style.top = '96px';
+      const stats = [0, 1, 2].map((i) => {
+        const s = el('div', 'abs stat', s4);
+        s.style.left = 960 - 735 + i * 500 + 'px';
+        s.style.top = '480px';
+        return s;
+      });
+      const kpmNum = el('div', 'num', stats[0], '0');
+      el('div', 'unit en', stats[0], 'KPM');
+      el('div', 'label km', stats[0], 'គ្រាប់ចុច/នាទី');
+      const RING_R = 130,
+        RING_C = 2 * Math.PI * RING_R;
+      stats[1].insertAdjacentHTML(
+        'beforeend',
+        `<svg class="abs" style="left:85px;top:40px" width="300" height="300" viewBox="0 0 300 300"><circle cx="150" cy="150" r="${RING_R}" fill="none" stroke="rgba(247,248,250,.12)" stroke-width="26"/><circle id="accRing" cx="150" cy="150" r="${RING_R}" fill="none" stroke="#e9b94c" stroke-width="26" stroke-linecap="round" transform="rotate(-90 150 150)" stroke-dasharray="${RING_C}" stroke-dashoffset="${RING_C}"/></svg>`,
+      );
+      const accNum = el('div', 'num', stats[1], '0%');
+      accNum.style.fontSize = '84px';
+      accNum.style.top = '138px';
+      el('div', 'label km', stats[1], 'ភាពត្រឹមត្រូវ · Accuracy');
+      const HIST = [92, 118, 104, 131, 127, 149, 158, 151, 172, 186];
+      const pts = HIST.map((v, i) => [40 + i * 43, 300 - (v - 80) * 2.1]);
+      stats[2].insertAdjacentHTML(
+        'beforeend',
+        `<svg class="abs" style="left:0;top:20px" width="470" height="340"><polyline id="histLine" points="${pts.map((q) => q.join(',')).join(' ')}" fill="none" stroke="#8bdbc2" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>${pts.map((q, i) => `<circle class="hd" cx="${q[0]}" cy="${q[1]}" r="12" fill="#e9b94c"/>`).join('')}</svg>`,
+      );
+      el('div', 'label km', stats[2], 'ប្រវត្តិ · History');
+      cue(16.35, 'whoosh', { len: 0.8 });
+      [0, 1, 2].forEach((i) => cue(16.85 + i * 0.16, 'swish'));
+      for (let k = 0; k < 22; k++)
+        cue(17.3 + 1.4 * Math.pow(k / 22, 1.6), 'tick', {
+          pitch: 1 + k * 0.03,
+        });
+      cue(18.75, 'ding');
+      cue(17.9, 'riser', { len: 0.9 });
+      function renderS4(t) {
+        if (t < 16.2 || t > 21.9) {
+          s4.style.display = 'none';
+          return;
+        }
+        s4.style.display = '';
+        const out = E.inOut(p(t, 21.0, 21.65));
+        set(head4, {
+          y: lerp(-50, 0, E.out(p(t, 16.4, 17.0))) - out * 80,
+          o: E.out(p(t, 16.4, 17.0)) * (1 - out),
+        });
+        stats.forEach((s, i) => {
+          const q = E.back(p(t, 16.85 + i * 0.16, 17.5 + i * 0.16));
+          set(s, {
+            y: lerp(360, 0, q) + out * 520,
+            s: lerp(0.8, 1, q),
+            o: clamp(q * 2) * (1 - out * 0.4),
+          });
+        });
+        const kq = E.out(p(t, 17.3, 18.75));
+        kpmNum.textContent = toKm(Math.round(186 * kq));
+        const aq = E.out(p(t, 17.5, 19.0));
+        $('accRing').setAttribute(
+          'stroke-dashoffset',
+          RING_C * (1 - 0.98 * aq),
+        );
+        accNum.textContent = toKm(Math.round(98 * aq)) + '%';
+        const hl = $('histLine'),
+          L = 900;
+        hl.setAttribute('stroke-dasharray', L);
+        hl.setAttribute(
+          'stroke-dashoffset',
+          L * (1 - E.inOut(p(t, 17.6, 19.4))),
+        );
+        [...stats[2].querySelectorAll('.hd')].forEach((d, i) => {
+          const q = E.back(p(t, 17.6 + i * 0.18, 17.9 + i * 0.18));
+          d.setAttribute('r', 12 * q);
+        });
+        set(kpmNum, { s: 1 + 0.08 * Math.sin(Math.PI * p(t, 18.75, 19.1)) });
+      }
+
+      // ---------- scene 5: features ----------
+      const s5 = $('s5');
+      const head5 = el(
+        'div',
+        'abs heading',
+        s5,
+        '<div class="km">បង្កើតឡើងសម្រាប់ថ្នាក់រៀនកម្ពុជា</div><div class="en">Made for Cambodian classrooms</div>',
+      );
+      head5.style.top = '110px';
+      const ICON = {
+        offline:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M2 8.8a15 15 0 0 1 4.2-2.6M10.3 5.1A15 15 0 0 1 22 8.8M5 12.5a10 10 0 0 1 3.2-2M15.5 10.4A10 10 0 0 1 19 12.5M8.5 16.1a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1.2" fill="#fff"/><path d="M3 3l18 18"/></svg>',
+        user: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.2-4 4.2-6 8-6s6.8 2 8 6"/></svg>',
+        history:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg>',
+        pc: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/><path d="M9 10l2 2 4-4"/></svg>',
+      };
+      const FEATS = [
+        [
+          'offline',
+          'គ្មានអ៊ីនធឺណិតក៏ប្រើបាន',
+          '100% offline — no internet needed',
+        ],
+        ['user', 'មិនត្រូវការគណនី', 'No sign-in, no accounts'],
+        ['history', 'រក្សាទុកប្រវត្តិ', 'Every session saved in History'],
+        ['pc', 'លឿនលើកុំព្យូទ័រចាស់', 'Fast on old PCs · Windows 10 & 11'],
+      ];
+      const tiles = FEATS.map(([ic, km, en], i) => {
+        const d = el(
+          'div',
+          'abs tile',
+          s5,
+          `<div class="ico">${ICON[ic]}</div><div><div class="km">${km}</div><div class="en">${en}</div></div>`,
+        );
+        d.style.left = 960 - 790 + (i % 2) * 820 + 'px';
+        d.style.top = 420 + Math.floor(i / 2) * 250 + 'px';
+        return d;
+      });
+      cue(21.45, 'whoosh', { len: 0.7 });
+      FEATS.forEach((_, i) =>
+        cue(22.0 + i * 0.38, 'pop', { pitch: 0.9 + i * 0.12 }),
+      );
+      cue(23.6, 'chime');
+      function renderS5(t) {
+        if (t < 21.3 || t > 26.7) {
+          s5.style.display = 'none';
+          return;
+        }
+        s5.style.display = '';
+        const out = E.inOut(p(t, 25.85, 26.5));
+        set(head5, {
+          y: lerp(-50, 0, E.out(p(t, 21.5, 22.1))) - out * 80,
+          o: E.out(p(t, 21.5, 22.1)) * (1 - out),
+        });
+        tiles.forEach((d, i) => {
+          const q = E.back(p(t, 22.0 + i * 0.38, 22.55 + i * 0.38));
+          const ico = d.querySelector('.ico');
+          ico.style.transform = `rotate(${lerp(-90, 0, E.elastic(p(t, 22.1 + i * 0.38, 23.0 + i * 0.38)))}deg)`;
+          set(d, {
+            s: lerp(0.5, 1, q) * (1 - out * 0.3),
+            o: clamp(q * 2) * (1 - out),
+            y: out * 40,
+          });
+        });
+      }
+
+      // ---------- scene 6: end card ----------
+      const s6 = $('s6');
+      const endSparks = [];
+      for (let i = 0; i < 26; i++)
+        endSparks.push({
+          e: el('div', 'abs center spark', s6),
+          a: (i / 26) * Math.PI * 2 + rnd() * 0.2,
+          d: 260 + rnd() * 240,
+          s: 0.5 + rnd(),
+        });
+      const endRing = el('div', 'abs center', s6);
+      endRing.id = 'ring';
+      const endLogo = el('div', 'abs center', s6, LOGO);
+      endLogo.id = 'end-logo';
+      const endTitle = el('div', 'abs', s6, 'SvaType');
+      endTitle.id = 'end-title';
+      const endKm = el('div', 'abs km', s6, 'រៀន និងហាត់វាយអក្សរខ្មែរ');
+      endKm.id = 'end-km';
+      const chips = el(
+        'div',
+        'abs',
+        s6,
+        '<span class="km">គ្មានអ៊ីនធឺណិត · Offline</span><span class="km">មិនត្រូវការគណនី · No sign-in</span><span>Windows 10 / 11</span>',
+      );
+      chips.id = 'chips';
+      cue(26.35, 'impact');
+      cue(26.5, 'sparkle');
+      cue(26.9, 'shimmer');
+      function renderS6(t) {
+        if (t < 26.2) {
+          s6.style.display = 'none';
+          return;
+        }
+        s6.style.display = '';
+        const k = E.back(p(t, 26.3, 26.95));
+        set(endLogo, {
+          y: -170,
+          s: k,
+          r: lerp(20, 0, E.out(p(t, 26.3, 27.1))),
+          o: clamp(k * 3),
+        });
+        const rp = p(t, 26.4, 27.4);
+        set(endRing, {
+          y: -170,
+          s: lerp(1, 2.6, E.out(rp)),
+          o: (1 - rp) * (rp > 0 ? 0.9 : 0),
+        });
+        for (const sp of endSparks) {
+          const q = p(t, 26.45, 27.6),
+            d = sp.d * E.out(q);
+          set(sp.e, {
+            x: Math.cos(sp.a) * d,
+            y: -170 + Math.sin(sp.a) * d,
+            s: sp.s * (1 - q),
+            o: q > 0 && q < 1 ? 1 : 0,
+          });
+        }
+        const tq = E.out(p(t, 26.75, 27.35));
+        set(endTitle, { y: lerp(60, 0, tq), o: tq, s: lerp(0.9, 1, tq) });
+        const kq = E.out(p(t, 27.15, 27.75));
+        set(endKm, { y: lerp(40, 0, kq), o: kq });
+        const cq = E.back(p(t, 27.55, 28.2));
+        chips.style.transform = `translateX(-50%) translateY(${lerp(40, 0, cq)}px) scale(${lerp(0.8, 1, cq)})`;
+        chips.style.opacity = clamp(cq * 2);
+        // slow breathing of the logo while holding
+        if (t > 27.2)
+          set(endLogo, { y: -170 + Math.sin((t - 27.2) * 2) * 6, s: 1, o: 1 });
+      }
+
+      // ---------- master ----------
+      function renderAt(t) {
+        renderBg(t);
+        renderS1(t);
+        renderS2(t);
+        renderS3(t);
+        renderS4(t);
+        renderS5(t);
+        renderS6(t);
+        $('fade').style.opacity = Math.max(
+          1 - p(t, 0, 0.35),
+          E.in(p(t, 30.2, 31)),
+        );
+      }
+      window.renderAt = renderAt;
+      window.DURATION = DURATION;
+      window.FPS = FPS;
+      window.ready = (async () => {
+        const [layout, fingers] = await Promise.all([
+          fetch('/content/layouts/nida.json').then((r) => r.json()),
+          fetch('/content/fingers.json').then((r) => r.json()),
+        ]);
+        LAYOUT = layout.keys;
+        for (const f of fingers.fingers) FINGERS[f.id] = f.color;
+        buildKeyboard();
+        planStrokes();
+        cue(DONE_T(), 'ding');
+        cue(10.85, 'whoosh', { len: 0.6, gain: 0.5 });
+        cue(0, 'music');
+        CUES.sort((a, b) => a.t - b.t);
+        window.CUES = CUES;
+        await document.fonts.ready;
+        await Promise.all(
+          [...document.fonts].map((f) => f.load().catch(() => {})),
+        );
+        renderAt(0);
+        return true;
+      })();
+      // Live preview when opened directly: ?play
+      if (location.search.includes('play'))
+        window.ready.then(() => {
+          const t0 = performance.now();
+          const loop = () => {
+            renderAt(((performance.now() - t0) / 1000) % DURATION);
+            requestAnimationFrame(loop);
+          };
+          loop();
+        });
+    </script>
+  </body>
+</html>
