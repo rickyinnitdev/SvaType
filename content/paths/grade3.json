@@ -1,0 +1,66 @@
+{
+  "id": "grade3",
+  "title": {
+    "km": "ថ្នាក់ទី៣",
+    "en": "Grade 3"
+  },
+  "audience": "grade",
+  "units": [
+    {
+      "id": "grade3_u1",
+      "title": {
+        "km": "ជំហាន 1",
+        "en": "Unit 1"
+      },
+      "lessons": [
+        "sitting",
+        "kb_home_row",
+        "kb_home_left",
+        "kb_home_right",
+        "kb_left_top"
+      ]
+    },
+    {
+      "id": "grade3_u2",
+      "title": {
+        "km": "ជំហាន 2",
+        "en": "Unit 2"
+      },
+      "lessons": [
+        "kb_right_top",
+        "kb_left_bottom",
+        "kb_right_bottom",
+        "kb_index",
+        "kb_middle"
+      ]
+    },
+    {
+      "id": "grade3_u3",
+      "title": {
+        "km": "ជំហាន 3",
+        "en": "Unit 3"
+      },
+      "lessons": [
+        "kb_ring",
+        "kb_little",
+        "consonants_1",
+        "consonants_2",
+        "vowels_1"
+      ]
+    },
+    {
+      "id": "grade3_u4",
+      "title": {
+        "km": "ជំហាន 4",
+        "en": "Unit 4"
+      },
+      "lessons": [
+        "vowels_2",
+        "space",
+        "first_words",
+        "more_words",
+        "g3_accuracy"
+      ]
+    }
+  ]
+}

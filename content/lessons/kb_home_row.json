@@ -1,0 +1,38 @@
+{
+  "id": "kb_home_row",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "ស្គាល់ជួរកណ្ដាល",
+    "en": "Meet the home row"
+  },
+  "focus_keys": ["KeyF", "KeyJ", "KeyK"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "ដាក់ម្រាមដៃឆ្វេងលើ A S D F និងម្រាមដៃស្ដាំលើ J K L ;។ ប្រើម្រាមដៃតាមពណ៌ និងស្លាកណែនាំ ហើយត្រឡប់ទៅជួរកណ្ដាលវិញ។",
+        "en": "Rest left fingers on A S D F and right fingers on J K L ;. Follow the finger color and label, then return to the home row."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["KeyF", "KeyJ", "KeyK"]
+    },
+    {
+      "type": "find_key",
+      "items": ["ថ", "ក"],
+      "strict": true
+    },
+    {
+      "type": "type_chars",
+      "text": "ថកថក",
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "ថកថក",
+      "min_accuracy": 70
+    }
+  ]
+}

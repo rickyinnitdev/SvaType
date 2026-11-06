@@ -1,0 +1,38 @@
+{
+  "id": "g4_accuracy",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "ភាពត្រឹមត្រូវកម្រិតបន្ទាប់",
+    "en": "Your next accuracy challenge"
+  },
+  "focus_keys": ["KeyY", "KeyR", "KeyG", "KeyS"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "អង្គុយឱ្យស្រួល ដាក់ជើងលើដី និងសម្រាកស្មា។ ដាក់ម្រាមដៃលើជួរកណ្ដាល។ មើលគ្រាប់ចុចណែនាំ ហើយវាយយឺតៗដោយត្រឹមត្រូវ។",
+        "en": "Sit comfortably with feet on the floor and relaxed shoulders. Rest your fingers on the home row. Follow the highlighted key and practise slowly and accurately."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["KeyY", "KeyR", "KeyG", "KeyS"]
+    },
+    {
+      "type": "find_key",
+      "items": ["យ", "ើ", "ង", "រ"],
+      "strict": true
+    },
+    {
+      "type": "type_sentence",
+      "text": "យើង រៀន អក្សរ ខ្មែរ ។",
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "យើង រៀន អក្សរ ខ្មែរ ។",
+      "min_accuracy": 85
+    }
+  ]
+}

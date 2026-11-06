@@ -1,0 +1,38 @@
+{
+  "id": "sign_nikahit",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "សញ្ញា ំ",
+    "en": "Meet nikahit"
+  },
+  "focus_keys": ["KeyM", "Comma", "KeyA"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "អង្គុយឱ្យស្រួល ដាក់ជើងលើដី និងសម្រាកស្មា។ ដាក់ម្រាមដៃលើជួរកណ្ដាល។ មើលគ្រាប់ចុចណែនាំ ហើយវាយយឺតៗដោយត្រឹមត្រូវ។",
+        "en": "Sit comfortably with feet on the floor and relaxed shoulders. Rest your fingers on the home row. Follow the highlighted key and practise slowly and accurately."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["KeyM", "Comma", "KeyA"]
+    },
+    {
+      "type": "find_key",
+      "items": ["ខ", "្", "ញ", "ភ"],
+      "strict": true
+    },
+    {
+      "type": "type_words",
+      "items": ["ខ្ញុំ", "ភ្នំ", "ចាំ"],
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "ខ្ញុំ ភ្នំ ចាំ",
+      "min_accuracy": 85
+    }
+  ]
+}

@@ -19,6 +19,7 @@ pub struct Content {
     pub root: PathBuf,
     banks: Mutex<HashMap<u8, Bank>>,
     layouts: Mutex<HashMap<String, PreparedLayout>>,
+    json: Mutex<HashMap<String, serde_json::Value>>,
 }
 impl Content {
     pub fn new(root: PathBuf) -> Self {
@@ -26,7 +27,32 @@ impl Content {
             root,
             banks: Mutex::new(HashMap::new()),
             layouts: Mutex::new(HashMap::new()),
+            json: Mutex::new(HashMap::new()),
         }
+    }
+    pub fn json(&self, folder: &str, id: &str) -> AppResult<serde_json::Value> {
+        if id.is_empty()
+            || id.len() > 100
+            || !id.chars().all(|c| c.is_ascii_alphanumeric() || c == '_')
+        {
+            return Err(AppError::invalid("invalid_content_id"));
+        }
+        let key = if folder.is_empty() {
+            format!("{id}.json")
+        } else {
+            format!("{folder}/{id}.json")
+        };
+        let mut cache = self
+            .json
+            .lock()
+            .map_err(|_| AppError::invalid("content_locked"))?;
+        if let Some(value) = cache.get(&key) {
+            return Ok(value.clone());
+        }
+        let value: serde_json::Value =
+            serde_json::from_str(&std::fs::read_to_string(self.root.join(&key))?)?;
+        cache.insert(key, value.clone());
+        Ok(value)
     }
     pub fn bank(&self, level: u8) -> AppResult<Bank> {
         if !(1..=5).contains(&level) {

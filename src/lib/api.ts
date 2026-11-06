@@ -85,6 +85,8 @@ export interface LessonProgress {
 export interface Progress {
   lessons: LessonProgress[];
   words_learned: number;
+  best_kpm: number;
+  recent_duration_ms: number;
   duration_ms: number;
 }
 export interface CustomText {
@@ -100,7 +102,85 @@ export interface Analysis {
   slowest: Summary['per_key'];
   heat: Record<string, number>;
 }
+export interface Localized {
+  km: string;
+  en: string;
+}
+export interface LessonIndex {
+  id: string;
+  title: Localized;
+  reviewed: boolean;
+}
+export interface PathIndex {
+  id: string;
+  title: Localized;
+  audience: 'grade' | 'skill';
+}
+export interface ContentIndex {
+  paths: PathIndex[];
+  lessons: LessonIndex[];
+}
+export interface LearningPath extends PathIndex {
+  units: { id: string; title: Localized; lessons: string[] }[];
+}
+export interface LessonStep {
+  type:
+    | 'explain'
+    | 'demo'
+    | 'find_key'
+    | 'type_chars'
+    | 'type_clusters'
+    | 'type_words'
+    | 'type_sentence'
+    | 'challenge';
+  text?: string | Localized;
+  items?: string[];
+  keys?: string[];
+  strict?: boolean;
+  policy?: 'stop_on_error' | 'flow';
+  min_accuracy?: number;
+  image?: string;
+}
+export interface Lesson extends LessonIndex {
+  version: number;
+  focus_keys: string[];
+  steps: LessonStep[];
+  bonus_kpm?: number;
+}
+export interface LessonDraft {
+  profile_id: number;
+  lesson_id: string;
+  uid: string;
+  step: number;
+  summaries: Summary[];
+  texts: string[];
+  started_at: number;
+  layout_id: string;
+}
 export const api = {
+  contentIndex: () => invoke<ContentIndex>('content_index'),
+  path: (id: string) => invoke<LearningPath>('content_path', { id }),
+  lesson: (id: string) => invoke<Lesson>('content_lesson', { id }),
+  lessonDraft: (profile: number, lesson: string) =>
+    invoke<LessonDraft | null>('lesson_draft_get', { profile, lesson }),
+  saveLessonDraft: (draft: LessonDraft) =>
+    invoke<void>('lesson_progress_set', { draft }),
+  saveLessonSession: (
+    profile: number,
+    lesson: string,
+    extra: Summary | null = null,
+    text: string | null = null,
+    completed = false,
+  ) =>
+    invoke<number | null>('lesson_session_save', {
+      profile,
+      lesson,
+      extra,
+      text,
+      completed,
+    }),
+  learningOptions: (profile: number) =>
+    invoke<{ unlock_all: boolean }>('learning_options', { profile }),
   customTexts: (profile: number) =>
     invoke<CustomText[]>('custom_text_list', { profile }),
   saveCustomText: (

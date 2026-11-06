@@ -56,3 +56,51 @@ pub fn accuracy(correct: u32, keystrokes: u32) -> f64 {
         correct as f64 * 100.0 / keystrokes as f64
     }
 }
+pub fn aggregate(summaries: &[SessionSummary]) -> SessionSummary {
+    let mut total = SessionSummary::default();
+    for summary in summaries {
+        total.duration_ms = total.duration_ms.saturating_add(summary.duration_ms);
+        total.active_ms = total.active_ms.saturating_add(summary.active_ms);
+        total.keystrokes = total.keystrokes.saturating_add(summary.keystrokes);
+        total.correct = total.correct.saturating_add(summary.correct);
+        total.errors = total.errors.saturating_add(summary.errors);
+        total.backspaces = total.backspaces.saturating_add(summary.backspaces);
+        total.clusters_done = total.clusters_done.saturating_add(summary.clusters_done);
+        for key in &summary.per_key {
+            if let Some(current) = total
+                .per_key
+                .iter_mut()
+                .find(|k| k.code == key.code && k.layer == key.layer)
+            {
+                let hits = current.hits.saturating_add(key.hits);
+                current.avg_hes_ms = if hits == 0 {
+                    0.0
+                } else {
+                    (current.avg_hes_ms * current.hits as f64 + key.avg_hes_ms * key.hits as f64)
+                        / hits as f64
+                };
+                current.hits = hits;
+                current.errors = current.errors.saturating_add(key.errors);
+            } else {
+                total.per_key.push(key.clone());
+            }
+        }
+        for confusion in &summary.confusions {
+            if let Some(current) = total
+                .confusions
+                .iter_mut()
+                .find(|c| c.expected == confusion.expected && c.typed == confusion.typed)
+            {
+                current.count = current.count.saturating_add(confusion.count);
+            } else {
+                total.confusions.push(confusion.clone());
+            }
+        }
+    }
+    total.kpm = rate(total.correct, total.active_ms);
+    total.wpm_equivalent = total.kpm / 5.0;
+    total.accuracy = accuracy(total.correct, total.keystrokes);
+    total.stars = stars(total.accuracy);
+    total.clusters_per_minute = rate(total.clusters_done, total.active_ms);
+    total
+}

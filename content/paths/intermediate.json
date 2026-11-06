@@ -1,0 +1,66 @@
+{
+  "id": "intermediate",
+  "title": {
+    "km": "កម្រិតមធ្យម",
+    "en": "Intermediate"
+  },
+  "audience": "skill",
+  "units": [
+    {
+      "id": "intermediate_u1",
+      "title": {
+        "km": "ជំហាន 1",
+        "en": "Unit 1"
+      },
+      "lessons": [
+        "punctuation",
+        "zwsp_awareness",
+        "sentences_1",
+        "sentences_2",
+        "sentences_3"
+      ]
+    },
+    {
+      "id": "intermediate_u2",
+      "title": {
+        "km": "ជំហាន 2",
+        "en": "Unit 2"
+      },
+      "lessons": [
+        "sentences_4",
+        "paragraphs_1",
+        "paragraphs_2",
+        "paragraphs_3",
+        "paragraphs_4"
+      ]
+    },
+    {
+      "id": "intermediate_u3",
+      "title": {
+        "km": "ជំហាន 3",
+        "en": "Unit 3"
+      },
+      "lessons": [
+        "numbers_dates",
+        "sentence_edit",
+        "common_clusters",
+        "long_words",
+        "mixed_text"
+      ]
+    },
+    {
+      "id": "intermediate_u4",
+      "title": {
+        "km": "ជំហាន 4",
+        "en": "Unit 4"
+      },
+      "lessons": [
+        "g5_accuracy_1",
+        "g5_accuracy_2",
+        "g5_accuracy_3",
+        "g5_review",
+        "g5_finish"
+      ]
+    }
+  ]
+}

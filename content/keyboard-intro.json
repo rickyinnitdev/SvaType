@@ -1,0 +1,83 @@
+{
+  "reviewed": false,
+  "rows": [
+    {
+      "id": "home",
+      "title": {
+        "km": "ជួរកណ្ដាល",
+        "en": "Home row"
+      },
+      "codes": [
+        "KeyA",
+        "KeyS",
+        "KeyD",
+        "KeyF",
+        "KeyJ",
+        "KeyK",
+        "KeyL",
+        "Semicolon"
+      ]
+    },
+    {
+      "id": "top",
+      "title": {
+        "km": "ជួរលើ",
+        "en": "Top row"
+      },
+      "codes": [
+        "KeyQ",
+        "KeyW",
+        "KeyE",
+        "KeyR",
+        "KeyT",
+        "KeyY",
+        "KeyU",
+        "KeyI",
+        "KeyO",
+        "KeyP"
+      ]
+    },
+    {
+      "id": "bottom",
+      "title": {
+        "km": "ជួរក្រោម",
+        "en": "Bottom row"
+      },
+      "codes": [
+        "KeyZ",
+        "KeyX",
+        "KeyC",
+        "KeyV",
+        "KeyB",
+        "KeyN",
+        "KeyM",
+        "Comma",
+        "Period",
+        "Slash"
+      ]
+    },
+    {
+      "id": "numbers",
+      "title": {
+        "km": "លេខ",
+        "en": "Number row"
+      },
+      "codes": [
+        "Digit1",
+        "Digit2",
+        "Digit3",
+        "Digit4",
+        "Digit5",
+        "Digit6",
+        "Digit7",
+        "Digit8",
+        "Digit9",
+        "Digit0"
+      ]
+    }
+  ],
+  "instruction": {
+    "km": "ដាក់ម្រាមដៃលើជួរកណ្ដាល ហើយវាយគ្រាប់ចុចដែលបានគូសបង្ហាញ។ កម្មវិធីណែនាំម្រាមដៃ ប៉ុន្តែមិនអាចមើលឃើញម្រាមដៃរបស់អ្នកបានទេ។",
+    "en": "Rest your fingers on the home row and press the highlighted key. This guide teaches finger placement; it cannot see which finger you use."
+  }
+}

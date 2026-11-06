@@ -1,0 +1,38 @@
+{
+  "id": "school_words",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "ពាក្យនៅសាលា",
+    "en": "Words at school"
+  },
+  "focus_keys": ["KeyS", "KeyK", "KeyJ", "BracketLeft"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "អង្គុយឱ្យស្រួល ដាក់ជើងលើដី និងសម្រាកស្មា។ ដាក់ម្រាមដៃលើជួរកណ្ដាល។ មើលគ្រាប់ចុចណែនាំ ហើយវាយយឺតៗដោយត្រឹមត្រូវ។",
+        "en": "Sit comfortably with feet on the floor and relaxed shoulders. Rest your fingers on the home row. Follow the highlighted key and practise slowly and accurately."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["KeyS", "KeyK", "KeyJ", "BracketLeft"]
+    },
+    {
+      "type": "find_key",
+      "items": ["ស", "ល", "គ", "្"],
+      "strict": true
+    },
+    {
+      "type": "type_sentence",
+      "text": "សាលា គ្រូ សិស្ស សៀវភៅ",
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "សាលា គ្រូ សិស្ស សៀវភៅ",
+      "min_accuracy": 85
+    }
+  ]
+}

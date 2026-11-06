@@ -5,10 +5,11 @@ use std::{
     sync::Mutex,
     time::{SystemTime, UNIX_EPOCH},
 };
-pub const VERSION: i64 = 2;
-pub const MIGRATIONS: [&str; 2] = [
+pub const VERSION: i64 = 3;
+pub const MIGRATIONS: [&str; 3] = [
     include_str!("migrations/001.sql"),
     include_str!("migrations/002.sql"),
+    include_str!("migrations/003.sql"),
 ];
 pub struct Database {
     pub connection: Mutex<Connection>,
@@ -144,9 +145,12 @@ pub fn validate_file(path: &Path) -> AppResult<()> {
         ("custom_texts","id,profile_id,title,body,created_at"),
         ("settings","key,value"),
     ] {conn.prepare(&format!("SELECT {columns} FROM {table} LIMIT 0"))?;}
-    if version(&conn)? == 2 {
+    if version(&conn)? >= 2 {
         conn.prepare("SELECT uid,target_text,clusters_done FROM sessions LIMIT 0")?;
         conn.prepare("SELECT uid,profile_id,payload,updated_at FROM session_checkpoints LIMIT 0")?;
+    }
+    if version(&conn)? >= 3 {
+        conn.prepare("SELECT profile_id,lesson_id,uid,step,summaries_json,texts_json,started_at FROM lesson_drafts LIMIT 0")?;
     }
     if conn.prepare("PRAGMA foreign_key_check")?.exists([])? {
         return Err(AppError::invalid("invalid_backup"));

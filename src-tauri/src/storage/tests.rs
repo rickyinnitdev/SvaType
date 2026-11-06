@@ -475,3 +475,109 @@ fn analysis_reads_recent_aggregate_data() {
     assert_eq!(result.weak[0].code, "KeyK");
     assert_eq!(result.confusions[0].count, 5);
 }
+
+#[test]
+fn lesson_draft_resume_and_partial_upgrade() {
+    let mut c = memory();
+    let p = profiles::create(&c, input("Learner")).unwrap();
+    let mut d = super::learning::Draft {
+        profile_id: p.id,
+        lesson_id: "test_lesson".into(),
+        uid: "lesson-attempt".into(),
+        step: 2,
+        summaries: vec![],
+        texts: vec![],
+        started_at: 1000,
+        layout_id: "nida".into(),
+    };
+    super::learning::set(&mut c, &d).unwrap();
+    assert_eq!(
+        super::learning::get(&c, p.id, "test_lesson")
+            .unwrap()
+            .unwrap()
+            .step,
+        2
+    );
+    let mut partial = sample(p.id, &d.uid);
+    partial.completed = false;
+    partial.bookmark_step = Some(2);
+    let id = sessions::save(&mut c, &partial).unwrap();
+    assert_eq!(
+        c.query_row("SELECT attempts FROM lesson_progress", [], |r| r
+            .get::<_, i64>(0))
+            .unwrap(),
+        1
+    );
+    d.step = 3;
+    d.summaries.push(partial.summary.clone());
+    super::learning::set(&mut c, &d).unwrap();
+    let mut complete = partial.clone();
+    complete.completed = true;
+    complete.bookmark_step = None;
+    complete.summary = super::learning::summary(&d, Some(partial.summary));
+    assert_eq!(sessions::save(&mut c, &complete).unwrap(), id);
+    assert!(super::learning::get(&c, p.id, "test_lesson")
+        .unwrap()
+        .is_none());
+    assert_eq!(
+        c.query_row("SELECT attempts,best_stars FROM lesson_progress", [], |r| {
+            Ok((r.get::<_, i64>(0)?, r.get::<_, i64>(1)?))
+        })
+        .unwrap(),
+        (1, 3)
+    );
+    assert_eq!(
+        sessions::history(&c, p.id, &HistoryFilter::default(), 0)
+            .unwrap()
+            .total,
+        1
+    );
+    assert_eq!(sessions::detail(&c, id).unwrap().summary.keystrokes, 200);
+}
+#[test]
+fn every_lesson_target_plans_and_paths_resolve() {
+    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .unwrap();
+    let content = crate::content::Content::new(root.join("content"));
+    let index = content.json("", "index").unwrap();
+    let mut types = std::collections::HashSet::new();
+    for lesson in index["lessons"].as_array().unwrap() {
+        let id = lesson["id"].as_str().unwrap();
+        let value = content.json("lessons", id).unwrap();
+        assert_eq!(value["reviewed"], false);
+        for step in value["steps"].as_array().unwrap() {
+            let kind = step["type"].as_str().unwrap();
+            types.insert(kind.to_owned());
+            if ["explain", "demo"].contains(&kind) {
+                continue;
+            }
+            let text = step["text"].as_str().map(str::to_owned).unwrap_or_else(|| {
+                step["items"]
+                    .as_array()
+                    .unwrap()
+                    .iter()
+                    .map(|v| v.as_str().unwrap())
+                    .collect::<Vec<_>>()
+                    .join(if kind == "find_key" { "" } else { " " })
+            });
+            for layout in ["nida", "khmer_legacy"] {
+                khmer_core::plan::validate_target(&text, &content.layout(layout).unwrap())
+                    .unwrap_or_else(|e| panic!("{id} {layout} {text}: {e:?}"));
+            }
+        }
+    }
+    assert_eq!(types.len(), 8);
+    for path in index["paths"].as_array().unwrap() {
+        let value = content.json("paths", path["id"].as_str().unwrap()).unwrap();
+        for unit in value["units"].as_array().unwrap() {
+            for id in unit["lessons"].as_array().unwrap() {
+                assert!(index["lessons"]
+                    .as_array()
+                    .unwrap()
+                    .iter()
+                    .any(|l| l["id"] == *id));
+            }
+        }
+    }
+}

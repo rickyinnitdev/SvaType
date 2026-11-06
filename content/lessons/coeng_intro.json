@@ -1,0 +1,38 @@
+{
+  "id": "coeng_intro",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "សញ្ញាជើង ្",
+    "en": "Meet coeng"
+  },
+  "focus_keys": ["KeyJ", "KeyK", "KeyX", "KeyM", "KeyN"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "សញ្ញា ្ ប្រែព្យញ្ជនៈបន្ទាប់ទៅជាជើង។ វាយ ្ រួចវាយព្យញ្ជនៈ។ ជើង រ អាចវាយមុន ឬក្រោយជើងមួយទៀតបាន។",
+        "en": "Coeng ្ turns the following consonant into a subscript. Type coeng, then the consonant. Coeng-ro is accepted before or after another subscript."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["KeyJ", "KeyK", "KeyX", "KeyM", "KeyN"]
+    },
+    {
+      "type": "find_key",
+      "items": ["ក", "្", "ខ", "ម"],
+      "strict": true
+    },
+    {
+      "type": "type_clusters",
+      "items": ["ក្ក", "ក្ខ", "ក្ម", "ក្ន"],
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "ក្ក ក្ខ ក្ម ក្ន",
+      "min_accuracy": 85
+    }
+  ]
+}

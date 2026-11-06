@@ -1,0 +1,38 @@
+{
+  "id": "shift_right",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "Shift និងដៃស្ដាំ",
+    "en": "Shift with both hands"
+  },
+  "focus_keys": ["KeyJ", "KeyN", "KeyL", "KeyF", "KeyD"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "ចុច Shift ដោយដៃម្ខាង និងចុចគ្រាប់អក្សរដោយដៃម្ខាងទៀត។ លែង Shift នៅពេលត្រឡប់ទៅអក្សរធម្មតា។",
+        "en": "Hold Shift with the opposite hand from the letter key. Release Shift before returning to the base layer."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["KeyJ", "KeyN", "KeyL", "KeyF", "KeyD"]
+    },
+    {
+      "type": "find_key",
+      "items": ["ញ", "ណ", "ឡ", "ធ"],
+      "strict": true
+    },
+    {
+      "type": "type_words",
+      "items": ["ញ", "ណ", "ឡ", "ធ", "ឌ"],
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "ញ ណ ឡ ធ ឌ",
+      "min_accuracy": 85
+    }
+  ]
+}

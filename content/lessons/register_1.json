@@ -1,0 +1,38 @@
+{
+  "id": "register_1",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "សញ្ញា ៉",
+    "en": "Meet muusikatoan"
+  },
+  "focus_keys": ["Quote", "KeyJ", "KeyM"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "សញ្ញា ៉ និង ៊ ស្ថិតនៅលើព្យញ្ជនៈ។ វាយព្យញ្ជនៈ សញ្ញា រួចស្រៈ។ មើលរូបអក្សរនៅក្នុងពាក្យ។",
+        "en": "The register shifters ៉ and ៊ belong above the consonant. Type the consonant, shifter, then vowel, and compare the result in the word."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["Quote", "KeyJ", "KeyM"]
+    },
+    {
+      "type": "find_key",
+      "items": ["ញ", "៉", "ម", "ែ"],
+      "strict": true
+    },
+    {
+      "type": "type_words",
+      "items": ["ញ៉ាំ", "ម៉ែ"],
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "ញ៉ាំ ម៉ែ",
+      "min_accuracy": 85
+    }
+  ]
+}

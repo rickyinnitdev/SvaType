@@ -1,0 +1,39 @@
+{
+  "id": "advanced_5",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "ហាត់កម្រិតខ្ពស់ 5",
+    "en": "Advanced practice 5"
+  },
+  "focus_keys": ["KeyR", "KeyJ", "Space"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "អានអត្ថបទមុនចាប់ផ្តើម។ ហាត់ជាក្រុមអក្សរ និងរក្សាភាពត្រឹមត្រូវ មុនពេលបង្កើនល្បឿន។ ផ្កាយផ្អែកលើភាពត្រឹមត្រូវ។",
+        "en": "Read before starting. Work cluster by cluster and keep your accuracy before increasing speed. Stars depend on accuracy."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["KeyR", "KeyJ", "Space"]
+    },
+    {
+      "type": "find_key",
+      "items": ["ខ", "្", "ញ", "ស"],
+      "strict": true
+    },
+    {
+      "type": "type_sentence",
+      "text": "ខ្ញុំ ស្រឡាញ់ គ្រួសារ ខ្ញុំ ។ យើង ដាំ ដើមឈើ នៅ មុខ ផ្ទះ ។ ខ្ញុំ ហាត់ វាយ អក្សរ ខ្មែរ ជា រៀងរាល់ ថ្ងៃ ។",
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "ខ្ញុំ ស្រឡាញ់ គ្រួសារ ខ្ញុំ ។ យើង ដាំ ដើមឈើ នៅ មុខ ផ្ទះ ។ ខ្ញុំ ហាត់ វាយ អក្សរ ខ្មែរ ជា រៀងរាល់ ថ្ងៃ ។",
+      "min_accuracy": 85
+    }
+  ],
+  "bonus_kpm": 80
+}

@@ -3,10 +3,37 @@
   import { router, navigate } from '../lib/router.svelte';
   import { messages, digits, locale } from '../lib/i18n/index.svelte';
   import { formatDate } from '../lib/i18n/format';
+  import { learning } from '../lib/stores/learning.svelte';
+  import { user } from '../lib/stores/profile.svelte';
   import { retryActivity } from '../lib/stores/activity.svelte';
   let t = $derived(messages());
   let detail = $state<HistoryDetail | null>(null);
   let failed = $state(false);
+  let nextId = $state<string | null>(null);
+  $effect(() => {
+    const current = detail;
+    if (
+      !current ||
+      current.session.kind !== 'lesson' ||
+      !current.session.completed ||
+      !current.summary.stars
+    )
+      return;
+    let alive = true;
+    void api
+      .path(user.profile?.path_id ?? 'beginner')
+      .then((path) => {
+        const ids = path.units.flatMap((unit) => unit.lessons);
+        const at = ids.indexOf(current.session.ref_id ?? '');
+        if (alive) nextId = at >= 0 ? (ids[at + 1] ?? null) : null;
+      })
+      .catch(() => {
+        if (alive) failed = true;
+      });
+    return () => {
+      alive = false;
+    };
+  });
   $effect(() => {
     const id = router.resultId;
     if (id === null) return;
@@ -36,9 +63,23 @@
       <h1>{detail?.session.completed ? t.finished : t.sessionDetail}</h1>
     </div>
     <div class="row">
+      {#if nextId}<button
+          class="primary"
+          onclick={() => {
+            learning.lessonId = nextId!;
+            user.resume = null;
+            void navigate('lesson');
+          }}>{t.nextLesson}</button
+        >{/if}
       <button onclick={() => navigate('history')}>{t.history}</button><button
         class="primary"
         onclick={() => {
+          if (detail?.session.kind === 'lesson' && detail.session.ref_id) {
+            learning.lessonId = detail.session.ref_id;
+            user.resume = null;
+            void navigate('lesson');
+            return;
+          }
           if (detail) retryActivity(detail);
           void navigate('practice');
         }}>{t.retry}</button

@@ -21,6 +21,7 @@
   import { user } from '../lib/stores/profile.svelte';
   import { preferences } from '../lib/stores/settings.svelte';
   import { activity } from '../lib/stores/activity.svelte';
+  import Hands from '../lib/components/Hands.svelte';
   import { navigate, registerLeaveGuard } from '../lib/router.svelte';
   let {
     sandbox = false,
@@ -29,6 +30,13 @@
     refId = activity.refId,
     free = activity.free,
     durationMs = activity.durationMs,
+    strict = activity.strict,
+    findKey = activity.findKey,
+    layoutOverride,
+    sessionUid,
+    bookmarkStep = null,
+    oncomplete,
+    onpause,
   }: {
     sandbox?: boolean;
     target?: string;
@@ -36,6 +44,13 @@
     refId?: string | null;
     free?: boolean;
     durationMs?: number;
+    strict?: boolean;
+    findKey?: boolean;
+    layoutOverride?: string;
+    sessionUid?: string;
+    bookmarkStep?: number | null;
+    oncomplete?: (summary: Summary, text: string) => Promise<void>;
+    onpause?: (summary: Summary, text: string) => Promise<void>;
   } = $props();
   const restored = untrack(() => (sandbox ? null : user.resume));
   const owner = user.profile ? { ...user.profile } : null;
@@ -58,7 +73,8 @@
     freeDisplay?.scrollTo({ top: 1_000_000 });
   });
   let practiceText = $derived(restored?.session.target_text ?? target);
-  let uid = restored?.session.uid ?? crypto.randomUUID();
+  let uid =
+    restored?.session.uid ?? untrack(() => sessionUid) ?? crypto.randomUUID();
   let startedAt = restored?.session.started_at ?? 0;
   let wallStart: number | null = restored ? performance.now() : null;
   let saved = false;
@@ -77,7 +93,10 @@
         : 'stop_on_error',
   );
   let layoutId = $state(
-    restored?.session.layout_id ?? owner?.layout_id ?? 'nida',
+    restored?.session.layout_id ??
+      untrack(() => layoutOverride) ??
+      owner?.layout_id ??
+      'nida',
   );
   let revision = $state(0);
   let layout = $derived((layoutId === 'nida' ? nida : legacy) as LayoutData);
@@ -99,7 +118,7 @@
         practiceText,
         layout,
         policy,
-        false,
+        strict,
         restored?.engine,
         isFree,
       );
@@ -163,7 +182,8 @@
       }
       running = false;
       summary = session.summary();
-      if (!sandbox) void finish();
+      if (oncomplete) void completeStep();
+      else if (!sandbox) void finish();
     }
   }
   onMount(() => {
@@ -182,6 +202,12 @@
     window.addEventListener('blur', pause);
     const leave = registerLeaveGuard(async () => {
       if (sandbox || saved || !session || wallStart === null) return;
+      if (onpause) {
+        session.observeTime();
+        await onpause(session.summary(), practiceText);
+        await checkpoint();
+        return;
+      }
       const input = snapshot(false);
       if (input.summary.duration_ms > 20_000) {
         await save(false);
@@ -216,7 +242,7 @@
       completed,
       target_text: isFree ? session!.typed() : practiceText,
       summary: stats,
-      bookmark_step: null,
+      bookmark_step: bookmarkStep,
     };
   }
   async function checkpoint() {
@@ -258,6 +284,21 @@
       }
     } catch {
       saveError = true;
+    }
+  }
+  async function completeStep() {
+    if (!oncomplete || !session) return;
+    saving = true;
+    saveError = false;
+    saved = true;
+    session.observeTime();
+    try {
+      await oncomplete(session.summary(), practiceText);
+    } catch {
+      saved = false;
+      saveError = true;
+    } finally {
+      saving = false;
     }
   }
   $effect(() => {
@@ -318,13 +359,17 @@
       <label
         >{t.layout}<select
           bind:value={layoutId}
-          disabled={running || (!sandbox && hasStarted)}
+          disabled={!!oncomplete || running || (!sandbox && hasStarted)}
           ><option value="nida">{nida.name.km}</option><option
             value="khmer_legacy">{legacy.name.km}</option
           ></select
         ></label
       >
-      {#if !isFree}<div class="policy" role="group" aria-label={t.mode}>
+      {#if !isFree && !oncomplete}<div
+          class="policy"
+          role="group"
+          aria-label={t.mode}
+        >
           <button
             class:selected={policy === 'stop_on_error'}
             onclick={() => (policy = 'stop_on_error')}
@@ -358,6 +403,7 @@
           disabled={saving}
           onclick={() => {
             if (sandbox) revision++;
+            else if (oncomplete) void completeStep();
             else void finish();
           }}>{saving ? t.saving : t.retry}</button
         >
@@ -369,12 +415,25 @@
           >{#if !isFree}<span>{digits(cursor)} / {digits(clusters.length)}</span
             >{/if}
         </div>
-        {#if isFree}<p class="muted free-hint" title={t.freeLimit}>
-            {t.freeHint}
-          </p>
-          <div class="free-text" bind:this={freeDisplay} aria-live="off">
-            {freeText || ' '}
-          </div>{:else}<TextTrack {clusters} {cursor} {errors} />{/if}
+        <div class="work-area">
+          <div class="text-area">
+            {#if isFree}<p class="muted free-hint" title={t.freeLimit}>
+                {t.freeHint}
+              </p>
+              <div class="free-text" bind:this={freeDisplay} aria-live="off">
+                {freeText || ' '}
+              </div>{:else if findKey}<div
+                class="find-key"
+                aria-label={t.findKey}
+              >
+                {expected?.produces}
+              </div>{:else}<TextTrack {clusters} {cursor} {errors} />{/if}
+          </div>
+          {#if !isFree && preferences.show_hands && owner?.preferred_mode === 'learning'}<Hands
+              active={expected?.finger ?? null}
+              compact={true}
+            />{/if}
+        </div>
         {#if liveStats && liveSummary}<p>
             {t.kpm}: {digits(liveSummary.kpm.toFixed(1))} · {t.accuracy}: {digits(
               liveSummary.accuracy.toFixed(1),
@@ -445,6 +504,22 @@
 </div>
 
 <style>
+  .work-area {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .text-area {
+    flex: 1;
+    min-width: 0;
+  }
+  .find-key {
+    font-size: 64px;
+    line-height: 1.9;
+    text-align: center;
+    min-height: 130px;
+    color: var(--primary);
+  }
   .free-text {
     font-size: var(--font-target);
     line-height: 1.9;

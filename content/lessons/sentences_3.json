@@ -1,0 +1,38 @@
+{
+  "id": "sentences_3",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "ពាក្យក្នុងប្រយោគ",
+    "en": "Words in sentences"
+  },
+  "focus_keys": ["KeyK", "KeyS", "KeyR", "Space"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "អានអត្ថបទមុនចាប់ផ្តើម។ ហាត់ជាក្រុមអក្សរ និងរក្សាភាពត្រឹមត្រូវ មុនពេលបង្កើនល្បឿន។ ផ្កាយផ្អែកលើភាពត្រឹមត្រូវ។",
+        "en": "Read before starting. Work cluster by cluster and keep your accuracy before increasing speed. Stars depend on accuracy."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["KeyK", "KeyS", "KeyR", "Space"]
+    },
+    {
+      "type": "find_key",
+      "items": ["ខ", "្", "ញ", "ស"],
+      "strict": true
+    },
+    {
+      "type": "type_sentence",
+      "text": "ខ្ញុំ ស្រឡាញ់ គ្រួសារ ខ្ញុំ ។",
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "ខ្ញុំ ស្រឡាញ់ គ្រួសារ ខ្ញុំ ។",
+      "min_accuracy": 85
+    }
+  ]
+}

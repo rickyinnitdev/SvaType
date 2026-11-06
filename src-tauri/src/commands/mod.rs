@@ -14,6 +14,100 @@ use std::sync::Arc;
 use tauri::State;
 type DbState<'a> = State<'a, Arc<Database>>;
 type ContentState<'a> = State<'a, Arc<crate::content::Content>>;
+async fn content_file(
+    content: ContentState<'_>,
+    folder: &'static str,
+    id: String,
+) -> AppResult<Value> {
+    let content = Arc::clone(content.inner());
+    tauri::async_runtime::spawn_blocking(move || content.json(folder, &id))
+        .await
+        .map_err(|_| AppError::invalid("content_worker_failed"))?
+}
+#[tauri::command]
+pub async fn content_index(content: ContentState<'_>) -> AppResult<Value> {
+    content_file(content, "", "index".into()).await
+}
+#[tauri::command]
+pub async fn content_path(content: ContentState<'_>, id: String) -> AppResult<Value> {
+    content_file(content, "paths", id).await
+}
+#[tauri::command]
+pub async fn content_lesson(content: ContentState<'_>, id: String) -> AppResult<Value> {
+    content_file(content, "lessons", id).await
+}
+#[tauri::command]
+pub async fn lesson_draft_get(
+    db: DbState<'_>,
+    profile: i64,
+    lesson: String,
+) -> AppResult<Option<crate::storage::learning::Draft>> {
+    query(db, move |conn| {
+        crate::storage::learning::get(conn, profile, &lesson)
+    })
+    .await
+}
+#[tauri::command]
+pub async fn lesson_progress_set(
+    db: DbState<'_>,
+    content: ContentState<'_>,
+    draft: crate::storage::learning::Draft,
+) -> AppResult<()> {
+    let content = Arc::clone(content.inner());
+    query(db, move |conn| {
+        let lesson = content.json("lessons", &draft.lesson_id)?;
+        let count = lesson["steps"]
+            .as_array()
+            .ok_or_else(|| AppError::invalid("invalid_lesson"))?
+            .len();
+        if draft.step as usize > count {
+            return Err(AppError::invalid("invalid_bookmark"));
+        }
+        crate::storage::learning::set(conn, &draft)
+    })
+    .await
+}
+#[tauri::command]
+pub async fn lesson_session_save(
+    db: DbState<'_>,
+    profile: i64,
+    lesson: String,
+    extra: Option<khmer_core::metrics::SessionSummary>,
+    text: Option<String>,
+    completed: bool,
+) -> AppResult<Option<i64>> {
+    query(db, move |conn| {
+        let draft = crate::storage::learning::get(conn, profile, &lesson)?
+            .ok_or_else(|| AppError::invalid("missing_lesson_draft"))?;
+        let summary = crate::storage::learning::summary(&draft, extra);
+        if !completed && summary.duration_ms <= 20_000 {
+            return Ok(None);
+        }
+        let mut texts = draft.texts;
+        if let Some(text) = text {
+            texts.push(text);
+        }
+        let input = SessionInput {
+            uid: draft.uid,
+            profile_id: profile,
+            mode: "learning".into(),
+            kind: "lesson".into(),
+            ref_id: Some(lesson),
+            layout_id: draft.layout_id,
+            started_at: draft.started_at,
+            completed,
+            target_text: texts.join(" "),
+            summary,
+            bookmark_step: if completed { None } else { Some(draft.step) },
+        };
+        Ok(Some(sessions::save(conn, &input)?))
+    })
+    .await
+}
+#[tauri::command]
+pub async fn learning_options(db: DbState<'_>, profile: i64) -> AppResult<Value> {
+    query(db,move|conn|Ok(json!({"unlock_all":db::setting(conn,"teacher_unlock_all")?.as_deref()==Some("true")||db::setting(conn,&format!("p:{profile}:unlock_all"))?.as_deref()==Some("true")}))).await
+}
 #[tauri::command]
 pub async fn custom_text_list(
     db: DbState<'_>,
@@ -238,7 +332,9 @@ pub async fn progress_get(db: DbState<'_>, profile: i64) -> AppResult<Value> {
     let lessons:Vec<Value>=conn.prepare("SELECT lesson_id,best_stars,best_accuracy,attempts,completed_at,bookmark_step FROM lesson_progress WHERE profile_id=?1")?.query_map([profile],|r|Ok(json!({"lesson_id":r.get::<_,String>(0)?,"best_stars":r.get::<_,u8>(1)?,"best_accuracy":r.get::<_,f64>(2)?,"attempts":r.get::<_,u32>(3)?,"completed_at":r.get::<_,Option<i64>>(4)?,"bookmark_step":r.get::<_,Option<u32>>(5)?})))?.collect::<Result<_,_>>()?;
     let words:u32=conn.query_row("SELECT COUNT(*) FROM words_learned WHERE profile_id=?1",[profile],|r|r.get(0))?;
     let time:i64=conn.query_row("SELECT COALESCE(SUM(duration_ms),0) FROM sessions WHERE profile_id=?1",[profile],|r|r.get(0))?;
-    Ok(json!({"lessons":lessons,"words_learned":words,"duration_ms":time}))
+    let best:f64=conn.query_row("SELECT COALESCE(MAX(kpm),0) FROM sessions WHERE profile_id=?1 AND completed=1",[profile],|r|r.get(0))?;
+    let today:i64=conn.query_row("SELECT COALESCE(SUM(duration_ms),0) FROM sessions WHERE profile_id=?1 AND started_at>=?2",rusqlite::params![profile,db::now()-86_400_000],|r|r.get(0))?;
+    Ok(json!({"lessons":lessons,"words_learned":words,"duration_ms":time,"best_kpm":best,"recent_duration_ms":today}))
 }).await
 }
 #[tauri::command]

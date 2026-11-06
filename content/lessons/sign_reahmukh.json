@@ -1,0 +1,38 @@
+{
+  "id": "sign_reahmukh",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "សញ្ញា ះ",
+    "en": "Meet reahmukh"
+  },
+  "focus_keys": ["KeyH", "Comma", "KeyV"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "អង្គុយឱ្យស្រួល ដាក់ជើងលើដី និងសម្រាកស្មា។ ដាក់ម្រាមដៃលើជួរកណ្ដាល។ មើលគ្រាប់ចុចណែនាំ ហើយវាយយឺតៗដោយត្រឹមត្រូវ។",
+        "en": "Sit comfortably with feet on the floor and relaxed shoulders. Rest your fingers on the home row. Follow the highlighted key and practise slowly and accurately."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["KeyH", "Comma", "KeyV"]
+    },
+    {
+      "type": "find_key",
+      "items": ["ផ", "្", "ទ", "ស"],
+      "strict": true
+    },
+    {
+      "type": "type_words",
+      "items": ["ផ្ទះ", "សេះ", "ចុះ"],
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "ផ្ទះ សេះ ចុះ",
+      "min_accuracy": 85
+    }
+  ]
+}

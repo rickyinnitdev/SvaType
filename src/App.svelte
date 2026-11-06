@@ -28,6 +28,10 @@
     custom: () => import('./screens/Custom.svelte'),
     random: () => import('./screens/Random.svelte'),
     analysis: () => import('./screens/Analysis.svelte'),
+    path: () => import('./screens/PathMap.svelte'),
+    lesson: () => import('./screens/LessonPlayer.svelte'),
+    intro: () => import('./screens/KeyboardIntro.svelte'),
+    progress: () => import('./screens/Progress.svelte'),
   };
   $effect(() => {
     if (!user.ready || sandbox) return;

@@ -1,0 +1,38 @@
+{
+  "id": "multipart_vowels",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "ស្រៈចម្រុះ",
+    "en": "Vowel combinations"
+  },
+  "focus_keys": ["Comma", "Semicolon", "KeyV", "KeyA"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "វាយព្យញ្ជនៈមុន រួចវាយស្រៈ។ ស្រៈអាចបង្ហាញនៅខាងលើ ខាងក្រោម ឬជុំវិញព្យញ្ជនៈ។ អនុវត្តតាមគ្រាប់ចុចណែនាំ។",
+        "en": "Type the consonant first, then its vowel. A vowel may appear above, below or around the consonant. Follow the keyboard guide."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["Comma", "Semicolon", "KeyV", "KeyA"]
+    },
+    {
+      "type": "find_key",
+      "items": ["ក", "ោ", "េ"],
+      "strict": true
+    },
+    {
+      "type": "type_words",
+      "items": ["កុំ", "កោះ", "កេះ", "កាំ"],
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "កុំ កោះ កេះ កាំ",
+      "min_accuracy": 85
+    }
+  ]
+}

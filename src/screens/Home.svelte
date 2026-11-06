@@ -3,6 +3,8 @@
   import { user } from '../lib/stores/profile.svelte';
   import { messages, digits } from '../lib/i18n/index.svelte';
   import { navigate } from '../lib/router.svelte';
+  import LearningHome from './LearningHome.svelte';
+  import { learning } from '../lib/stores/learning.svelte';
   import Avatar from '../lib/components/Avatar.svelte';
   let t = $derived(messages());
   let progress = $state<Progress | null>(null);
@@ -35,7 +37,10 @@
   });
   function practice(checkpoint: Checkpoint | null = null) {
     user.resume = checkpoint;
-    void navigate('practice');
+    if (checkpoint?.session.kind === 'lesson' && checkpoint.session.ref_id) {
+      learning.lessonId = checkpoint.session.ref_id;
+      void navigate('lesson');
+    } else void navigate('practice');
   }
 </script>
 
@@ -70,15 +75,7 @@
           <h2>{t[title]}</h2>
           <p class="muted">{t[description]}</p></button
         >{/each}
-    </div>{:else}<div class="welcome panel">
-      <div>
-        <h2>{t.practiceDescription}</h2>
-        <p class="muted">{t.switchLater}</p>
-      </div>
-      <button class="primary" onclick={() => practice()}
-        >{t.practice} <span aria-hidden="true">→</span></button
-      >
-    </div>{/if}
+    </div>{:else}<LearningHome />{/if}
   <div class="tiles">
     {#each [[t.totalTime, digits(Math.round((progress?.duration_ms ?? 0) / 60000)), t.minutes], [t.lessonsDone, digits(progress?.lessons.filter((l) => l.completed_at !== null).length ?? 0), ''], [t.wordsLearned, digits(progress?.words_learned ?? 0), '']] as [label, value, unit] (label)}<div
         class="panel"
@@ -121,21 +118,6 @@
   }
   .typing-card p {
     font-size: 16px;
-  }
-  .welcome {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 32px;
-    min-height: 200px;
-    background: var(--surface-soft);
-  }
-  .welcome h2 {
-    max-width: 540px;
-    font-size: 28px;
-  }
-  .welcome button {
-    white-space: nowrap;
   }
   .tiles {
     display: grid;

@@ -1,0 +1,654 @@
+{
+  "paths": [
+    {
+      "id": "grade3",
+      "title": {
+        "km": "ថ្នាក់ទី៣",
+        "en": "Grade 3"
+      },
+      "audience": "grade"
+    },
+    {
+      "id": "grade4",
+      "title": {
+        "km": "ថ្នាក់ទី៤",
+        "en": "Grade 4"
+      },
+      "audience": "grade"
+    },
+    {
+      "id": "grade5",
+      "title": {
+        "km": "ថ្នាក់ទី៥",
+        "en": "Grade 5"
+      },
+      "audience": "grade"
+    },
+    {
+      "id": "beginner",
+      "title": {
+        "km": "អ្នកចាប់ផ្តើម",
+        "en": "Beginner"
+      },
+      "audience": "skill"
+    },
+    {
+      "id": "elementary",
+      "title": {
+        "km": "កម្រិតបឋម",
+        "en": "Elementary"
+      },
+      "audience": "skill"
+    },
+    {
+      "id": "intermediate",
+      "title": {
+        "km": "កម្រិតមធ្យម",
+        "en": "Intermediate"
+      },
+      "audience": "skill"
+    },
+    {
+      "id": "advanced",
+      "title": {
+        "km": "កម្រិតខ្ពស់",
+        "en": "Advanced"
+      },
+      "audience": "skill"
+    }
+  ],
+  "lessons": [
+    {
+      "id": "sitting",
+      "title": {
+        "km": "ឥរិយាបថអង្គុយ",
+        "en": "Sit comfortably"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "kb_home_row",
+      "title": {
+        "km": "ស្គាល់ជួរកណ្ដាល",
+        "en": "Meet the home row"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "kb_home_left",
+      "title": {
+        "km": "ដៃឆ្វេងនៅជួរកណ្ដាល",
+        "en": "Left hand home row"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "kb_home_right",
+      "title": {
+        "km": "ដៃស្ដាំនៅជួរកណ្ដាល",
+        "en": "Right hand home row"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "kb_left_top",
+      "title": {
+        "km": "ជួរលើខាងឆ្វេង",
+        "en": "Left top row"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "kb_right_top",
+      "title": {
+        "km": "ជួរលើខាងស្ដាំ",
+        "en": "Right top row"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "kb_left_bottom",
+      "title": {
+        "km": "ជួរក្រោមខាងឆ្វេង",
+        "en": "Left bottom row"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "kb_right_bottom",
+      "title": {
+        "km": "ជួរក្រោមខាងស្ដាំ",
+        "en": "Right bottom row"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "kb_index",
+      "title": {
+        "km": "ម្រាមចង្អុល",
+        "en": "Index fingers reach"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "kb_middle",
+      "title": {
+        "km": "ម្រាមកណ្ដាល",
+        "en": "Middle fingers"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "kb_ring",
+      "title": {
+        "km": "ម្រាមនាង",
+        "en": "Ring fingers"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "kb_little",
+      "title": {
+        "km": "ម្រាមកូន",
+        "en": "Little fingers"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "consonants_1",
+      "title": {
+        "km": "ព្យញ្ជនៈដំបូង",
+        "en": "First consonants"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "consonants_2",
+      "title": {
+        "km": "ព្យញ្ជនៈបន្ថែម",
+        "en": "More consonants"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "vowels_1",
+      "title": {
+        "km": "ស្រៈ ា ិ ី ុ ូ",
+        "en": "First vowel keys"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "vowels_2",
+      "title": {
+        "km": "ស្រៈ េ ែ ៃ ោ ៅ",
+        "en": "More vowel keys"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "space",
+      "title": {
+        "km": "ដកឃ្លា",
+        "en": "Make a space"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "first_words",
+      "title": {
+        "km": "ពាក្យខ្លីៗ",
+        "en": "Your first words"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "more_words",
+      "title": {
+        "km": "ហាត់ពាក្យបន្ថែម",
+        "en": "Practise short words"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "g3_accuracy",
+      "title": {
+        "km": "បញ្ចប់ជំហានដំបូង",
+        "en": "Your first accuracy challenge"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "shift_left",
+      "title": {
+        "km": "Shift ខាងឆ្វេង",
+        "en": "Meet Shift"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "shift_right",
+      "title": {
+        "km": "Shift និងដៃស្ដាំ",
+        "en": "Shift with both hands"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "shift_words",
+      "title": {
+        "km": "ពាក្យប្រើ Shift",
+        "en": "Words with Shift"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "coeng_intro",
+      "title": {
+        "km": "សញ្ញាជើង ្",
+        "en": "Meet coeng"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "coeng_words",
+      "title": {
+        "km": "ពាក្យមានជើង",
+        "en": "Words with subscripts"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "coeng_two",
+      "title": {
+        "km": "ជើងពីរ",
+        "en": "Two subscripts"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "coeng_ro",
+      "title": {
+        "km": "ជើង រ",
+        "en": "Meet coeng-ro"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "coeng_ro_order",
+      "title": {
+        "km": "លំដាប់ជើង រ",
+        "en": "Coeng-ro order"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "independent_1",
+      "title": {
+        "km": "ស្រៈពេញតួ",
+        "en": "Independent vowels"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "independent_2",
+      "title": {
+        "km": "ពាក្យស្រៈពេញតួ",
+        "en": "Independent vowels in words"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "sign_bantoc",
+      "title": {
+        "km": "សញ្ញា ់",
+        "en": "Meet bantoc"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "sign_nikahit",
+      "title": {
+        "km": "សញ្ញា ំ",
+        "en": "Meet nikahit"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "sign_reahmukh",
+      "title": {
+        "km": "សញ្ញា ះ",
+        "en": "Meet reahmukh"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "sign_yuukaleapintu",
+      "title": {
+        "km": "សញ្ញា ៈ",
+        "en": "Meet yuukaleapintu"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "register_1",
+      "title": {
+        "km": "សញ្ញា ៉",
+        "en": "Meet muusikatoan"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "register_2",
+      "title": {
+        "km": "សញ្ញា ៊",
+        "en": "Meet triisap"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "multipart_vowels",
+      "title": {
+        "km": "ស្រៈចម្រុះ",
+        "en": "Vowel combinations"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "khmer_digits",
+      "title": {
+        "km": "លេខខ្មែរ",
+        "en": "Khmer digits"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "school_words",
+      "title": {
+        "km": "ពាក្យនៅសាលា",
+        "en": "Words at school"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "family_words",
+      "title": {
+        "km": "ពាក្យគ្រួសារ",
+        "en": "Family words"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "g4_sentence",
+      "title": {
+        "km": "ប្រយោគដំបូង",
+        "en": "Your first sentence"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "g4_accuracy",
+      "title": {
+        "km": "ភាពត្រឹមត្រូវកម្រិតបន្ទាប់",
+        "en": "Your next accuracy challenge"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "punctuation",
+      "title": {
+        "km": "វណ្ណយុត្តិ",
+        "en": "Punctuation"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "zwsp_awareness",
+      "title": {
+        "km": "ការបំបែកពាក្យ",
+        "en": "Invisible word breaks"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "sentences_1",
+      "title": {
+        "km": "ប្រយោគខ្លី",
+        "en": "Short sentences"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "sentences_2",
+      "title": {
+        "km": "ប្រយោគច្បាស់លាស់",
+        "en": "Clear sentences"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "sentences_3",
+      "title": {
+        "km": "ពាក្យក្នុងប្រយោគ",
+        "en": "Words in sentences"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "sentences_4",
+      "title": {
+        "km": "ប្រយោគពីរ",
+        "en": "Two sentences"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "paragraphs_1",
+      "title": {
+        "km": "កថាខណ្ឌដំបូង",
+        "en": "Your first paragraph"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "paragraphs_2",
+      "title": {
+        "km": "អានមុនវាយ",
+        "en": "Read before you type"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "paragraphs_3",
+      "title": {
+        "km": "រក្សាចង្វាក់",
+        "en": "Find your rhythm"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "paragraphs_4",
+      "title": {
+        "km": "ហាត់ដោយស្ងប់",
+        "en": "Calm practice"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "numbers_dates",
+      "title": {
+        "km": "លេខ និងកាលបរិច្ឆេទ",
+        "en": "Numbers and dates"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "sentence_edit",
+      "title": {
+        "km": "ពិនិត្យ និងកែតម្រូវ",
+        "en": "Review and correct"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "common_clusters",
+      "title": {
+        "km": "ក្រុមអក្សរដែលជួបញឹកញាប់",
+        "en": "Common clusters"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "long_words",
+      "title": {
+        "km": "ពាក្យវែង",
+        "en": "Longer words"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "mixed_text",
+      "title": {
+        "km": "អត្ថបទចម្រុះ",
+        "en": "Mixed text"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "g5_accuracy_1",
+      "title": {
+        "km": "ភាពត្រឹមត្រូវ ១",
+        "en": "Accuracy challenge 1"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "g5_accuracy_2",
+      "title": {
+        "km": "ភាពត្រឹមត្រូវ ២",
+        "en": "Accuracy challenge 2"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "g5_accuracy_3",
+      "title": {
+        "km": "ភាពត្រឹមត្រូវ ៣",
+        "en": "Accuracy challenge 3"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "g5_review",
+      "title": {
+        "km": "រំលឹកឡើងវិញ",
+        "en": "Review your skills"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "g5_finish",
+      "title": {
+        "km": "ដំណើរបន្ទាប់របស់អ្នក",
+        "en": "Your next chapter"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "advanced_1",
+      "title": {
+        "km": "ហាត់កម្រិតខ្ពស់ 1",
+        "en": "Advanced practice 1"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "advanced_2",
+      "title": {
+        "km": "ហាត់កម្រិតខ្ពស់ 2",
+        "en": "Advanced practice 2"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "advanced_3",
+      "title": {
+        "km": "ហាត់កម្រិតខ្ពស់ 3",
+        "en": "Advanced practice 3"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "advanced_4",
+      "title": {
+        "km": "ហាត់កម្រិតខ្ពស់ 4",
+        "en": "Advanced practice 4"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "advanced_5",
+      "title": {
+        "km": "ហាត់កម្រិតខ្ពស់ 5",
+        "en": "Advanced practice 5"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "advanced_6",
+      "title": {
+        "km": "ហាត់កម្រិតខ្ពស់ 6",
+        "en": "Advanced practice 6"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "advanced_7",
+      "title": {
+        "km": "ហាត់កម្រិតខ្ពស់ 7",
+        "en": "Advanced practice 7"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "advanced_8",
+      "title": {
+        "km": "ហាត់កម្រិតខ្ពស់ 8",
+        "en": "Advanced practice 8"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "advanced_9",
+      "title": {
+        "km": "ហាត់កម្រិតខ្ពស់ 9",
+        "en": "Advanced practice 9"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "advanced_10",
+      "title": {
+        "km": "ហាត់កម្រិតខ្ពស់ 10",
+        "en": "Advanced practice 10"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "advanced_11",
+      "title": {
+        "km": "ហាត់កម្រិតខ្ពស់ 11",
+        "en": "Advanced practice 11"
+      },
+      "reviewed": false
+    },
+    {
+      "id": "advanced_12",
+      "title": {
+        "km": "ហាត់កម្រិតខ្ពស់ 12",
+        "en": "Advanced practice 12"
+      },
+      "reviewed": false
+    }
+  ]
+}

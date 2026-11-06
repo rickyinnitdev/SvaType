@@ -1,0 +1,38 @@
+{
+  "id": "long_words",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "ពាក្យវែង",
+    "en": "Longer words"
+  },
+  "focus_keys": ["KeyK", "KeyS", "KeyR", "Space"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "អានអត្ថបទមុនចាប់ផ្តើម។ ហាត់ជាក្រុមអក្សរ និងរក្សាភាពត្រឹមត្រូវ មុនពេលបង្កើនល្បឿន។ ផ្កាយផ្អែកលើភាពត្រឹមត្រូវ។",
+        "en": "Read before starting. Work cluster by cluster and keep your accuracy before increasing speed. Stars depend on accuracy."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["KeyK", "KeyS", "KeyR", "Space"]
+    },
+    {
+      "type": "find_key",
+      "items": ["ម", "ន", "ច", "ប"],
+      "strict": true
+    },
+    {
+      "type": "type_sentence",
+      "text": "មុន ចាប់ផ្តើម សរសេរ យើង គួរ រៀបចំ កន្លែង អង្គុយ ឱ្យ មាន ផាសុកភាព ។",
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "មុន ចាប់ផ្តើម សរសេរ យើង គួរ រៀបចំ កន្លែង អង្គុយ ឱ្យ មាន ផាសុកភាព ។",
+      "min_accuracy": 85
+    }
+  ]
+}

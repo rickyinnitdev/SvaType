@@ -132,18 +132,27 @@ pub fn save(conn: &mut Connection, input: &SessionInput) -> AppResult<i64> {
         return Err(AppError::invalid("short_abandoned_session"));
     }
     let tx = conn.transaction()?;
-    if let Some((id, profile_id)) = tx
+    let existing = tx
         .query_row(
-            "SELECT id,profile_id FROM sessions WHERE uid=?1",
+            "SELECT id,profile_id,completed,keystrokes FROM sessions WHERE uid=?1",
             [&input.uid],
-            |r| Ok((r.get::<_, i64>(0)?, r.get::<_, i64>(1)?)),
+            |r| {
+                Ok((
+                    r.get::<_, i64>(0)?,
+                    r.get::<_, i64>(1)?,
+                    r.get::<_, bool>(2)?,
+                    r.get::<_, u32>(3)?,
+                ))
+            },
         )
-        .optional()?
-    {
+        .optional()?;
+    if let Some((id, profile_id, completed, hits)) = existing {
         if profile_id != input.profile_id {
             return Err(AppError::invalid("duplicate_session_uid"));
         }
-        return Ok(id);
+        if completed || (!input.completed && input.summary.keystrokes < hits) {
+            return Ok(id);
+        }
     }
     let s = &input.summary;
     let sample: String = input.target_text.chars().take(500).collect();
@@ -152,8 +161,12 @@ pub fn save(conn: &mut Connection, input: &SessionInput) -> AppResult<i64> {
     } else {
         None
     };
-    tx.execute("INSERT INTO sessions(profile_id,mode,kind,ref_id,layout_id,started_at,duration_ms,active_ms,keystrokes,correct,errors,backspaces,kpm,accuracy,stars,completed,text_sample,uid,target_text,clusters_done) VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13,?14,?15,?16,?17,?18,?19,?20)",params![input.profile_id,input.mode,input.kind,input.ref_id,input.layout_id,input.started_at,s.duration_ms as i64,s.active_ms as i64,s.keystrokes,s.correct,s.errors,s.backspaces,s.kpm,s.accuracy,stars,input.completed,sample,input.uid,input.target_text,s.clusters_done])?;
-    let id = tx.last_insert_rowid();
+    tx.execute("INSERT INTO sessions(profile_id,mode,kind,ref_id,layout_id,started_at,duration_ms,active_ms,keystrokes,correct,errors,backspaces,kpm,accuracy,stars,completed,text_sample,uid,target_text,clusters_done) VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13,?14,?15,?16,?17,?18,?19,?20) ON CONFLICT(uid) DO UPDATE SET duration_ms=excluded.duration_ms,active_ms=excluded.active_ms,keystrokes=excluded.keystrokes,correct=excluded.correct,errors=excluded.errors,backspaces=excluded.backspaces,kpm=excluded.kpm,accuracy=excluded.accuracy,stars=excluded.stars,completed=excluded.completed,text_sample=excluded.text_sample,target_text=excluded.target_text,clusters_done=excluded.clusters_done",params![input.profile_id,input.mode,input.kind,input.ref_id,input.layout_id,input.started_at,s.duration_ms as i64,s.active_ms as i64,s.keystrokes,s.correct,s.errors,s.backspaces,s.kpm,s.accuracy,stars,input.completed,sample,input.uid,input.target_text,s.clusters_done])?;
+    let id = tx.query_row("SELECT id FROM sessions WHERE uid=?1", [&input.uid], |r| {
+        r.get::<_, i64>(0)
+    })?;
+    tx.execute("DELETE FROM session_keys WHERE session_id=?1", [id])?;
+    tx.execute("DELETE FROM session_confusions WHERE session_id=?1", [id])?;
     for k in &s.per_key {
         tx.execute("INSERT INTO session_keys(session_id,key_code,layer,hits,errors,avg_hes_ms) VALUES(?1,?2,?3,?4,?5,?6)",params![id,k.code,serde_json::to_string(&k.layer)?.trim_matches('"'),k.hits,k.errors,k.avg_hes_ms])?;
     }
@@ -165,7 +178,7 @@ pub fn save(conn: &mut Connection, input: &SessionInput) -> AppResult<i64> {
     }
     if input.kind == "lesson" {
         if let Some(lesson) = &input.ref_id {
-            tx.execute("INSERT INTO lesson_progress(profile_id,lesson_id,best_stars,best_accuracy,attempts,completed_at,bookmark_step) VALUES(?1,?2,?3,?4,1,?5,?6) ON CONFLICT(profile_id,lesson_id) DO UPDATE SET best_stars=MAX(best_stars,excluded.best_stars),best_accuracy=MAX(best_accuracy,excluded.best_accuracy),attempts=attempts+1,completed_at=COALESCE(excluded.completed_at,completed_at),bookmark_step=excluded.bookmark_step",params![input.profile_id,lesson,if input.completed{s.stars}else{0},s.accuracy,if input.completed{Some(now())}else{None},input.bookmark_step])?;
+            tx.execute("INSERT INTO lesson_progress(profile_id,lesson_id,best_stars,best_accuracy,attempts,completed_at,bookmark_step) VALUES(?1,?2,?3,?4,1,?5,?6) ON CONFLICT(profile_id,lesson_id) DO UPDATE SET best_stars=MAX(best_stars,excluded.best_stars),best_accuracy=MAX(best_accuracy,excluded.best_accuracy),attempts=attempts+?7,completed_at=COALESCE(excluded.completed_at,completed_at),bookmark_step=excluded.bookmark_step",params![input.profile_id,lesson,if input.completed{s.stars}else{0},if input.completed{s.accuracy}else{0.0},if input.completed&&s.stars>0{Some(now())}else{None},input.bookmark_step,if existing.is_none(){1}else{0}])?;
         }
     }
     if input.kind == "vocab" && input.completed {
@@ -174,6 +187,9 @@ pub fn save(conn: &mut Connection, input: &SessionInput) -> AppResult<i64> {
         }
     }
     tx.execute("DELETE FROM session_checkpoints WHERE uid=?1", [&input.uid])?;
+    if input.kind == "lesson" && input.completed {
+        tx.execute("DELETE FROM lesson_drafts WHERE uid=?1", [&input.uid])?;
+    }
     tx.commit()?;
     Ok(id)
 }
@@ -229,7 +245,7 @@ pub fn checkpoint(conn: &Connection, input: &Checkpoint) -> AppResult<()> {
         return Err(AppError::invalid("invalid_checkpoint"));
     }
     let saved: bool = conn.query_row(
-        "SELECT EXISTS(SELECT 1 FROM sessions WHERE uid=?1)",
+        "SELECT EXISTS(SELECT 1 FROM sessions WHERE uid=?1 AND completed=1)",
         [&input.session.uid],
         |r| r.get(0),
     )?;

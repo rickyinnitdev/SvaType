@@ -1,0 +1,38 @@
+{
+  "id": "family_words",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "ពាក្យគ្រួសារ",
+    "en": "Family words"
+  },
+  "focus_keys": ["KeyM", "KeyB", "KeyN"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "អង្គុយឱ្យស្រួល ដាក់ជើងលើដី និងសម្រាកស្មា។ ដាក់ម្រាមដៃលើជួរកណ្ដាល។ មើលគ្រាប់ចុចណែនាំ ហើយវាយយឺតៗដោយត្រឹមត្រូវ។",
+        "en": "Sit comfortably with feet on the floor and relaxed shoulders. Rest your fingers on the home row. Follow the highlighted key and practise slowly and accurately."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["KeyM", "KeyB", "KeyN"]
+    },
+    {
+      "type": "find_key",
+      "items": ["ម", "្", "ត", "យ"],
+      "strict": true
+    },
+    {
+      "type": "type_sentence",
+      "text": "ម្តាយ ឪពុក បង ប្អូន",
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "ម្តាយ ឪពុក បង ប្អូន",
+      "min_accuracy": 85
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "id": "advanced_1",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "ហាត់កម្រិតខ្ពស់ 1",
+    "en": "Advanced practice 1"
+  },
+  "focus_keys": ["KeyR", "KeyJ", "Space"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "អានអត្ថបទមុនចាប់ផ្តើម។ ហាត់ជាក្រុមអក្សរ និងរក្សាភាពត្រឹមត្រូវ មុនពេលបង្កើនល្បឿន។ ផ្កាយផ្អែកលើភាពត្រឹមត្រូវ។",
+        "en": "Read before starting. Work cluster by cluster and keep your accuracy before increasing speed. Stars depend on accuracy."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["KeyR", "KeyJ", "Space"]
+    },
+    {
+      "type": "find_key",
+      "items": ["៛", "១", "០", "២"],
+      "strict": true
+    },
+    {
+      "type": "type_sentence",
+      "text": "៛ ១០០០ ៛ ២០០០ ។",
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "៛ ១០០០ ៛ ២០០០ ។",
+      "min_accuracy": 85
+    }
+  ],
+  "bonus_kpm": 80
+}

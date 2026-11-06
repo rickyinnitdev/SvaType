@@ -1,0 +1,38 @@
+{
+  "id": "coeng_words",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "ពាក្យមានជើង",
+    "en": "Words with subscripts"
+  },
+  "focus_keys": ["KeyJ", "KeyX", "KeyQ", "KeyP"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "សញ្ញា ្ ប្រែព្យញ្ជនៈបន្ទាប់ទៅជាជើង។ វាយ ្ រួចវាយព្យញ្ជនៈ។ ជើង រ អាចវាយមុន ឬក្រោយជើងមួយទៀតបាន។",
+        "en": "Coeng ្ turns the following consonant into a subscript. Type coeng, then the consonant. Coeng-ro is accepted before or after another subscript."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["KeyJ", "KeyX", "KeyQ", "KeyP"]
+    },
+    {
+      "type": "find_key",
+      "items": ["ខ", "្", "ម", "ែ"],
+      "strict": true
+    },
+    {
+      "type": "type_clusters",
+      "items": ["ខ្មែរ", "ឆ្កែ", "ឆ្មា", "ផ្កា"],
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "ខ្មែរ ឆ្កែ ឆ្មា ផ្កា",
+      "min_accuracy": 85
+    }
+  ]
+}

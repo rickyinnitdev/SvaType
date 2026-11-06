@@ -1,0 +1,38 @@
+{
+  "id": "register_2",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "សញ្ញា ៊",
+    "en": "Meet triisap"
+  },
+  "focus_keys": ["Slash", "KeyB", "KeyI"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "សញ្ញា ៉ និង ៊ ស្ថិតនៅលើព្យញ្ជនៈ។ វាយព្យញ្ជនៈ សញ្ញា រួចស្រៈ។ មើលរូបអក្សរនៅក្នុងពាក្យ។",
+        "en": "The register shifters ៉ and ៊ belong above the consonant. Type the consonant, shifter, then vowel, and compare the result in the word."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["Slash", "KeyB", "KeyI"]
+    },
+    {
+      "type": "find_key",
+      "items": ["ប", "៊", "ិ", "ច"],
+      "strict": true
+    },
+    {
+      "type": "type_words",
+      "items": ["ប៊ិច", "ប៊ូ"],
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "ប៊ិច ប៊ូ",
+      "min_accuracy": 85
+    }
+  ]
+}

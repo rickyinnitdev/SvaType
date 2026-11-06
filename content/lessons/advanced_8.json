@@ -1,0 +1,39 @@
+{
+  "id": "advanced_8",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "ហាត់កម្រិតខ្ពស់ 8",
+    "en": "Advanced practice 8"
+  },
+  "focus_keys": ["KeyR", "KeyJ", "Space"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "អានអត្ថបទមុនចាប់ផ្តើម។ ហាត់ជាក្រុមអក្សរ និងរក្សាភាពត្រឹមត្រូវ មុនពេលបង្កើនល្បឿន។ ផ្កាយផ្អែកលើភាពត្រឹមត្រូវ។",
+        "en": "Read before starting. Work cluster by cluster and keep your accuracy before increasing speed. Stars depend on accuracy."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["KeyR", "KeyJ", "Space"]
+    },
+    {
+      "type": "find_key",
+      "items": ["ក", "រ", "អ", "ន"],
+      "strict": true
+    },
+    {
+      "type": "type_sentence",
+      "text": "ការអាន សៀវភៅ ជួយ ឱ្យ យើង មាន ចំណេះដឹង ។ នៅ ពេល ព្រឹក សិស្ស ទៅ សាលារៀន ដោយ រីករាយ ។ យើង ជួយ គ្នា ថែរក្សា អនាម័យ ក្នុង ថ្នាក់រៀន ។",
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "ការអាន សៀវភៅ ជួយ ឱ្យ យើង មាន ចំណេះដឹង ។ នៅ ពេល ព្រឹក សិស្ស ទៅ សាលារៀន ដោយ រីករាយ ។ យើង ជួយ គ្នា ថែរក្សា អនាម័យ ក្នុង ថ្នាក់រៀន ។",
+      "min_accuracy": 85
+    }
+  ],
+  "bonus_kpm": 80
+}

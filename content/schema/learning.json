@@ -1,0 +1,93 @@
+[
+  {
+    "pattern": "^index\\.json$",
+    "schema": {
+      "type": "object",
+      "required": ["paths", "lessons"],
+      "properties": {
+        "paths": { "type": "array", "minItems": 7 },
+        "lessons": { "type": "array", "minItems": 62 }
+      }
+    }
+  },
+  {
+    "pattern": "^paths/.*\\.json$",
+    "schema": {
+      "type": "object",
+      "required": ["id", "title", "audience", "units"],
+      "properties": {
+        "title": { "$ref": "localized" },
+        "audience": { "enum": ["grade", "skill"] },
+        "units": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["id", "title", "lessons"],
+            "properties": {
+              "title": { "$ref": "localized" },
+              "lessons": {
+                "type": "array",
+                "minItems": 1,
+                "items": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "pattern": "^lessons/.*\\.json$",
+    "schema": {
+      "type": "object",
+      "required": ["id", "version", "reviewed", "title", "focus_keys", "steps"],
+      "properties": {
+        "reviewed": { "type": "boolean" },
+        "title": { "$ref": "localized" },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "enum": [
+                  "explain",
+                  "demo",
+                  "find_key",
+                  "type_chars",
+                  "type_clusters",
+                  "type_words",
+                  "type_sentence",
+                  "challenge"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "pattern": "^hands\\.json$",
+    "schema": {
+      "type": "object",
+      "required": ["view_box", "palms", "fingers"],
+      "properties": { "fingers": { "type": "array", "minItems": 10 } }
+    }
+  },
+  {
+    "pattern": "^keyboard-intro\\.json$",
+    "schema": {
+      "type": "object",
+      "required": ["reviewed", "rows", "instruction"],
+      "properties": {
+        "reviewed": { "type": "boolean" },
+        "instruction": { "$ref": "localized" },
+        "rows": { "type": "array", "minItems": 4 }
+      }
+    }
+  }
+]

@@ -1,0 +1,42 @@
+{
+  "id": "advanced",
+  "title": {
+    "km": "កម្រិតខ្ពស់",
+    "en": "Advanced"
+  },
+  "audience": "skill",
+  "units": [
+    {
+      "id": "advanced_u1",
+      "title": {
+        "km": "ជំហាន 1",
+        "en": "Unit 1"
+      },
+      "lessons": ["advanced_1", "advanced_2", "advanced_3"]
+    },
+    {
+      "id": "advanced_u2",
+      "title": {
+        "km": "ជំហាន 2",
+        "en": "Unit 2"
+      },
+      "lessons": ["advanced_4", "advanced_5", "advanced_6"]
+    },
+    {
+      "id": "advanced_u3",
+      "title": {
+        "km": "ជំហាន 3",
+        "en": "Unit 3"
+      },
+      "lessons": ["advanced_7", "advanced_8", "advanced_9"]
+    },
+    {
+      "id": "advanced_u4",
+      "title": {
+        "km": "ជំហាន 4",
+        "en": "Unit 4"
+      },
+      "lessons": ["advanced_10", "advanced_11", "advanced_12"]
+    }
+  ]
+}

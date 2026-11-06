@@ -38,7 +38,14 @@ fn main() {
             commands::analysis_get,
             commands::weak_keys,
             commands::practice_text,
-            commands::drill_generate
+            commands::drill_generate,
+            commands::content_index,
+            commands::content_path,
+            commands::content_lesson,
+            commands::lesson_draft_get,
+            commands::lesson_progress_set,
+            commands::lesson_session_save,
+            commands::learning_options
         ])
         .setup(|app| {
             let database = storage::db::Database::open(paths::data_dir()?)

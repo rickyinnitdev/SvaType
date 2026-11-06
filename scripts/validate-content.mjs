@@ -37,7 +37,11 @@ function validate(value, schema, path) {
     }
   }
 }
-const schemas = JSON.parse(readFileSync('content/schema/core.json', 'utf8'));
+const schemas = readdirSync('content/schema')
+  .filter((name) => name.endsWith('.json'))
+  .flatMap((name) =>
+    JSON.parse(readFileSync(join('content/schema', name), 'utf8')),
+  );
 let count = 0;
 function walk(dir) {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {

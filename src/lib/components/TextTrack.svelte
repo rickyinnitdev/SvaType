@@ -73,8 +73,5 @@
       min-height: 75px;
       max-height: 90px;
     }
-    .cluster {
-      font-size: 30px;
-    }
   }
 </style>

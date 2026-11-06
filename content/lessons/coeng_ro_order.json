@@ -1,0 +1,38 @@
+{
+  "id": "coeng_ro_order",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "លំដាប់ជើង រ",
+    "en": "Coeng-ro order"
+  },
+  "focus_keys": ["KeyJ", "KeyR", "KeyT", "KeyS"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "សញ្ញា ្ ប្រែព្យញ្ជនៈបន្ទាប់ទៅជាជើង។ វាយ ្ រួចវាយព្យញ្ជនៈ។ ជើង រ អាចវាយមុន ឬក្រោយជើងមួយទៀតបាន។",
+        "en": "Coeng ្ turns the following consonant into a subscript. Type coeng, then the consonant. Coeng-ro is accepted before or after another subscript."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["KeyJ", "KeyR", "KeyT", "KeyS"]
+    },
+    {
+      "type": "find_key",
+      "items": ["ស", "្", "ត", "រ"],
+      "strict": true
+    },
+    {
+      "type": "type_clusters",
+      "items": ["ស្ត្រី", "ស្រ្តី"],
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "ស្ត្រី ស្រ្តី",
+      "min_accuracy": 85
+    }
+  ]
+}

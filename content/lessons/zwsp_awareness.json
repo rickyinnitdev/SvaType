@@ -1,0 +1,38 @@
+{
+  "id": "zwsp_awareness",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "ការបំបែកពាក្យ",
+    "en": "Invisible word breaks"
+  },
+  "focus_keys": ["KeyK", "KeyS", "KeyR", "Space"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "ក្តារចុចនីដា ប្រើ Space សម្រាប់ចន្លោះមើលមិនឃើញ។ ប្រើ Shift + Space សម្រាប់ចន្លោះដែលមើលឃើញ។ ការហាត់អត្ថបទមិនតម្រូវឱ្យវាយចន្លោះមើលមិនឃើញទេ។",
+        "en": "On NiDA, Space produces an invisible word break. Use Shift + Space for a visible space. Text practice does not require invisible word breaks."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["KeyK", "KeyS", "KeyR", "Space"]
+    },
+    {
+      "type": "find_key",
+      "items": ["ឪ", "ព", "ក", "ន"],
+      "strict": true
+    },
+    {
+      "type": "type_sentence",
+      "text": "ឪពុក និង ម្តាយ ទៅ ផ្សារ ។",
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "ឪពុក និង ម្តាយ ទៅ ផ្សារ ។",
+      "min_accuracy": 85
+    }
+  ]
+}

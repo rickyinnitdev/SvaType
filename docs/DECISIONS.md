@@ -1,5 +1,20 @@
 # Decisions
 
+## M5 — Lesson attempts and curriculum
+
+74 generated, unreviewed lessons cover seven paths and all eight step types.
+Migration 003 stores a bookmark plus aggregate summaries for completed steps.
+A paused lesson over 20 seconds creates one unfinished History row; finishing
+upgrades that same UID transactionally, so time and attempts are not duplicated.
+Challenge retries preserve their errors. Stars use accuracy, and one star unlocks
+the next lesson. Demo timers run only after Replay and stop on blur or hiding.
+
+Verification: the native isolated smoke test completed all 20 Grade 3 lessons
+with three stars and exactly 20 History rows. All 74 lesson targets validate on
+both layouts, path references resolve, and draft/partial upgrade tests pass.
+435 engine tests, 24 storage/content tests, frontend checks, 12 WASM/i18n tests
+and the offline scan pass. WASM remains 195,313 bytes.
+
 ## M4 — Typing metrics and text bounds
 
 Per-key errors are attributed to the expected key/layer, while confusion pairs

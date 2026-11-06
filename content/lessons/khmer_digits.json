@@ -1,0 +1,38 @@
+{
+  "id": "khmer_digits",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "លេខខ្មែរ",
+    "en": "Khmer digits"
+  },
+  "focus_keys": ["Digit1", "Digit2", "Digit3", "Digit4", "Digit5"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "អង្គុយឱ្យស្រួល ដាក់ជើងលើដី និងសម្រាកស្មា។ ដាក់ម្រាមដៃលើជួរកណ្ដាល។ មើលគ្រាប់ចុចណែនាំ ហើយវាយយឺតៗដោយត្រឹមត្រូវ។",
+        "en": "Sit comfortably with feet on the floor and relaxed shoulders. Rest your fingers on the home row. Follow the highlighted key and practise slowly and accurately."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["Digit1", "Digit2", "Digit3", "Digit4", "Digit5"]
+    },
+    {
+      "type": "find_key",
+      "items": ["០", "១", "២", "៣"],
+      "strict": true
+    },
+    {
+      "type": "type_words",
+      "items": ["០", "១", "២", "៣", "៤", "៥", "៦", "៧", "៨", "៩"],
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "០ ១ ២ ៣ ៤ ៥ ៦ ៧ ៨ ៩",
+      "min_accuracy": 85
+    }
+  ]
+}

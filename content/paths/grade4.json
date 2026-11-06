@@ -1,0 +1,63 @@
+{
+  "id": "grade4",
+  "title": {
+    "km": "ថ្នាក់ទី៤",
+    "en": "Grade 4"
+  },
+  "audience": "grade",
+  "units": [
+    {
+      "id": "grade4_u1",
+      "title": {
+        "km": "ជំហាន 1",
+        "en": "Unit 1"
+      },
+      "lessons": [
+        "shift_left",
+        "shift_right",
+        "shift_words",
+        "coeng_intro",
+        "coeng_words",
+        "coeng_two"
+      ]
+    },
+    {
+      "id": "grade4_u2",
+      "title": {
+        "km": "ជំហាន 2",
+        "en": "Unit 2"
+      },
+      "lessons": [
+        "coeng_ro",
+        "coeng_ro_order",
+        "independent_1",
+        "independent_2",
+        "sign_bantoc",
+        "sign_nikahit"
+      ]
+    },
+    {
+      "id": "grade4_u3",
+      "title": {
+        "km": "ជំហាន 3",
+        "en": "Unit 3"
+      },
+      "lessons": [
+        "sign_reahmukh",
+        "sign_yuukaleapintu",
+        "register_1",
+        "register_2",
+        "multipart_vowels",
+        "khmer_digits"
+      ]
+    },
+    {
+      "id": "grade4_u4",
+      "title": {
+        "km": "ជំហាន 4",
+        "en": "Unit 4"
+      },
+      "lessons": ["school_words", "family_words", "g4_sentence", "g4_accuracy"]
+    }
+  ]
+}

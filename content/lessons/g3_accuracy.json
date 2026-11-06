@@ -1,0 +1,38 @@
+{
+  "id": "g3_accuracy",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "បញ្ចប់ជំហានដំបូង",
+    "en": "Your first accuracy challenge"
+  },
+  "focus_keys": ["KeyK", "KeyM", "KeyB", "KeyC"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "អង្គុយឱ្យស្រួល ដាក់ជើងលើដី និងសម្រាកស្មា។ ដាក់ម្រាមដៃលើជួរកណ្ដាល។ មើលគ្រាប់ចុចណែនាំ ហើយវាយយឺតៗដោយត្រឹមត្រូវ។",
+        "en": "Sit comfortably with feet on the floor and relaxed shoulders. Rest your fingers on the home row. Follow the highlighted key and practise slowly and accurately."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["KeyK", "KeyM", "KeyB", "KeyC"]
+    },
+    {
+      "type": "find_key",
+      "items": ["ក", "ូ", "ន", "ម"],
+      "strict": true
+    },
+    {
+      "type": "type_words",
+      "items": ["កូន", "មាន", "បាយ", "។"],
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "កូន មាន បាយ ។",
+      "min_accuracy": 70
+    }
+  ]
+}

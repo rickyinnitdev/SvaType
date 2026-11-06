@@ -1,0 +1,38 @@
+{
+  "id": "sentences_2",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "ប្រយោគច្បាស់លាស់",
+    "en": "Clear sentences"
+  },
+  "focus_keys": ["KeyK", "KeyS", "KeyR", "Space"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "អានអត្ថបទមុនចាប់ផ្តើម។ ហាត់ជាក្រុមអក្សរ និងរក្សាភាពត្រឹមត្រូវ មុនពេលបង្កើនល្បឿន។ ផ្កាយផ្អែកលើភាពត្រឹមត្រូវ។",
+        "en": "Read before starting. Work cluster by cluster and keep your accuracy before increasing speed. Stars depend on accuracy."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["KeyK", "KeyS", "KeyR", "Space"]
+    },
+    {
+      "type": "find_key",
+      "items": ["ក", "ូ", "ន", "អ"],
+      "strict": true
+    },
+    {
+      "type": "type_sentence",
+      "text": "កូន អាន សៀវភៅ ជាមួយ ម្តាយ ។",
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "កូន អាន សៀវភៅ ជាមួយ ម្តាយ ។",
+      "min_accuracy": 85
+    }
+  ]
+}

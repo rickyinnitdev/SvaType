@@ -1,0 +1,39 @@
+{
+  "id": "sitting",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "ឥរិយាបថអង្គុយ",
+    "en": "Sit comfortably"
+  },
+  "focus_keys": ["KeyK"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "អង្គុយឱ្យស្រួល ដាក់ជើងលើដី និងសម្រាកស្មា។ ដាក់ម្រាមដៃលើជួរកណ្ដាល។ មើលគ្រាប់ចុចណែនាំ ហើយវាយយឺតៗដោយត្រឹមត្រូវ។",
+        "en": "Sit comfortably with feet on the floor and relaxed shoulders. Rest your fingers on the home row. Follow the highlighted key and practise slowly and accurately."
+      },
+      "image": "posture.svg"
+    },
+    {
+      "type": "demo",
+      "keys": ["KeyK"]
+    },
+    {
+      "type": "find_key",
+      "items": ["ក"],
+      "strict": true
+    },
+    {
+      "type": "type_chars",
+      "text": "កកក",
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "កកក",
+      "min_accuracy": 70
+    }
+  ]
+}

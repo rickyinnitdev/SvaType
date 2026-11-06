@@ -1,0 +1,38 @@
+{
+  "id": "independent_1",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "ស្រៈពេញតួ",
+    "en": "Independent vowels"
+  },
+  "focus_keys": ["BracketRight", "KeyO", "KeyR"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "អង្គុយឱ្យស្រួល ដាក់ជើងលើដី និងសម្រាកស្មា។ ដាក់ម្រាមដៃលើជួរកណ្ដាល។ មើលគ្រាប់ចុចណែនាំ ហើយវាយយឺតៗដោយត្រឹមត្រូវ។",
+        "en": "Sit comfortably with feet on the floor and relaxed shoulders. Rest your fingers on the home row. Follow the highlighted key and practise slowly and accurately."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["BracketRight", "KeyO", "KeyR"]
+    },
+    {
+      "type": "find_key",
+      "items": ["ឪ", "ឱ", "ឯ", "ឬ"],
+      "strict": true
+    },
+    {
+      "type": "type_words",
+      "items": ["ឪ", "ឱ", "ឯ", "ឬ", "ឫ"],
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "ឪ ឱ ឯ ឬ ឫ",
+      "min_accuracy": 85
+    }
+  ]
+}

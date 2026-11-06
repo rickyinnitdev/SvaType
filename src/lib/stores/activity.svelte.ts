@@ -5,7 +5,17 @@ export const activity = $state<{
   refId: string | null;
   durationMs: number;
   free: boolean;
-}>({ target: null, kind: 'test', refId: null, durationMs: 0, free: false });
+  strict: boolean;
+  findKey: boolean;
+}>({
+  target: null,
+  kind: 'test',
+  refId: null,
+  durationMs: 0,
+  free: false,
+  strict: false,
+  findKey: false,
+});
 export function configureActivity(
   target: string,
   kind: string,
@@ -18,6 +28,8 @@ export function configureActivity(
     refId,
     durationMs,
     free: kind === 'free',
+    strict: false,
+    findKey: false,
   });
 }
 export function retryActivity(detail: HistoryDetail) {

@@ -1,0 +1,38 @@
+{
+  "id": "shift_words",
+  "version": 1,
+  "reviewed": false,
+  "title": {
+    "km": "ពាក្យប្រើ Shift",
+    "en": "Words with Shift"
+  },
+  "focus_keys": ["KeyK", "KeyX", "KeyC", "KeyT", "KeyB"],
+  "steps": [
+    {
+      "type": "explain",
+      "text": {
+        "km": "ចុច Shift ដោយដៃម្ខាង និងចុចគ្រាប់អក្សរដោយដៃម្ខាងទៀត។ លែង Shift នៅពេលត្រឡប់ទៅអក្សរធម្មតា។",
+        "en": "Hold Shift with the opposite hand from the letter key. Release Shift before returning to the base layer."
+      }
+    },
+    {
+      "type": "demo",
+      "keys": ["KeyK", "KeyX", "KeyC", "KeyT", "KeyB"]
+    },
+    {
+      "type": "find_key",
+      "items": ["គ", "ោ", "ឃ", "ើ"],
+      "strict": true
+    },
+    {
+      "type": "type_words",
+      "items": ["គោ", "ឃើញ", "ជើង", "ទឹក", "ពូ"],
+      "policy": "stop_on_error"
+    },
+    {
+      "type": "challenge",
+      "text": "គោ ឃើញ ជើង ទឹក ពូ",
+      "min_accuracy": 85
+    }
+  ]
+}
