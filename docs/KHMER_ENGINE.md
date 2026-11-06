@@ -91,6 +91,17 @@ and is deterministic for a seed.
 
 ## Verification
 
+M2 adds the thin wasm-bindgen wrapper and a typed frontend wrapper. The optimized
+WASM is 161,067 bytes. Six Vitest tests run against that actual optimized binary.
+The development-only playground reads its sample from `content/playground.json`
+(`reviewed: false`). `scripts/smoke-playground.mjs` drives actual KeyboardEvents
+through the native WebView against both layouts and policies, including an
+incorrect key and flow Backspace correction. All four runs finish with the
+mistake highlighted and zero keystroke IPC calls. Key-to-DOM-update p95 was
+0.3–0.6 ms on the development machine (not an end-to-end paint measurement).
+The keyboard and target fit the minimum development window; the text track
+renders at most 120 clusters, below the plan's approximate 300-cluster ceiling.
+
 M1 verification on 2026-11-06: 426 engine tests pass. Criterion (20 samples,
 1-second warmup, 2-second measurement) reports planning at 349–365 µs and
 `on_key` at 0.65–1.10 µs, both below budget. These ranges include scheduler noise.

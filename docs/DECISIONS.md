@@ -1,5 +1,20 @@
 # Decisions
 
+## M2 — Local WASM loading and CSP
+
+PLAN §6.1's `connect-src` omits `'self'`, which blocks its §9 requirement to
+stream WASM from a bundled file. Add `'self'` to `connect-src` to permit the local
+Tauri asset protocol. External origins remain forbidden; `default-src 'self'`
+is unchanged. The generated wasm-bindgen URL loader is removed at build time;
+the app supplies a Response from the literal `/engine/khmer_bg.wasm` path.
+The build fails if a generated fetch fallback survives.
+
+The development frontend uses Vite's development _mode_ with static bundled
+assets, and the Tauri launcher still disables its dev server. This allows the
+M2 playground to be development-only without introducing an HTTP/HMR server.
+WASM and glue are generated and ignored, with the exact wasm-bindgen CLI version
+matching the locked crate. Binaryen is a development-only optimizer.
+
 ## M1 — Fingers and metric interpretation
 
 The sample layout in PLAN §4.4 assigns KeyJ to R1 and KeyK to R2, conflicting

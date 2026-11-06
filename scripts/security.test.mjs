@@ -14,7 +14,7 @@ test('bundled development uses the same restrictive policy as release', () => {
   assert.equal(config.app.withGlobalTauri, false);
   assert.equal(
     config.app.security.csp,
-    "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; media-src 'self'; connect-src ipc: http://ipc.localhost",
+    "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; media-src 'self'; connect-src 'self' ipc: http://ipc.localhost",
   );
   assert.equal(config.app.windows[0].visible, false);
   assert.equal(config.bundle.windows.webviewInstallMode.type, 'skip');

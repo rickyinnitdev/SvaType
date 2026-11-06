@@ -5,3 +5,4 @@ src-tauri/gen
 Cargo.lock
 AGENTS.md
 docs/PLAN.md
+src/lib/wasm

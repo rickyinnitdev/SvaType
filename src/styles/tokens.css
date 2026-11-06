@@ -1,0 +1,24 @@
+:root {
+  --background: #f7f8fa;
+  --surface: #ffffff;
+  --surface-soft: #edf4f2;
+  --foreground: #172c2b;
+  --muted: #526562;
+  --line: #bdceca;
+  --primary: #176b62;
+  --on-primary: #ffffff;
+  --accent: #e9b94c;
+  --error: #a92c3b;
+  --error-soft: #fff0f1;
+  --success: #176b62;
+  --focus: #155dc1;
+  --radius: 16px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --font-ui: 18px;
+  --font-target: 36px;
+}

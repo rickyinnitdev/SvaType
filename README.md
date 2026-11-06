@@ -9,6 +9,17 @@ Install Node.js, Rust (MSVC), Microsoft C++ Build Tools with the Windows SDK,
 and WebView2. Dependency downloads are development-only; the app uses local
 bundled files in both development and release.
 
+Install the WASM build tools once:
+
+```powershell
+rustup target add wasm32-unknown-unknown
+cargo install wasm-bindgen-cli --version 0.2.130 --locked
+```
+
+`npm install` supplies Binaryen for `wasm-opt -Oz`. The frontend build generates
+the WASM/glue locally and checks the 200 KB budget. These generated files are
+ignored by Git. `npm test` uses the real optimized WASM binary.
+
 ```powershell
 npm install
 npm run dev
