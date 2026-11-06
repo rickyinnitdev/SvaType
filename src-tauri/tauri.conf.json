@@ -22,7 +22,7 @@
         "minHeight": 640,
         "visible": false,
         "backgroundColor": "#f7f8fa",
-        "additionalBrowserArgs": "--disable-features=msSmartScreenProtection,msWebOOUI,msPdfOOUI,ElasticOverscroll --disable-background-networking --disable-component-update --no-first-run"
+        "additionalBrowserArgs": "--disable-features=msSmartScreenProtection,msWebOOUI,msPdfOOUI,ElasticOverscroll --disable-background-networking --disable-component-update --no-first-run --disable-crash-reporter --disable-breakpad --disable-domain-reliability --disable-sync"
       }
     ],
     "security": {
@@ -49,7 +49,8 @@
           "English": "installer/English.nsh"
         }
       },
-      "allowDowngrades": false
+      "allowDowngrades": false,
+      "minimumWebview2Version": "105.0.0.0"
     }
   }
 }

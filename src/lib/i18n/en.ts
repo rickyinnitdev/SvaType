@@ -2,6 +2,40 @@ import app from '../../../content/app.json';
 import type { Messages } from './km';
 
 export const en: Messages = {
+  help: 'Help',
+  about: 'About',
+  metricsTitle: 'Understanding your results',
+  kpmHelp:
+    'KPM is correct physical keystrokes per active minute. WPM* is KPM divided by five; it is a comparison unit, not a count of Khmer words.',
+  accuracyHelp:
+    'Accuracy is correct strokes divided by all character-key attempts. Backspaces are counted separately. Repeated errors at one position affect accuracy but appear once in the mistake list.',
+  activeTimeHelp:
+    'Active time excludes gaps longer than ten seconds. The test countdown pauses when you pause or leave the window. Learning stars depend on accuracy: 70%, 85% and 95% earn one, two and three stars.',
+  windowsKeyboard: 'Khmer keyboard in Windows',
+  keyboardOptional:
+    'SvaType uses physical keys and its bundled layouts. Windows Khmer is optional for practice; install it if you also want to type Khmer in other programs or compare layouts.',
+  windows11Help:
+    'Windows 11: Settings > Time & language > Language & region. Add Khmer if needed, then open its Language options and add the Khmer (NIDA) keyboard. Select it from the taskbar input indicator.',
+  windows10Help:
+    'Windows 10: Settings > Time & Language > Language. Add Khmer if needed, open Options, then Add a keyboard. Choose Khmer (NIDA), or Khmer for the legacy layout. Select the same layout in SvaType.',
+  offlineHelp:
+    'All profiles, practice and History stay on this computer. There is no sign-in. Use Settings > Backup to move progress by USB; close the app before copying a portable data folder.',
+  reviewWarning:
+    'Generated lessons and words await review by a Khmer teacher. Finger pictures teach placement; the app cannot see which finger you use.',
+  fontLicences: 'Font licences',
+  licenceDetails: 'Read the full licence',
+  version: 'Version',
+  layoutCheck: 'Check Windows layout',
+  layoutCheckHint:
+    'Activate the matching Windows Khmer keyboard first. Start the check and press each physical key, including Shift and AltGr layers. This screen compares exact Windows output with the Rust engine; it does not save a practice session.',
+  windowsOutput: 'Windows output',
+  engineOutput: 'SvaType output',
+  keyMatch: 'Matches',
+  keyMismatch: 'Different',
+  clearRecords: 'Clear this check',
+  startCheck: 'Start check',
+  checkCapture: 'Windows keyboard check input',
+
   teacherContentError:
     'Enter the required fields and check that the Khmer text types on both layouts.',
   teacher: 'Teacher',

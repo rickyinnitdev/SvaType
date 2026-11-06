@@ -219,7 +219,7 @@
     align-items: flex-end;
   }
   .filters label {
-    font-size: 14px;
+    font-size: var(--font-ui);
     display: grid;
     gap: 4px;
   }
@@ -231,7 +231,7 @@
     width: 100%;
     border-collapse: collapse;
     text-align: left;
-    font-size: 15px;
+    font-size: var(--font-ui);
   }
   th,
   td {
@@ -239,7 +239,7 @@
     border-bottom: 1px solid var(--line);
   }
   th {
-    font-size: 13px;
+    font-size: var(--font-ui);
     color: var(--muted);
     font-weight: 600;
   }
@@ -248,7 +248,7 @@
   }
   td button {
     padding: 6px 12px;
-    font-size: 14px;
+    font-size: var(--font-ui);
   }
   .delete {
     color: var(--error);

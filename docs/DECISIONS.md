@@ -1,5 +1,47 @@
 # Decisions
 
+## M11 — Accessible polish and reliable exit
+
+Help/About includes bilingual metric definitions, Windows keyboard setup, local
+backup/PIN recovery instructions and the complete bundled font OFL notices.
+Layout Check intentionally uses a textarea only for Windows output, comparing
+raw Unicode with the Rust layout output; it does not save a practice session.
+Contrast tokens meet WCAG text contrast tests; XL uses 24 px UI and 48 px targets,
+with a 40 px minimum on Grade 3. Reduced motion also stops falling movement.
+
+Optional sound uses three tiny original PCM cues generated on demand instead of
+OGG assets. This avoids codecs/files and preloading, especially on low-end PCs.
+At most eight sources play, and the AudioContext suspends when cues end or the
+activity pauses. No background timer is introduced.
+
+Focused explanation/demo time is measured from focus/visibility/leave events,
+without an idle clock. Native empty reading summaries preserve unfinished lesson
+History after more than 20 seconds. Nested leave guards save children before
+parents; window close awaits the same guards and prevents exit on a save error.
+The main window has the narrowly scoped destroy permission required by Tauri
+to complete its awaited close handler. Teacher writes finish before locking.
+
+The bundled frontend targets Chrome 105, so startup now rejects missing or
+older WebView2 with a bilingual native message directing users to Full. Full
+sets a matching minimum runtime version. No runtime download is requested.
+
+Verification on Windows 11 with process-scoped external host/proxy blocking:
+polish smoke passes Help/licences, exact layout match/mismatch, XL/contrast,
+reading History, bookmarks, path persistence and Khmer Settings at 1024 px.
+Native Alt+F4 followed by restart retained the unfinished reading session.
+The full 20-lesson Grade 3 path, four games/Journey resume and all teacher
+operations for 40 students pass again after the save-order changes.
+435 engine tests, 34 native platform/storage/content tests, 20 WASM/UI tests
+and four scanner/security tests pass. Formatting, strict checks and Clippy pass.
+
+Clean disconnected Windows 10 and physical Sandy Bridge/HDD certification remain
+manual release gates. This environment cannot supply those machines. All
+generated lesson/vocabulary/sentence content still requires teacher review.
+
+Automatic approval review rejected removal of the disposable installer-test
+registry preference (HKCU\Software\svatype\SvaType), reason: "blocked by policy".
+It remains pointed at D:\SvaType\target\install-smoke; no learner data is there.
+
 ## M10 — Local teacher controls
 
 Argon2id uses the RustCrypto argon2 crate, because implementing a password hash

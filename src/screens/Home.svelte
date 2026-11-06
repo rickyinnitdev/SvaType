@@ -118,13 +118,13 @@
     border-radius: 50%;
     display: grid;
     place-items: center;
-    font-size: 15px;
+    font-size: var(--font-ui);
   }
   .typing-card h2 {
     font-size: 21px;
   }
   .typing-card p {
-    font-size: 16px;
+    font-size: var(--font-ui);
   }
   .tiles {
     display: grid;

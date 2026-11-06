@@ -25,6 +25,7 @@ test('only the planned main-window permissions are granted', () => {
   assert.deepEqual(capability.permissions, [
     'core:default',
     'core:window:allow-show',
+    'core:window:allow-destroy',
     'core:window:allow-set-fullscreen',
     'dialog:allow-save',
     'dialog:allow-open',

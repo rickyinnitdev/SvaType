@@ -179,7 +179,11 @@
       >
     </div>
   </div>
-  <button onclick={() => navigate('teacher')}>{t.teacher}</button>
+  <div class="row">
+    <button onclick={() => navigate('layoutCheck')}>{t.layoutCheck}</button
+    ><button onclick={() => navigate('help')}>{t.help} / {t.about}</button
+    ><button onclick={() => navigate('teacher')}>{t.teacher}</button>
+  </div>
   {#if feedback || failed}<p
       class:error={failed}
       role={failed ? 'alert' : 'status'}

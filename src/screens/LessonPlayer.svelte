@@ -24,6 +24,33 @@
   let retry = $state(false);
   let demoIndex = $state(0);
   let playing = $state(false);
+  let readingStarted: number | null = null;
+  let readingMs = 0;
+  function pauseReading() {
+    if (readingStarted !== null)
+      readingMs += Math.max(0, performance.now() - readingStarted);
+    readingStarted = null;
+  }
+  function resumeReading() {
+    if (
+      step &&
+      ['explain', 'demo'].includes(step.type) &&
+      !document.hidden &&
+      document.hasFocus() &&
+      readingStarted === null
+    )
+      readingStarted = performance.now();
+  }
+  function resetReading() {
+    readingMs = 0;
+    readingStarted = null;
+    resumeReading();
+  }
+  async function readingSummary(): Promise<Summary | undefined> {
+    pauseReading();
+    if (readingMs < 1) return;
+    return api.readingSummary(Math.round(readingMs));
+  }
   $effect(() => {
     if (
       !playing ||
@@ -56,7 +83,6 @@
         }
       : null,
   );
-  let isTyping = $derived(!!step && !['explain', 'demo'].includes(step.type));
   let target = $derived(
     typeof step?.text === 'string'
       ? step.text
@@ -66,9 +92,15 @@
     let alive = true;
     const stop = () => {
       playing = false;
+      pauseReading();
+    };
+    const visibility = () => {
+      if (document.hidden) stop();
+      else resumeReading();
     };
     window.addEventListener('blur', stop);
-    document.addEventListener('visibilitychange', stop);
+    window.addEventListener('focus', resumeReading);
+    document.addEventListener('visibilitychange', visibility);
     void (async () => {
       try {
         const l = await api.lesson(learning.lessonId);
@@ -104,6 +136,7 @@
             ) ?? null;
           lesson = l;
           draft = d;
+          resetReading();
         }
       } catch {
         if (alive) failed = true;
@@ -111,13 +144,20 @@
     })();
     const leave = registerLeaveGuard(async () => {
       if (!draft || finished) return;
-      await api.saveLessonDraft(draft);
-      if (!isTyping) await api.saveLessonSession(profile.id, draft.lesson_id);
+      const read = await readingSummary();
+      const updated = read
+        ? { ...draft, summaries: [...draft.summaries, read] }
+        : draft;
+      await api.saveLessonDraft(updated);
+      draft = updated;
+      resetReading();
+      await api.saveLessonSession(profile.id, draft.lesson_id);
     });
     return () => {
       alive = false;
       window.removeEventListener('blur', stop);
-      document.removeEventListener('visibilitychange', stop);
+      window.removeEventListener('focus', resumeReading);
+      document.removeEventListener('visibilitychange', visibility);
       leave();
     };
   });
@@ -126,6 +166,7 @@
     busy = true;
     failed = false;
     try {
+      summary ??= await readingSummary();
       const repeat =
         summary &&
         step?.type === 'challenge' &&
@@ -139,6 +180,7 @@
       await api.saveLessonDraft(updated);
       user.resume = null;
       draft = updated;
+      resetReading();
       demoIndex = 0;
       retry = !!repeat;
       attempt++;
@@ -159,6 +201,7 @@
       throw new Error('save_failed');
     } finally {
       busy = false;
+      resumeReading();
     }
   }
   async function pause(summary: Summary, text: string) {
@@ -169,7 +212,9 @@
 
 <section
   class="lesson stack"
-  class:grade3={profile.path_id === 'grade3' || profile.grade === 3}
+  style:--font-target={profile.path_id === 'grade3' || profile.grade === 3
+    ? `${Math.max(40, { s: 30, m: 36, l: 42, xl: 48 }[preferences.font_size])}px`
+    : undefined}
 >
   {#if failed}<p class="error" role="alert">{t.saveFailed}</p>{/if}
   {#if lesson && draft && step}<header class="row">
@@ -257,8 +302,5 @@
   .explanation img {
     height: 230px;
     object-fit: contain;
-  }
-  .grade3 {
-    --font-target: 40px;
   }
 </style>

@@ -12,6 +12,7 @@
   import { messages, locale, digits } from '../lib/i18n/index.svelte';
   import { navigate, registerLeaveGuard } from '../lib/router.svelte';
   import { recordLatency } from '../lib/diagnostics.svelte';
+  import { sound, pauseSounds } from '../lib/sound';
   import { GameLoop } from '../lib/game-loop';
   import {
     TypingSession,
@@ -36,6 +37,7 @@
   let expected = $state<Stroke | null>(null);
   let cursor = $state(0);
   let y = $state(-35);
+  let remaining = $state(0);
   let capture = $state<HTMLDivElement>();
   let session: TypingSession | undefined;
   let loop: GameLoop | undefined;
@@ -221,6 +223,7 @@
       event.preventDefault();
     const result = session.onKey(event, elapsed);
     if (result.ignored) return;
+    sound(result.finished ? 'success' : result.correct ? 'key' : 'error');
     void tick().then(() => recordLatency(performance.now() - received));
     expected = result.expected_next;
     cursor = result.cluster_index;
@@ -251,6 +254,7 @@
           const prior = draft?.summaries.at(-1)?.accuracy ?? 85;
           const duration = 12000 - prior * 40;
           y = -35 + Math.min(1, elapsed / duration) * 335;
+          remaining = Math.max(0, Math.ceil((duration - elapsed) / 1000));
           if (elapsed >= duration) void complete(true);
         }
         if (elapsed - lastCheckpoint >= 30000) {
@@ -258,9 +262,10 @@
           void checkpoint();
         }
       },
-      preferences.low_end,
+      preferences.low_end || preferences.reduce_motion,
       () => {
         running = false;
+        pauseSounds();
         if (!saving) void checkpoint();
       },
     );
@@ -307,7 +312,8 @@
         >{t.gameRound}
         {digits(draft.step + 1)} / {digits(game.rounds.length)}</strong
       >{#if game.id === 'falling'}<span
-          >{t.gameLives}: {digits(draft.lives)}</span
+          >{t.gameLives}: {digits(draft.lives)}{#if preferences.reduce_motion}
+            · {t.timeLeft}: {digits(remaining)} {t.seconds}{/if}</span
         >{/if}
     </div>
     {#if game.id === 'journey'}<div class="stops" aria-label={t.gameRound}>
@@ -323,7 +329,9 @@
     >
       {#if game.id === 'falling'}<div
           class="sprite"
-          style:transform={`translate3d(0,${y}px,0)`}
+          style:transform={preferences.reduce_motion
+            ? 'translate3d(0,120px,0)'
+            : `translate3d(0,${y}px,0)`}
         >
           {round.target}
         </div>{:else}<div class="picture" aria-hidden="true">{round.emoji}</div>

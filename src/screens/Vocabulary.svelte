@@ -184,7 +184,7 @@
     line-height: 1.9;
   }
   h3 {
-    font-size: 17px;
+    font-size: var(--font-ui);
     color: var(--muted);
   }
   .card p {

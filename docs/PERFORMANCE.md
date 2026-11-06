@@ -59,3 +59,21 @@ CPU throttling on this machine cannot certify those hardware-specific results.
 
 Raw local reports are under ignored `target/performance-*.json`. Repeat these
 measurements after adding screens/content and on the actual school hardware.
+
+## Final M11 release measurements (2026-11-06)
+
+- Slim installer: 2,696,052 bytes; Full installer: 220,422,132 bytes.
+- Portable ZIP: 3,417,441 bytes, verified hashes and 140 entries with no learner DB.
+- EXE: 7,683,584 bytes; installed EXE plus content: 7,959,538 bytes.
+- Initial JavaScript gzip: 34,731 bytes; WASM: 195,313 bytes; CSS: 21,361 bytes.
+- 200 keys, Low-end mode: normal p50 0.3 / p95 0.7 / max 1.6 ms;
+  6x CPU throttle p50 3.6 / p95 5.4 / max 12.1 ms. No per-key IPC;
+  108 visible clusters. These samples were measured while Full was packaging.
+- Home has zero active intervals and animation callbacks; bundled font loaded.
+- Release without debugger, after settling: 100,069,376 bytes private working
+  set across eight processes; full working-set sum 445,014,016 bytes; CPU 0.312%
+  of the 12-logical-processor machine (rounds to 0% in Task Manager).
+
+The 150 MB target passes using Task Manager's private working-set measurement.
+The full working-set sum includes shared pages and is reported separately; it
+exceeds 150 MB. Physical school-PC measurements and cold starts remain required.

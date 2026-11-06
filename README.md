@@ -30,8 +30,24 @@ cargo test --workspace
 ```
 
 If Cargo is not in PATH, use `$env:USERPROFILE/.cargo/bin/cargo.exe`.
-The dev command builds local frontend assets and opens the empty M0 window;
+The dev command builds local frontend assets and opens the app;
 restart it after frontend edits. No development HTTP server is needed.
 
-`npm run build` runs the Tauri release bundler. The full offline installer and
-portable package are scheduled for M8.
+`npm run build` produces the slim installer, Full offline installer, portable ZIP
+and SHA-256 checksums in `target/packages`. The Full installer embeds WebView2;
+the other two packages require an existing runtime. Run `npm run perf` for release
+size budgets, and `scripts/check-packages.ps1` to verify packaged resources/hashes.
+
+Learning includes seven paths, 74 lessons, 275 words across eleven categories,
+four games and local achievements. Typing includes free typing, timed tests,
+custom texts, random drills and mistake analysis. Every finished activity is
+saved to local SQLite History. Teacher tools use an optional local Argon2id PIN;
+there are no accounts or runtime network services.
+
+All generated learning content is marked unreviewed. Classroom deployment still
+requires teacher review, the disconnected clean Windows 10 installation test,
+and the physical Sandy Bridge checks listed in
+[TESTING_ON_SCHOOL_PCS.md](docs/TESTING_ON_SCHOOL_PCS.md).
+Development measurements and their limits are in
+[PERFORMANCE.md](docs/PERFORMANCE.md); deviations are in
+[DECISIONS.md](docs/DECISIONS.md).

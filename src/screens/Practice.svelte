@@ -13,7 +13,8 @@
   } from '../lib/engine';
   import Keyboard from '../lib/components/Keyboard.svelte';
   import TextTrack from '../lib/components/TextTrack.svelte';
-  import { messages, digits } from '../lib/i18n/index.svelte';
+  import { messages, digits, locale } from '../lib/i18n/index.svelte';
+  import { sound, pauseSounds } from '../lib/sound';
   import nida from '../../content/layouts/nida.json';
   import legacy from '../../content/layouts/khmer_legacy.json';
   import content from '../../content/playground.json';
@@ -162,6 +163,7 @@
       event.preventDefault();
     const result = session.onKey(event);
     if (result.ignored) return;
+    sound(result.finished ? 'success' : result.correct ? 'key' : 'error');
     void tick().then(() => recordLatency(performance.now() - received));
     const next = errors;
     if (event.code === 'Backspace') {
@@ -200,6 +202,7 @@
       });
     const pause = () => {
       running = false;
+      pauseSounds();
     };
     window.addEventListener('keydown', key);
     window.addEventListener('blur', pause);
@@ -223,6 +226,7 @@
       alive = false;
       window.removeEventListener('keydown', key);
       window.removeEventListener('blur', pause);
+      pauseSounds();
       leave();
     };
   });
@@ -341,7 +345,7 @@
 <div class="workspace stack">
   <header class="intro">
     <div>
-      <p class="eyebrow">{t.development}</p>
+      {#if sandbox}<p class="eyebrow">{t.development}</p>{/if}
       <h1>{sandbox ? t.playground : t.practice}</h1>
       <p class="muted">{t.playgroundHint}</p>
     </div>
@@ -363,8 +367,8 @@
         >{t.layout}<select
           bind:value={layoutId}
           disabled={!!oncomplete || running || (!sandbox && hasStarted)}
-          ><option value="nida">{nida.name.km}</option><option
-            value="khmer_legacy">{legacy.name.km}</option
+          ><option value="nida">{nida.name[locale.language]}</option><option
+            value="khmer_legacy">{legacy.name[locale.language]}</option
           ></select
         ></label
       >
@@ -384,7 +388,7 @@
             disabled={running || (!sandbox && hasStarted)}
             aria-pressed={policy === 'flow'}>{t.flow}</button
           >
-        </div>{:else}<label class="row"
+        </div>{:else if isFree}<label class="row"
           ><input type="checkbox" bind:checked={liveStats} />{t.showLive}</label
         >{/if}
       {#if hasTimer}<strong class="countdown"
@@ -395,7 +399,7 @@
       <section class="panel stack" aria-label={t.results}>
         <h2>{t.finished}</h2>
         <div class="stats">
-          {#each [[t.kpm, summary.kpm.toFixed(1)], ['WPM*', summary.wpm_equivalent.toFixed(1)], [t.accuracy, `${summary.accuracy.toFixed(1)}%`], [t.errors, summary.errors]] as [label, value] (label)}<div
+          {#each [[t.kpm, summary.kpm.toFixed(1)], [t.wpm, summary.wpm_equivalent.toFixed(1)], [t.accuracy, `${summary.accuracy.toFixed(1)}%`], [t.errors, summary.errors]] as [label, value] (label)}<div
             >
               <strong>{digits(value)}</strong><span class="muted">{label}</span>
             </div>{/each}
@@ -463,7 +467,10 @@
               running = true;
             }
           }}
-          onblur={() => (running = false)}
+          onblur={() => {
+            running = false;
+            pauseSounds();
+          }}
         >
           <p id="capture-hint" class="muted">
             {running ? t.active : t.captureHint}
@@ -491,8 +498,10 @@
           <button
             class="primary"
             onclick={() => {
-              if (running) running = false;
-              else void start();
+              if (running) {
+                running = false;
+                pauseSounds();
+              } else void start();
             }}>{running ? t.pause : t.start}</button
           >
         </div>
@@ -533,7 +542,7 @@
     contain: layout paint;
   }
   .free-hint {
-    font-size: 14px;
+    font-size: var(--font-ui);
   }
   .countdown {
     font-variant-numeric: tabular-nums;
@@ -550,7 +559,7 @@
     align-items: center;
   }
   .eyebrow {
-    font-size: 13px;
+    font-size: var(--font-ui);
     color: var(--primary);
     font-weight: 700;
     letter-spacing: 0.06em;
@@ -559,7 +568,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 14px;
+    font-size: var(--font-ui);
     white-space: nowrap;
   }
   .status span {
@@ -578,7 +587,7 @@
     display: flex;
     gap: 12px;
     align-items: center;
-    font-size: 16px;
+    font-size: var(--font-ui);
   }
   .policy {
     display: flex;
@@ -594,7 +603,7 @@
   }
   .progress {
     justify-content: space-between;
-    font-size: 14px;
+    font-size: var(--font-ui);
   }
   .capture {
     position: absolute;
@@ -612,7 +621,7 @@
   .practice-footer {
     justify-content: space-between;
     margin-top: 16px;
-    font-size: 16px;
+    font-size: var(--font-ui);
   }
   .practice-footer strong {
     font-size: 26px;
@@ -635,7 +644,7 @@
     font-size: 36px;
   }
   .stats span {
-    font-size: 15px;
+    font-size: var(--font-ui);
   }
   @media (max-width: 1050px) {
     .workspace {

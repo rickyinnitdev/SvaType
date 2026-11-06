@@ -18,6 +18,7 @@ fn main() {
         .plugin(tauri_plugin_dialog::init())
         .manage(std::sync::Arc::new(storage::teacher::Gate::default()))
         .invoke_handler(tauri::generate_handler![
+            commands::reading_summary,
             commands::profiles_list,
             commands::profiles_create,
             commands::profiles_update,

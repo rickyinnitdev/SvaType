@@ -106,3 +106,18 @@ Development tests run on Windows 11. A clean Windows 10 VM with its adapter
 disabled is not available in this workspace. Do not mark that acceptance step
 passed until an operator runs it. Development process-scoped host/proxy blocking
 is useful evidence, but it does not replace the disconnected-VM installation test.
+
+## Final development regression (M11)
+
+Windows 11 native integration checks passed for all five Typing Mode activities,
+the entire 20-lesson Grade 3 path, all four games, Journey stop-five resume,
+blur/hidden pause, 30 fps Low-end cap, and the teacher workflow with 40 profiles.
+Polish checks cover complete local OFL text, Windows layout match/mismatch,
+contrast/XL, Grade 3 target size, bookmarks, unfinished reading History, path
+selection persistence and Khmer Settings at 1024 x 640. A native Alt+F4/restart
+check retained the unfinished lesson. Tests use isolated disposable data folders.
+
+The automated layout comparison test supplies synthetic Windows input. It does
+not replace pressing every physical key with NiDA active on a school keyboard.
+Similarly, generated Khmer content remains marked unreviewed until a teacher
+checks the language, examples, order and classroom suitability.

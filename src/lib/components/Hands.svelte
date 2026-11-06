@@ -14,6 +14,7 @@
 </script>
 
 <svg
+  class="hands"
   viewBox={geometry.view_box}
   role="img"
   aria-label={t.keyboardIntro}
@@ -30,6 +31,13 @@
       class:active={active === finger.id}
       stroke="var(--foreground)"
       stroke-width="1"
+    /><rect
+      x={finger.x - 10}
+      y={finger.y - 13}
+      width="20"
+      height="18"
+      rx="2"
+      fill="var(--surface)"
     /><text x={finger.x} y={finger.y} text-anchor="middle">{finger.id}</text
     >{#if active === finger.id}<text
         x={finger.x}
@@ -63,7 +71,7 @@
     transform: translateY(-3px);
   }
   text {
-    font: 11px sans-serif;
+    font: 14px sans-serif;
     fill: var(--foreground);
   }
   .arrow {

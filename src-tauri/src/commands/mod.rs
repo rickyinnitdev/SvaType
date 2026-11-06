@@ -497,3 +497,12 @@ pub async fn achievements_get(db: DbState<'_>, profile: i64) -> AppResult<Vec<Va
 pub async fn content_achievements(content: ContentState<'_>) -> AppResult<Value> {
     content_file(content, "", "achievements".into()).await
 }
+
+#[tauri::command]
+pub async fn reading_summary(duration_ms: u64) -> AppResult<khmer_core::metrics::SessionSummary> {
+    Ok(khmer_core::metrics::SessionSummary {
+        duration_ms,
+        accuracy: 100.0,
+        ..Default::default()
+    })
+}

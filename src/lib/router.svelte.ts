@@ -1,3 +1,4 @@
+import { LeaveGuards } from './leave-guards';
 export type Screen =
   | 'profiles'
   | 'onboarding'
@@ -17,33 +18,43 @@ export type Screen =
   | 'progress'
   | 'vocabulary'
   | 'games'
-  | 'teacher';
+  | 'teacher'
+  | 'help'
+  | 'layoutCheck';
 export const router = $state<{
   screen: Screen;
   resultId: number | null;
   busy: boolean;
   error: string | null;
 }>({ screen: 'profiles', resultId: null, busy: false, error: null });
-// Guards are an imperative registry, never rendered or read by reactive effects.
-// eslint-disable-next-line svelte/prefer-svelte-reactivity
-const guards = new Map<symbol, () => Promise<void>>();
+const guards = new LeaveGuards();
 export function registerLeaveGuard(next: () => Promise<void>) {
-  const key = Symbol();
-  guards.set(key, next);
-  return () => {
-    guards.delete(key);
-  };
+  return guards.register(next);
 }
 export async function navigate(screen: Screen, resultId: number | null = null) {
   if (router.busy) return;
   router.busy = true;
   router.error = null;
   try {
-    for (const guard of [...guards.values()]) await guard();
+    await guards.flush();
     router.resultId = resultId;
     router.screen = screen;
   } catch {
     router.error = 'save_failed';
+  } finally {
+    router.busy = false;
+  }
+}
+export async function flushForClose() {
+  if (router.busy) return false;
+  router.busy = true;
+  router.error = null;
+  try {
+    await guards.flush();
+    return true;
+  } catch {
+    router.error = 'save_failed';
+    return false;
   } finally {
     router.busy = false;
   }

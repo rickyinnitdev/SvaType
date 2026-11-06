@@ -38,14 +38,26 @@ async function visibleText() {
   );
 }
 try {
-  await call('Page.navigate', { url: 'http://tauri.localhost/' });
-  await wait("document.querySelector('.people')");
   const profiles = await invoke('profiles_list');
   assert.ok(
     profiles.every((p) => p.name === 'M3 Smoke'),
     'Use isolated smoke data only',
   );
-  const profile = profiles[0];
+  const profile =
+    profiles[0] ??
+    (await invoke('profiles_create', {
+      input: {
+        name: 'M3 Smoke',
+        avatar: '0',
+        grade: null,
+        path_id: 'beginner',
+        layout_id: 'nida',
+        preferred_mode: 'typing',
+      },
+    }));
+  await invoke('settings_set', { key: 'language', value: 'en' });
+  await call('Page.navigate', { url: 'http://tauri.localhost/' });
+  await wait("document.querySelector('.people')");
   await click("document.querySelector('.person')");
   await wait("document.querySelector('.typing-cards')");
   await card('Free typing');

@@ -6,6 +6,7 @@
   import {
     router,
     navigate,
+    flushForClose,
     type Screen as ScreenName,
   } from './lib/router.svelte';
   import { api } from './lib/api';
@@ -33,6 +34,8 @@
     lesson: () => import('./screens/LessonPlayer.svelte'),
     intro: () => import('./screens/KeyboardIntro.svelte'),
     progress: () => import('./screens/Progress.svelte'),
+    help: () => import('./screens/Help.svelte'),
+    layoutCheck: () => import('./screens/LayoutCheck.svelte'),
     teacher: () => import('./screens/Teacher.svelte'),
     games: () => import('./screens/Games.svelte'),
     vocabulary: () => import('./screens/Vocabulary.svelte'),
@@ -71,6 +74,14 @@
     }
   }
   onMount(() => {
+    let unlisten: (() => void) | undefined;
+    void getCurrentWindow()
+      .onCloseRequested(async (event) => {
+        if (!(await flushForClose())) event.preventDefault();
+      })
+      .then((value) => {
+        unlisten = value;
+      });
     document.title = t.appName;
     const isSandbox =
       import.meta.env.MODE === 'development' &&
@@ -90,6 +101,7 @@
     requestAnimationFrame(() =>
       requestAnimationFrame(() => void getCurrentWindow().show()),
     );
+    return () => unlisten?.();
   });
 </script>
 
@@ -204,13 +216,13 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    font-size: 14px;
+    font-size: var(--font-ui);
   }
   nav {
     gap: 8px;
   }
   nav button {
-    font-size: 15px;
+    font-size: var(--font-ui);
     padding: 6px 12px;
   }
   .modes {
@@ -223,7 +235,7 @@
   }
   .modes button {
     border: 0;
-    min-height: 40px;
+    min-height: 48px;
     background: transparent;
   }
   .modes .selected {

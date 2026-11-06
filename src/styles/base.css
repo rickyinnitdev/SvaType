@@ -138,3 +138,45 @@ h2 {
     scroll-behavior: auto !important;
   }
 }
+
+[data-theme='contrast'] .keyboard .key {
+  border-color: var(--line);
+}
+
+:root {
+  color-scheme: light;
+}
+[data-theme='dark'],
+[data-theme='contrast'] {
+  color-scheme: dark;
+}
+[data-theme='contrast'] .keyboard .key.medium-error,
+[data-theme='contrast'] .keyboard .key.high-error {
+  background: var(--surface);
+  color: var(--foreground);
+  border-style: dashed;
+}
+
+body {
+  overflow-wrap: anywhere;
+}
+html[data-reduce-motion='true'] *,
+html[data-reduce-motion='true'] *::before,
+html[data-reduce-motion='true'] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+html[data-low-end='true'] * {
+  transition-property: opacity !important;
+}
+
+[data-theme='contrast'] .hands path {
+  fill: var(--surface);
+  stroke: var(--foreground);
+  opacity: 1;
+}
+[data-theme='contrast'] .hands path.active {
+  stroke: var(--primary);
+  stroke-width: 3;
+}

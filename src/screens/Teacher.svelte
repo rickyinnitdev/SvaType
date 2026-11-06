@@ -19,6 +19,7 @@
   let authorized = $state(false);
   let loading = $state(true);
   let busy = $state(false);
+  let pendingOperation: Promise<void> | null = null;
   let feedback = $state('');
   let pin = $state('');
   let confirmation = $state('');
@@ -106,6 +107,7 @@
         }
       });
     const leave = registerLeaveGuard(async () => {
+      if (pendingOperation) await pendingOperation;
       await api.teacherLock();
       const people = await api.profiles();
       user.profiles = people;
@@ -117,19 +119,24 @@
       leave();
     };
   });
-  async function run(action: () => Promise<void>, reload = true) {
-    if (busy) return;
+  function run(action: () => Promise<void>, reload = true): Promise<void> {
+    if (pendingOperation) return pendingOperation;
     busy = true;
     feedback = '';
-    try {
-      await action();
-      if (reload) await refresh();
-      feedback = t.saved;
-    } catch (e) {
-      error(e);
-    } finally {
-      busy = false;
-    }
+    pendingOperation = (async () => {
+      try {
+        await action();
+        if (reload) await refresh();
+        feedback = t.saved;
+      } catch (e) {
+        error(e);
+      } finally {
+        busy = false;
+      }
+    })().finally(() => {
+      pendingOperation = null;
+    });
+    return pendingOperation;
   }
   async function enter() {
     await run(async () => {
@@ -178,6 +185,7 @@
   async function confirm() {
     if (!pending) return;
     const request = pending;
+    let deletedSelf = false;
     await run(async () => {
       if (request.action === 'reset') await api.resetProgress(request.id);
       else {
@@ -185,13 +193,13 @@
         if (user.profile?.id === request.id) {
           user.profile = null;
           pending = null;
-          await navigate('profiles');
-          return;
+          deletedSelf = true;
         }
       }
       pending = null;
       edit(null);
     });
+    if (deletedSelf) await navigate('profiles');
   }
   async function exportClass() {
     await run(async () => {

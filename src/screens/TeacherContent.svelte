@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { registerLeaveGuard } from '../lib/router.svelte';
   import { onMount } from 'svelte';
   import {
     api,
@@ -26,6 +27,7 @@
   let emoji = $state('📖');
   let reviewed = $state(false);
   let busy = $state(false);
+  let pendingOperation: Promise<void> | null = null;
   let failed = $state(false);
   let saved = $state(false);
   let pendingDelete = $state<number | null>(null);
@@ -42,6 +44,12 @@
     if (kind === 'word') words = (await api.vocab(category)).words;
   }
   onMount(() => {
+    const leave = registerLeaveGuard(async () => {
+      if (pendingOperation) {
+        await pendingOperation;
+        if (failed) throw new Error('save_failed');
+      }
+    });
     void (async () => {
       try {
         categories = (await api.vocabIndex()).categories;
@@ -51,6 +59,7 @@
         onerror(error);
       }
     })();
+    return leave;
   });
   function clear() {
     rowId = null;
@@ -108,21 +117,26 @@
     reviewed = row.value.reviewed === true;
     saved = false;
   }
-  async function run(operation: () => Promise<void>) {
-    if (busy) return;
+  function run(operation: () => Promise<void>): Promise<void> {
+    if (pendingOperation) return pendingOperation;
     busy = true;
     failed = false;
     saved = false;
-    try {
-      await operation();
-      await refresh();
-      saved = true;
-    } catch (error) {
-      failed = true;
-      onerror(error);
-    } finally {
-      busy = false;
-    }
+    pendingOperation = (async () => {
+      try {
+        await operation();
+        await refresh();
+        saved = true;
+      } catch (error) {
+        failed = true;
+        onerror(error);
+      } finally {
+        busy = false;
+      }
+    })().finally(() => {
+      pendingOperation = null;
+    });
+    return pendingOperation;
   }
   async function save() {
     await run(async () => {

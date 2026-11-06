@@ -33,6 +33,13 @@ fn native_message(key: &str) -> Vec<u16> {
     .chain([0])
     .collect()
 }
+fn supported_version(value: &str) -> bool {
+    value
+        .split('.')
+        .next()
+        .and_then(|major| major.parse::<u32>().ok())
+        .is_some_and(|major| major >= 105)
+}
 pub fn startup() -> Option<Instance> {
     unsafe {
         let handle = match CreateMutexW(None, false, w!("Local\\SvaType.Desktop.Instance")) {
@@ -57,8 +64,13 @@ pub fn startup() -> Option<Instance> {
         }
         let instance = Instance(handle);
         let mut version = PWSTR::null();
-        let available =
+        let found =
             GetAvailableCoreWebView2BrowserVersionString(PCWSTR::null(), &mut version).is_ok();
+        let available = found
+            && !version.is_null()
+            && version
+                .to_string()
+                .is_ok_and(|value| supported_version(&value));
         if !version.is_null() {
             CoTaskMemFree(Some(version.0.cast()));
         }
@@ -94,4 +106,16 @@ pub fn lockdown(window: &tauri::WebviewWindow) -> tauri::Result<()> {
             eprintln!("WebView settings: {error}");
         }
     })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::supported_version;
+    #[test]
+    fn requires_the_frontend_browser_baseline() {
+        assert!(!supported_version("104.0.1293.0"));
+        assert!(supported_version("105.0.0.0"));
+        assert!(supported_version("150.0.3657.0 beta"));
+        assert!(!supported_version("unknown"));
+    }
 }

@@ -91,6 +91,7 @@ impl Content {
         cache.insert(id.into(), layout.clone());
         Ok(layout)
     }
+    #[allow(clippy::too_many_arguments)]
     pub fn practice(
         &self,
         level: u8,

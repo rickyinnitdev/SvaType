@@ -221,6 +221,8 @@ export interface ContentOverride {
   value: Record<string, unknown>;
 }
 export const api = {
+  readingSummary: (durationMs: number) =>
+    invoke<Summary>('reading_summary', { durationMs }),
   teacherUnlockStatus: (profile: number | null) =>
     invoke<{ enabled: boolean }>('teacher_unlock_status', { profile }),
   teacherStatus: () =>
